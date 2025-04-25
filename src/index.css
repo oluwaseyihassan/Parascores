@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark-bg: #1b1e25;
+  --color-light-bg: #f7f7f7;
+  --color-dark: #020300;
+  --color-light: #ebecef;
+  --color-accent: #009b72;
+}
+
+*,
+*::after,
+*::before {
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: inter, monospace;
+  /* outline: solid 1px red; */
+}
+
+.scroll_bar::-webkit-scrollbar {
+  width: 4px;
+  /* background-color: #424242; */
+}
+
+.scroll_bar::-webkit-scrollbar-thumb {
+  background-color: #009b7210;
+}
+
+.scroll_bar::-webkit-scrollbar-thumb:hover {
+  background-color: #686868;
+  cursor: pointer;
+}
+
+.scroll_bar::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+.calendar-panel-light {
+  background-color: var(--color-light-bg);
+  color: var(--color-dark);
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  width: 250px;
+  height: fit-content;
+}
+.calendar-panel-dark {
+  background-color: var(--color-dark-bg);
+  color: var(--color-light);
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  border: 1px solid var(--color-accent);
+  width: 250px;
+  height: fit-content;
+}
+
+/* Style for current day in light theme */
+.calendar-panel-light .p-datepicker-today > span {
+  background-color: var(--color-accent) !important;
+  color: white !important;
+  border-radius: 50% !important;
+  font-weight: bold !important;
+  box-shadow: 0 0 0 2px rgba(0, 155, 114, 0.3) !important;
+  transform: scale(1.1) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Style for current day in dark theme */
+.calendar-panel-dark .p-datepicker-today > span {
+  background-color: var(--color-accent) !important;
+  color: white !important;
+  border-radius: 50% !important;
+  font-weight: bold !important;
+  box-shadow: 0 0 0 2px rgba(0, 155, 114, 0.3) !important;
+  transform: scale(1.1) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Hover effects for current day */
+.calendar-panel-light .p-datepicker-today > span:hover,
+.calendar-panel-dark .p-datepicker-today > span:hover {
+  background-color: var(--color-accent) !important;
+  opacity: 0.9 !important;
+  box-shadow: 0 0 0 3px rgba(0, 155, 114, 0.5) !important;
+  transform: scale(1.15) !important;
+}
+.calendar-input {
+  outline: none;
+  cursor: pointer;
+  color: var(--color-light);
+}
+
+.calendar-panel-light .p-datepicker-calendar {
+  color: var(--color-dark);
+  height: 200px;
+  
+}
+.calendar-panel-dark .p-datepicker-calendar {
+  color: var(--color-light);
+  height: 200px;
+}
+
