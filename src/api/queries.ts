@@ -30,3 +30,4 @@ export const getFixtureById = async (id: number, includes: string,filters: strin
         throw error;
     }
 }
+

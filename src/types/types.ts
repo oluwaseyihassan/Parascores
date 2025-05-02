@@ -5,7 +5,7 @@ export type League = {
     type: string;
     category: number;
     short_code: string | null;
-    inplay: Inplay[] | null;
+    inplay: Today[] | null;
     today: Today[] | null;
     country: Country | null;
 }
@@ -19,13 +19,13 @@ export type Today = {
     state: State | null;
     scores: Scores[] | null;
     periods: Periods[] | null;
-
+    events: Events[] | null;
+    lineups: LineUp[] | null;
+    metadata: MetaData[] | null;
+    statistics: Statistics[] | null;
 }
 
-export type Inplay = {
-    id: number;
-    name: string | null;
-}
+
 
 export type Pagination = {
     count: number;
@@ -75,6 +75,8 @@ export type Fixture = {
     events: Events[] | null;
     participants: Participants[] | null;
     scores: Scores[] | null;
+    starting_at: string | null;
+    state: State | null;
 }
 
 export type Scores = {
@@ -96,6 +98,7 @@ export type Periods = {
     seconds: number;
     has_timer: boolean;
     counts_from: number;
+    ticking: boolean;
 
 }
 
@@ -108,6 +111,8 @@ export type Events = {
     result: string | null;
     info: string | null
     sort_order: number
+    participant_id: number
+    addition: string | null
     type: {
         id: number;
         name: string | null;
@@ -120,4 +125,78 @@ export type Events = {
         developer_name: string | null;
         model_type: string | null;
     } | null;
+}
+
+export type LineUp = {
+    id: number;
+    fixture_id: number;
+    player_id: number;
+    team_id: number;
+    position_id: number;
+    formation_field: string | null;
+    type_id: number;
+    player_name: string;
+    jersey_number: number | null;
+    formation_position: number | null;
+    player: {
+        id: number;
+        common_name: string | null;
+        image_path: string | null;
+        gender: string | null;
+    },
+    details: {
+        id: number;
+        data: {
+            value: number | null;
+        },
+        type: {
+            id: number;
+            name: string | null;
+            developer_name: string | null;
+            model_type: string | null;
+        }
+    },
+    type: {
+        id: number;
+        name: string | null;
+        developer_name: string | null;
+        model_type: string | null;
+    },
+   
+
+}
+
+export type Type = {
+    id: number;
+    name: string | null;
+    developer_name: string | null;
+    model_type: string | null;
+
+}
+
+export type MetaData = {
+        id: number;
+        type: Type;
+       values: {
+        home: string | null;
+        away: string | null
+       }
+}
+
+export type Statistics = {
+    id: number;
+    fixture_id: number;
+    type_id: number;
+    participant_id: number;
+    data: {
+        value: number
+    }
+    location: string;
+    type: {
+        id: number;
+        name: string | null;
+        developer_name: string | null;
+        model_type: string | null;
+        stat_group: string | null;
+    }
 }

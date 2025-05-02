@@ -6,6 +6,8 @@
   --color-dark: #020300;
   --color-light: #ebecef;
   --color-accent: #009b72;
+  --animate-blink: blink 1s infinite;
+  --breakpoint-xl: 80rem;
 }
 
 *,
@@ -15,6 +17,11 @@
   box-sizing: border-box;
   font-family: inter, monospace;
   /* outline: solid 1px red; */
+}
+body {
+  margin: 0;
+  padding: 0;
+  font-family: inter, monospace;
 }
 
 .scroll_bar::-webkit-scrollbar {
@@ -93,10 +100,25 @@
 .calendar-panel-light .p-datepicker-calendar {
   color: var(--color-dark);
   height: 200px;
-  
 }
 .calendar-panel-dark .p-datepicker-calendar {
   color: var(--color-light);
   height: 200px;
 }
 
+
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
