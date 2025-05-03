@@ -10,7 +10,7 @@ const LineUp: FC<props> = ({ fixture }) => {
   return (
     <section className=" h-fit">
       <div className=" p-2 grid grid-cols-2 gap-4">
-        <div className="flex items-center justify-center gap-2 col-span-1 justify-self-start">
+        <div className="flex items-center lg:justify-start justify-center gap-2 lg:col-span-1 col-span-2 justify-self-start lg:text-base text-sm mt-2 lg:mt-0 w-full ">
           <div className="h-7 w-7">
             <img
               src={`${
@@ -35,7 +35,7 @@ const LineUp: FC<props> = ({ fixture }) => {
             }
           </div>
         </div>
-        <div className="flex items-center justify-center gap-2 col-span-1 justify-self-end">
+        <div className="hidden items-center justify-center gap-2 lg:col-span-1 justify-self-end lg:flex">
           <div>
             {
               fixture?.metadata?.find(
@@ -99,6 +99,31 @@ const LineUp: FC<props> = ({ fixture }) => {
               )?.values.away ?? null
             }
           />
+          <div className="flex items-center gap-2 lg:hidden lg:text-base text-sm mt-2 lg:mt-0">
+            <div className="h-7 w-7">
+              <img
+                src={`${
+                  fixture?.participants?.find(
+                    (participant) => participant.meta.location === "away"
+                  )?.image_path
+                }`}
+                alt=""
+                className="w-full h-full"
+              />
+            </div>
+            {
+              fixture?.participants?.find(
+                (participant) => participant.meta.location === "away"
+              )?.name
+            }
+            <div>
+              {
+                fixture?.metadata?.find(
+                  (meta) => meta.type.developer_name === "FORMATION"
+                )?.values.away
+              }
+            </div>
+          </div>
         </div>
       )}
     </section>

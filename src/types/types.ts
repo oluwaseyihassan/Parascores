@@ -24,6 +24,21 @@ export type Today = {
     lineups: LineUp[] | null;
     metadata: MetaData[] | null;
     statistics: Statistics[] | null;
+    league: {
+        id: number;
+        name: string;
+        image_path: string | null
+    }
+    venue: Venue | null;
+}
+
+export type  Venue = {
+    id: number;
+    name: string | null;
+    latitude: string | null;
+    longitude: string | null;
+    image_path: string | null;
+    city_name: string | null
 }
 
 

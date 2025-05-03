@@ -14,3 +14,24 @@ export const formatDate = (date: Date): string => {
       date1.getDate() === date2.getDate()
     );
   };
+
+  export const formatDateToReadable = (dateString: string): string => {
+    try {
+      const date = new Date(dateString);
+      
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return "Invalid date";
+      }
+      
+      // Format the date: day month year
+      return date.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid date";
+    }
+  }

@@ -1,7 +1,10 @@
 import { FC } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
-import {  Today } from "../types/types";
+import { Today } from "../types/types";
+import { formatDateToReadable } from "../utils/helperFunctions";
+import { FaCalendar } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 
 type props = {
   fixture: Today | null;
@@ -78,84 +81,81 @@ const FixtureCard: FC<props> = ({ fixture }) => {
       );
     }
 
-    return <span>{currentPeriod?.minutes}<span className="animate-blink">'</span></span>;
+    return (
+      <span>
+        {currentPeriod?.minutes}
+        <span className="animate-blink">'</span>
+      </span>
+    );
   };
   return (
-    <section
-      className={`${
-        theme === "dark" ? "bg-dark/70" : "bg-light"
-      } grid grid-cols-3 bg-accent p-2 rounded-lg`}
-    >
-      <div className="col-span-1 wrap-break-word text-center">
-        <Link
-          to={`${
-            fixture?.participants?.filter(
-              (participant) => participant.meta.location === "home"
-            )[0].id
-          }`}
-          className="flex flex-col items-center justify-center gap-2"
-        >
-          <div className="w-9 h-9">
-            <img
-              src={`${
-                fixture?.participants?.filter(
-                  (participant) => participant.meta.location === "home"
-                )[0].image_path
-              }`}
-              alt=""
-              className="w-full h-full"
-            />
-          </div>
-          <span className="text-xs max-w-full">
-            {
-              fixture?.participants?.filter(
-                (participant) => participant.meta.location === "home"
-              )[0].name
-            }
-          </span>
+    <section className={` p-2 rounded-lg`}>
+      <div
+        className={`${
+          theme === "dark" ? "bg-dark/70" : "bg-light"
+        } text-xs text-center rounded-lg mb-2 flex justify-between px-4 py-2 items-center gap-2`}
+      >
+        <div className="flex items-center gap-1">
+          <FaCalendar />{" "}
+          <span>{formatDateToReadable(fixture?.starting_at ?? "")} </span>
+        </div>
+        <Link to={``} className="flex items-center gap-1">
+          <img
+            src={`${fixture?.league.image_path}`}
+            className="h-3 w-3"
+            alt=""
+          />
+          <span>{fixture?.league.name}</span>
         </Link>
+        <div className="flex items-center gap-1">
+          <FaLocationDot className="text-gray-400" />
+          <span className="">
+            <a
+              href={`https://www.google.com/maps?q=${
+                fixture?.venue?.latitude ?? ""
+              },${fixture?.venue?.longitude ?? ""}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="View stadium location on Google Maps"
+            >
+              {fixture?.venue?.name}
+            </a>
+          </span>
+        </div>
       </div>
       <div
         className={`${
-          fixture?.state?.developer_name?.split("_")[0] === "INPLAY" ||
-          fixture?.state?.developer_name === "HT"
-            ? "text-accent"
-            : ""
-        } col-span-1 flex flex-col items-center justify-center`}
+          theme === "dark" ? "bg-dark/70" : "bg-light"
+        } grid grid-cols-3 bg-accent p-2 rounded-lg`}
       >
-        <div
-          className={`${
-            fixture?.state?.developer_name?.split("_")[0] === "INPLAY" ||
-            fixture?.state?.developer_name === "HT"
-              ? "bg-accent text-light-bg"
-              : ""
-          } px-2 rounded-full`}
-        >
-          {fixture?.state?.developer_name === "NS" ? (
-            fixture?.starting_at?.split(" ")[1].slice(0, 5)
-          ) : (
-            <div className="flex justify-center items-center gap-1 text-sm">
-              <span>
-                {
-                  fixture?.scores?.filter(
-                    (score) =>
-                      score.description === "CURRENT" &&
-                      score.score.participant === "home"
-                  )[0]?.score.goals
-                }
-              </span>
-              -
-              <span>
-                {
-                  fixture?.scores?.filter(
-                    (score) =>
-                      score.description === "CURRENT" &&
-                      score.score.participant === "away"
-                  )[0]?.score.goals
-                }
-              </span>
+        <div className="col-span-1 wrap-break-word text-center">
+          <Link
+            to={`${
+              fixture?.participants?.filter(
+                (participant) => participant.meta.location === "home"
+              )[0].id
+            }`}
+            className="flex flex-col items-center justify-center gap-2"
+          >
+            <div className="w-9 h-9">
+              <img
+                src={`${
+                  fixture?.participants?.filter(
+                    (participant) => participant.meta.location === "home"
+                  )[0].image_path
+                }`}
+                alt=""
+                className="w-full h-full"
+              />
             </div>
-          )}
+            <span className="text-xs max-w-full">
+              {
+                fixture?.participants?.filter(
+                  (participant) => participant.meta.location === "home"
+                )[0].name
+              }
+            </span>
+          </Link>
         </div>
         <div
           className={`${
@@ -163,39 +163,82 @@ const FixtureCard: FC<props> = ({ fixture }) => {
             fixture?.state?.developer_name === "HT"
               ? "text-accent"
               : ""
-          }`}
+          } col-span-1 flex flex-col items-center justify-center`}
         >
-          {fixture && currentState(fixture)}
-        </div>
-      </div>
-      <div className="col-span-1 wrap-break-word text-center">
-        <Link
-          to={`${
-            fixture?.participants?.filter(
-              (participant) => participant.meta.location === "away"
-            )[0].id
-          }`}
-          className="flex flex-col items-center justify-center gap-2"
-        >
-          <div className="w-9 h-9">
-            <img
-              src={`${
-                fixture?.participants?.filter(
-                  (participant) => participant.meta.location === "away"
-                )[0].image_path
-              }`}
-              alt=""
-              className="w-full h-full"
-            />
+          <div
+            className={`${
+              fixture?.state?.developer_name?.split("_")[0] === "INPLAY" ||
+              fixture?.state?.developer_name === "HT"
+                ? "bg-accent text-light-bg"
+                : ""
+            } px-2 rounded-full`}
+          >
+            {fixture?.state?.developer_name === "NS" ? (
+              fixture?.starting_at?.split(" ")[1].slice(0, 5)
+            ) : (
+              <div className="flex justify-center items-center gap-1 text-sm">
+                <span>
+                  {
+                    fixture?.scores?.filter(
+                      (score) =>
+                        score.description === "CURRENT" &&
+                        score.score.participant === "home"
+                    )[0]?.score.goals
+                  }
+                </span>
+                -
+                <span>
+                  {
+                    fixture?.scores?.filter(
+                      (score) =>
+                        score.description === "CURRENT" &&
+                        score.score.participant === "away"
+                    )[0]?.score.goals
+                  }
+                </span>
+              </div>
+            )}
           </div>
-          <span className="text-xs max-w-full">
-            {
+          <div
+            className={`${
+              fixture?.state?.developer_name?.split("_")[0] === "INPLAY" ||
+              fixture?.state?.developer_name === "HT"
+                ? "text-accent"
+                : ""
+            }`}
+          >
+            {fixture && currentState(fixture)}
+          </div>
+        </div>
+        <div className="col-span-1 wrap-break-word text-center">
+          <Link
+            to={`${
               fixture?.participants?.filter(
                 (participant) => participant.meta.location === "away"
-              )[0].name
-            }
-          </span>
-        </Link>
+              )[0].id
+            }`}
+            className="flex flex-col items-center justify-center gap-2"
+          >
+            <div className="w-9 h-9">
+              <img
+                src={`${
+                  fixture?.participants?.filter(
+                    (participant) => participant.meta.location === "away"
+                  )[0].image_path
+                }`}
+                alt=""
+                className="w-full h-full"
+              />
+            </div>
+            <span className="text-xs max-w-full">
+              {
+                fixture?.participants?.filter(
+                  (participant) => participant.meta.location === "away"
+                )[0].name
+              }
+            </span>
+          </Link>
+        </div>
       </div>
     </section>
   );

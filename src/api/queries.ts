@@ -40,3 +40,13 @@ export const getStandinsBySeasonId = async (seasonId: number, includes: string, 
         throw error;
     }
 }
+
+export const getHeadToHead = async (team1Id: number, team2Id: number, includes: string, filters: string) => {
+    try {
+        const response = await api.get(`/fixtures/headtohead/${team1Id}/${team2Id}?includes=${includes}&filters=${filters}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching head-to-head data:", error);
+        throw error;
+    }
+}

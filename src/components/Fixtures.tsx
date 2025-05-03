@@ -18,6 +18,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { RiFootballFill } from "react-icons/ri";
 import { useInView } from "react-intersection-observer";
 import { FaStar } from "react-icons/fa";
+import { imagePlaceholders } from "../utils/imagePlaceholders";
 
 type LeaguesApiResponse = {
   data: {
@@ -46,7 +47,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
   const [date, setDate] = useState<Date>(
     dateParam ? new Date(dateParam) : new Date()
   );
-  const [activeLeagueId, setActiveLeagueId] = useState<number | null>(null);
+  const [activeLeagueId] = useState<number | null>(null);
 
   const { ref, inView } = useInView();
 
@@ -73,7 +74,6 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
         : undefined,
     refetchInterval: 60000,
   });
-  console.log(leagues, hasNextPage);
 
   const handleDateChange = (newDate: Date) => {
     setDate(newDate);
@@ -89,24 +89,32 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
     }
   };
 
+  // Set initial fixture ID when data loads
   useEffect(() => {
-    const firstLeague = leagues?.pages[0]?.data.data[0];
-    const firstFixtureId = firstLeague?.today?.[0].id;
-    if (!fixtureId && firstFixtureId) {
-      setFixtureId(firstFixtureId);
-    }
-  }, [leagues]);
+    if ((leagues?.pages?.[0]?.data.data.length ?? 0) > 0 && !fixtureId) {
+      const firstLeague = leagues?.pages[0].data.data[0];
+      const firstFixture =
+        (filterFixtures === "live" && firstLeague?.inplay?.[0]) ||
+        firstLeague?.today?.[0];
 
+      if (firstFixture) {
+        setFixtureId(firstFixture.id);
+      }
+    }
+  }, [leagues, fixtureId, setFixtureId, filterFixtures]);
+
+  // Load more data when scrolling to the bottom
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
     }
-  }, [inView, fetchNextPage]);
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  // Count live matches for the badge
   const liveMatchesCount = useMemo(() => {
     if (!leagues?.pages || leagues.pages.length === 0) return 0;
 
     let count = 0;
-
     leagues.pages.forEach((page) => {
       page.data.data.forEach((league) => {
         if (league.inplay) {
@@ -119,35 +127,55 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
   }, [leagues]);
 
   return (
-    <div>
-      <section className="flex justify-between">
-        <div>
-          <div
-            onClick={() => {
-              setFilterFixtures("all");
-            }}
+    <div className="pb-10">
+      <section className="flex justify-between mb-4">
+        <div className="flex gap-2">
+          <button
+            onClick={() => setFilterFixtures("all")}
+            className={`px-4 py-1 h-fit rounded-md transition-colors cursor-pointer ${
+              filterFixtures === "all"
+                ? "bg-accent text-white"
+                : theme === "dark"
+                ? "bg-dark-bg hover:bg-dark-bg/80"
+                : "bg-light-bg hover:bg-light-bg/80"
+            }`}
+            aria-pressed={filterFixtures === "all"}
           >
             All
-          </div>
-          <div
-            onClick={() => {
-              setFilterFixtures("live");
-            }}
+          </button>
+
+          <button
+            onClick={() => setFilterFixtures("live")}
+            className={`px-4 py-1 h-fit cursor-pointer rounded-md transition-colors flex items-center ${
+              filterFixtures === "live"
+                ? "bg-accent text-white"
+                : theme === "dark"
+                ? "bg-dark-bg hover:bg-dark-bg/80"
+                : "bg-light-bg hover:bg-light-bg/80"
+            }`}
+            aria-pressed={filterFixtures === "live"}
           >
-            Live {liveMatchesCount}
-          </div>
-          <div>Favourites</div>
-          <div
-            onClick={() => {
-              if (hasNextPage) {
-                fetchNextPage();
-              }
-            }}
+            Live
+            {liveMatchesCount > 0 && (
+              <span className="ml-1 bg-white text-accent rounded-full h-5 w-5 text-[10px] flex justify-center items-center font-bold">
+                {liveMatchesCount}
+              </span>
+            )}
+          </button>
+
+          <button
+            className={`px-4 py-2 rounded-md transition-colors ${
+              theme === "dark"
+                ? "bg-dark-bg hover:bg-dark-bg/80"
+                : "bg-light-bg hover:bg-light-bg/80"
+            }`}
           >
-            loadmore
-          </div>
+            <FaStar className="inline mr-1" />
+            Favorites
+          </button>
         </div>
-        <div className="bg-accent h-fit w-24 py-1 px-2 rounded-lg cursor-pointer">
+
+        <div className="bg-accent rounded-lg overflow-hidden w-[100px] h-fit p-2">
           <Calendar
             value={date}
             onChange={(e) => handleDateChange(e.value as Date)}
@@ -163,13 +191,22 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
           />
         </div>
       </section>
-      {isError && <div className="text-center py-3 text-2xl"></div>}
-      {isLoading && (
-        <div className="flex justify-center items-center h-24 animate-spin text-4xl text-accent">
-          <RiFootballFill />
+
+      {isError && (
+        <div className="text-center py-8 text-red-500">
+          <p>Something went wrong. Please try again later.</p>
         </div>
       )}
-      <section>
+
+      {isLoading && (
+        <div className="flex justify-center items-center h-24">
+          <div className="animate-spin text-4xl text-accent">
+            <RiFootballFill />
+          </div>
+        </div>
+      )}
+
+      <section className="space-y-4">
         {!isLoading &&
           !isError &&
           leagues?.pages.map((page) => (
@@ -183,56 +220,51 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                 .map((league) => (
                   <div
                     key={league.id}
-                    onClick={() => setActiveLeagueId(league.id)}
-                    className={`${
+                    className={`rounded-lg overflow-hidden ${
                       theme === "dark" ? "divide-dark-bg" : "divide-light-bg"
                     } divide-y-[1px]`}
                   >
                     <div
-                      className={`flex items-center gap-2 py-1 mt-4 rounded-t-lg text-sm px-2 justify-between ${
+                      className={`flex items-center gap-2 py-2 rounded-t-lg px-3 justify-between ${
                         theme === "dark" ? "bg-dark/70" : "bg-light"
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <div className="h-4 w-4 flex justify-center items-center rounded-full overflow-clip">
+                        <div className="h-6 w-6 flex justify-center items-center rounded-full overflow-hidden">
                           <img
-                            src={`${
-                              league.country?.image_path ??
-                              "https://cdn.sportmonks.com/images/soccer/leagues/28/1116.png"
-                            }`}
-                            alt={`${league.country?.name}`}
-                            className="w-4 h-4 object-cover"
+                            src={league.country?.image_path || imagePlaceholders.team}
+                            alt=""
+                            className="w-5 h-5 object-contain"
                           />
                         </div>
-                        <div className="flex flex-col text-[8px]">
+                        <div className="flex flex-col text-[10px]">
                           <Link
-                            to={`/${league.country?.id}`}
-                            className="text-gray-400 hover:text-accent"
+                            to={`/${league.country?.id || ""}`}
+                            className=" text-gray-400 hover:text-accent"
                           >
-                            {league.country?.name}
+                            {league.country?.name || "International"}
                           </Link>
-                          <div className="flex">
+                          <div className="flex items-center">
                             <Link
-                              to={`/${league.id}`}
-                              className="mr-1 hover:text-accent hover:underline"
+                              to={`/league/${league.id}`}
+                              className="font-medium hover:text-accent hover:underline "
                             >
                               {league.name}
                             </Link>
-                            <div>
-                              {league.today
-                                ?.filter((_, index) => index === 0)
-                                .map((today) => (
-                                  <div key={today.id}>
-                                    Round {today.round?.name}
-                                  </div>
-                                ))}
-                            </div>
+                            {league.today?.[0]?.round?.name && (
+                              <div className="ml-2  opacity-70">
+                                Round {league.today[0].round.name}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
-                      <div className="cursor-pointer  hover:text-accent/70">
-                        <FaStar className="" />
-                      </div>
+                      <button
+                        className="text-xl cursor-pointer hover:text-accent focus:outline-none"
+                        aria-label="Add to favorites"
+                      >
+                        <FaStar className="text-gray-400" />
+                      </button>
                     </div>
 
                     <LeagueFixtures
@@ -247,12 +279,17 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
             </Fragment>
           ))}
       </section>
+
       {isFetchingNextPage && (
-        <div className="flex justify-center items-center h-24 animate-spin text-4xl text-accent">
-          <RiFootballFill />
+        <div className="flex justify-center items-center h-16 mt-4">
+          <div className="animate-spin text-3xl text-accent">
+            <RiFootballFill />
+          </div>
         </div>
       )}
-      <div ref={ref}></div>
+
+      {/* Invisible element for intersection observer */}
+      <div ref={ref} className="h-4" />
     </div>
   );
 };

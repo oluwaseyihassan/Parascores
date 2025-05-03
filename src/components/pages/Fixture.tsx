@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Fragment, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getFixtureById } from "../../api/queries";
+import { getFixtureById, getHeadToHead } from "../../api/queries";
 import FixtureCard from "../FixtureCard";
 import Events from "../Events";
 import { Today } from "../../types/types";
@@ -10,6 +10,7 @@ import LineUp from "../LineUp";
 import { RiFootballFill } from "react-icons/ri";
 import Statistics from "../Statistics";
 import Standing from "../Standing";
+import HeadToHead from "../HeadToHead";
 
 type ApiResponse = {
   data: {
@@ -37,7 +38,34 @@ const Fixture = () => {
     enabled: !!id,
     refetchInterval: 60000,
   });
-  console.log(data);
+
+  const teamsId = {
+    home:
+      data?.data.data.participants?.find(
+        (team) => team.meta.location === "home"
+      )?.id ?? null,
+    away:
+      data?.data.data.participants?.find(
+        (team) => team.meta.location === "away"
+      )?.id ?? null,
+  };
+
+  const { data: h2h } = useQuery({
+    queryKey: ["h2h", teamsId.home, teamsId.away],
+    queryFn: async () => {
+      if (teamsId.home === null || teamsId.away === null) {
+        throw new Error("teamsId is null");
+      }
+      return getHeadToHead(
+        teamsId.home,
+        teamsId.away,
+        "participants;league;scores;state;venue;events",
+        ""
+      );
+    },
+    enabled: !!teamsId.home && !!teamsId.away,
+  });
+  console.log(h2h);
 
   const tabs = [
     { name: "Details" },
@@ -45,6 +73,8 @@ const Fixture = () => {
     { name: "Statistics" },
     { name: "Commentary" },
     { name: "Standing" },
+    { name: "Head to Head" },
+    { name: "Venue" },
   ];
 
   if (isLoading) {
@@ -59,17 +89,56 @@ const Fixture = () => {
     <div className="grid lg:grid-cols-3 grid-cols-1 lg:gap-4 p-4">
       {/* Large screens */}
       <Fragment>
-        <section
-          className={`${
-            theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-          } col-span-1 rounded-lg p-3`}
-        >
-          <div>
-            <FixtureCard fixture={data?.data.data ?? null} />
+        <section className={` col-span-1 rounded-lg`}>
+          <section
+            className={`${
+              theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+            } rounded-lg p-3`}
+          >
+            <div>
+              <FixtureCard fixture={data?.data.data ?? null} />
+            </div>
+            <div className="lg:block hidden">
+              <Events
+                events={data?.data.data.events ?? null}
+                homeId={
+                  data?.data.data.participants?.find(
+                    (participant) => participant.meta.location === "home"
+                  )?.id ?? 0
+                }
+                awayId={
+                  data?.data.data.participants?.find(
+                    (participant) => participant.meta.location === "away"
+                  )?.id ?? 0
+                }
+                homeStyle="justify-end flex-row-reverse"
+                awayStyle="justify-end text-right"
+              />
+            </div>
+          </section>
+          <div
+            className={`${
+              theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+            } rounded-lg lg:block hidden p-3 mt-4`}
+          >
+            <Statistics fixture={data?.data.data ?? null} />
           </div>
-          <div className="lg:block hidden">
-            <Events
-              events={data?.data.data.events ?? null}
+        </section>
+        <section className={` col-span-2 lg:block hidden h-fit`}>
+          <section
+            className={`${
+              theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+            } rounded-lg`}
+          >
+            <LineUp fixture={data?.data.data ?? null} />
+          </section>
+          <section
+            className={`${
+              theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+            } rounded-lg mt-4`}
+          >
+            <HeadToHead
+              h2h={h2h}
               homeId={
                 data?.data.data.participants?.find(
                   (participant) => participant.meta.location === "home"
@@ -80,20 +149,8 @@ const Fixture = () => {
                   (participant) => participant.meta.location === "away"
                 )?.id ?? 0
               }
-              homeStyle="justify-end flex-row-reverse"
-              awayStyle="justify-end text-right"
             />
-          </div>
-          <div className="lg:block hidden">
-            <Statistics fixture={data?.data.data ?? null} />
-          </div>
-        </section>
-        <section
-          className={`${
-            theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-          } rounded-lg col-span-2 lg:block hidden h-fit`}
-        >
-          <LineUp fixture={data?.data.data ?? null} />
+          </section>
         </section>
       </Fragment>
       <Fragment>
@@ -114,7 +171,11 @@ const Fixture = () => {
           </div>
           <div className="h-full">
             {activeTab === 0 && (
-              <div className="p-2">
+              <div
+                className={`${
+                  theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+                } rounded-lg p-3`}
+              >
                 <Events
                   events={data?.data.data.events ?? null}
                   homeId={
@@ -139,7 +200,11 @@ const Fixture = () => {
                 </div>
               )}
               {activeTab === 2 && (
-                <div className={`${theme === "dark" ? "bg-dark-bg" : "bg-light-bg"} p-3 rounded-lg`}>
+                <div
+                  className={`${
+                    theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+                  } p-3 rounded-lg`}
+                >
                   <Statistics fixture={data?.data.data ?? null} />
                 </div>
               )}
@@ -150,7 +215,29 @@ const Fixture = () => {
               )}
               {activeTab === 4 && (
                 <div className="">
-                 <Standing fixture={data?.data.data ?? null}/>
+                  <Standing fixture={data?.data.data ?? null} />
+                </div>
+              )}
+              {activeTab === 5 && (
+                <div className="">
+                  <HeadToHead
+                    h2h={h2h}
+                    homeId={
+                      data?.data.data.participants?.find(
+                        (participant) => participant.meta.location === "home"
+                      )?.id ?? 0
+                    }
+                    awayId={
+                      data?.data.data.participants?.find(
+                        (participant) => participant.meta.location === "away"
+                      )?.id ?? 0
+                    }
+                  />
+                </div>
+              )}
+              {activeTab === 6 && (
+                <div className="p-2">
+                  <h1>Venue</h1>
                 </div>
               )}
             </div>
