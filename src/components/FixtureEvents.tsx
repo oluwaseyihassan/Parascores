@@ -29,7 +29,7 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
       }
       return getFixtureById(
         fixtureId,
-        "participants;events.type;events.subType;state;scores;periods",
+        "participants;events.type;events.subType;state;scores;periods;league",
         ""
       );
     },

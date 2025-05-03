@@ -5,6 +5,7 @@ import { Today } from "../types/types";
 import { formatDateToReadable } from "../utils/helperFunctions";
 import { FaCalendar } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import { imagePlaceholders } from "../utils/imagePlaceholders";
 
 type props = {
   fixture: Today | null;
@@ -101,7 +102,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
         </div>
         <Link to={``} className="flex items-center gap-1">
           <img
-            src={`${fixture?.league.image_path}`}
+            src={`${fixture?.league.image_path || imagePlaceholders.team}`}
             className="h-3 w-3"
             alt=""
           />
