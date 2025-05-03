@@ -14,6 +14,7 @@ export type Today = {
     id: number;
     name: string | null;
     starting_at: string | null;
+    season_id: number | null;
     participants: Participants[] | null;
     round: Round | null;
     state: State | null;
@@ -199,4 +200,66 @@ export type Statistics = {
         model_type: string | null;
         stat_group: string | null;
     }
+}
+
+export type StandingType = {
+    id: number;
+    league_id: number;
+    season_id: number;
+    position: number;
+    result: string | null;
+    points: number ;
+    participant: {
+        id: number;
+        name: string;
+        short_code: string | null;
+        image_path: string | null;
+        type: string | null;
+        country_id: number | null;
+    }
+    stage: {
+        id: number;
+        name: string | null;
+        league_id: number | null;
+        season_id: number | null;
+        sort_order: number | null;
+        is_current: boolean | null;
+    }
+    details: {
+        id: number;
+        value: number | null;
+        standing_type: string | null;
+        type: {
+            id: number;
+            name: string | null;
+            developer_name: string | null;
+            model_type: string | null;
+            stat_group: string | null;
+        }
+
+    }[]
+    rule: {
+        id: number;
+        position: number | null;
+        type: {
+            id: number;
+            name: string | null;
+            developer_name: string | null;
+            model_type: string | null;
+            stat_group: string | null;
+        }
+
+    }
+    form: {
+        id: number;
+        form: string | null;
+        sort_order: number | null;
+        fixture_id: number | null;
+        fixture: {
+            id: number;
+            name: string | null;
+            result_info: string | null;
+        }
+
+    }[]
 }

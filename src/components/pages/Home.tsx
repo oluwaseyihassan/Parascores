@@ -20,7 +20,7 @@ type ApiResponse = {
 
 const Home = () => {
   const { theme } = useTheme();
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
   const [fixtureId, setFixtureId] = useState<number>();
   const {
     data: leagues,

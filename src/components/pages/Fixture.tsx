@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { Fragment, useState } from "react";
+import { Fragment, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getFixtureById } from "../../api/queries";
 import FixtureCard from "../FixtureCard";
@@ -9,6 +9,7 @@ import { useTheme } from "../../context/ThemeContext";
 import LineUp from "../LineUp";
 import { RiFootballFill } from "react-icons/ri";
 import Statistics from "../Statistics";
+import Standing from "../Standing";
 
 type ApiResponse = {
   data: {
@@ -148,8 +149,8 @@ const Fixture = () => {
                 </div>
               )}
               {activeTab === 4 && (
-                <div className="p-2">
-                  <h1>Standing</h1>
+                <div className="">
+                 <Standing fixture={data?.data.data ?? null}/>
                 </div>
               )}
             </div>

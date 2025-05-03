@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
-import { Events, Today } from "../types/types";
+import {  Today } from "../types/types";
 
 type props = {
   fixture: Today | null;

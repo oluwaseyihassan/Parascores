@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Today } from "../types/types";
 import LineUpCard from "./LineUpCard";
 

@@ -31,3 +31,12 @@ export const getFixtureById = async (id: number, includes: string,filters: strin
     }
 }
 
+export const getStandinsBySeasonId = async (seasonId: number, includes: string, filters: string) => {
+    try {
+        const response = await api.get(`/standings/seasons/${seasonId}?includes=${includes}&filters=${filters}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching standings by season ID:", error);
+        throw error;
+    }
+}

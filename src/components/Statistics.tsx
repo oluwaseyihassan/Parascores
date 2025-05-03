@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { Today } from "../types/types";
 import { useTheme } from "../context/ThemeContext";
 import StatisticsCard from "./StatisticsCard";

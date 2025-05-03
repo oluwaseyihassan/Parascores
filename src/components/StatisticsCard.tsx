@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Statistics } from "../types/types";
 
 type StatisticsCardProps = {
@@ -14,7 +14,7 @@ type StatisticsCardProps = {
     | null;
 };
 
-const StatisticsCard: FC<StatisticsCardProps> = ({ stats, groupedStats }) => {
+const StatisticsCard: FC<StatisticsCardProps> = ({  groupedStats }) => {
   return (
     <div className="text-xs flex flex-col gap-1">
       {groupedStats?.map((stat) => (

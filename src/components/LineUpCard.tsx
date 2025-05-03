@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { LineUp } from "../types/types";
 
@@ -26,13 +26,7 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
     ) || [];
   console.log(startingPlayers);
 
-  const gridStyle = {
-    display: "grid",
-    gridTemplateRows: `repeat(${formationLength}, minmax(0, 1fr))`,
-    height: "100%",
-    position: "relative" as const,
-    zIndex: 30,
-  };
+
   if (formationArray.length === 0) {
     return <div className="lg:-rotate-270">{side === "home" ? "Formation Not Available" : ""}</div>;
   }
@@ -112,7 +106,7 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
                     : 0;
                   return aPosition - bPosition;
                 })
-                .map((player, index) => (
+                .map((player) => (
                   <div key={player.id} className="z-30">
                     <div className="flex flex-col items-center justify-center lg:rotate-90">
                       <div className="h-9 w-9 bg-white flex justify-center items-end rounded-full overflow-hidden">

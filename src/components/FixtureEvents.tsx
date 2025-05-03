@@ -1,8 +1,7 @@
 import { Dispatch, FC, SetStateAction } from "react";
-import { useTheme } from "../context/ThemeContext";
 import { useQuery } from "@tanstack/react-query";
 import { getFixtureById } from "../api/queries";
-import { Fixture, Today } from "../types/types";
+import {  Today } from "../types/types";
 import { RiFootballFill } from "react-icons/ri";
 import Events from "./Events";
 import { Link } from "react-router-dom";
@@ -20,8 +19,7 @@ type ApiResponse = {
   success: boolean;
 };
 
-const FixtureEvents: FC<Props> = ({ fixtureId, setFixtureId }) => {
-  const { theme } = useTheme();
+const FixtureEvents: FC<Props> = ({ fixtureId }) => {
 
   const { data: fixtureEvents, isLoading } = useQuery<ApiResponse>({
     queryKey: ["fixtureEvents", fixtureId],

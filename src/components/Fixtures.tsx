@@ -1,4 +1,4 @@
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getLeaguesByDate } from "../api/queries";
 import {
   Dispatch,
@@ -14,31 +14,11 @@ import { Calendar } from "primereact/calendar";
 import { useTheme } from "../context/ThemeContext";
 import { formatDate, isSameDay } from "../utils/helperFunctions";
 import LeagueFixtures from "./LeagueFixtures";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { RiFootballFill } from "react-icons/ri";
 import { useInView } from "react-intersection-observer";
-import { FaRegStar, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 
-type ApiResponse = {
-  pageParam: number[];
-  infinteData: {
-    fixtures: {
-      data: {
-        data: League[];
-        pagination: Pagination;
-      };
-      message: string;
-      success: boolean;
-    };
-    error: {
-      response: {
-        data: {
-          message: string;
-        };
-      };
-    };
-  };
-};
 type LeaguesApiResponse = {
   data: {
     data: League[];
@@ -60,7 +40,6 @@ type FixturesProps = {
 
 const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
   const { theme } = useTheme();
-  const [page, setPage] = useState<number>(1);
   const [searchParams, setSearchParams] = useSearchParams();
   const dateParam = searchParams.get("date");
   const [filterFixtures, setFilterFixtures] = useState("all");
@@ -77,7 +56,6 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    error,
     isError,
   } = useInfiniteQuery<LeaguesPageType, Error, LeaguesInfiniteData>({
     queryKey: ["fixtures", date],

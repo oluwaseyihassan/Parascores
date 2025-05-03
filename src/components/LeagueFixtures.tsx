@@ -1,10 +1,9 @@
-import { act, Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import {  Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { Fixture, League, Today } from "../types/types";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getFixtureById } from "../api/queries";
-import Fixtures from "./Fixtures";
 import Events from "./Events";
 
 type props = {
@@ -123,7 +122,7 @@ const LeagueFixtures: FC<props> = ({
     >
       {(filterFixtures === "live" ? league.inplay : league.today)
         ?.sort((a, b) => a.id - b.id)
-        .map((today, index) => (
+        .map((today) => (
           <div key={today.id}>
             <button
               className={`${
@@ -208,7 +207,7 @@ const LeagueFixtures: FC<props> = ({
                 {windowWidth >= 640 && (
                   <span
                     className={`${
-                      today.state?.developer_name?.split("_")[0] === "INPLAY"
+                      (today.state?.developer_name?.split("_")[0] === "INPLAY" || today.state?.developer_name === "HT")
                         ? "bg-accent text-light-bg"
                         : theme === "dark"
                         ? "bg-dark-bg"
