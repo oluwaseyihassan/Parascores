@@ -72,7 +72,7 @@ const Fixture = () => {
   console.log(h2h);
 
   const seasonId = data?.data.data?.season_id;
-  const { data: standing } = useQuery({
+  const { data: standing, isLoading: standingIsLoading } = useQuery({
     queryKey: ["standing", seasonId],
     queryFn: async () => {
       if (seasonId === undefined || seasonId === null) {
@@ -153,7 +153,7 @@ const Fixture = () => {
             <LineUp fixture={data?.data.data ?? null} />
           </section>
           <section className="mt-4">
-            <Standing standing={standing} />
+            <Standing standing={standing} isLoading={standingIsLoading} />
           </section>
           <section
             className={`${
@@ -238,7 +238,7 @@ const Fixture = () => {
               )}
               {activeTab === 4 && (
                 <div className="">
-                  <Standing standing={standing} />
+                  <Standing standing={standing} isLoading={standingIsLoading}/>
                 </div>
               )}
               {activeTab === 5 && (

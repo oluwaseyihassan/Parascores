@@ -89,7 +89,6 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
     }
   };
 
-  // Set initial fixture ID when data loads
   useEffect(() => {
     if ((leagues?.pages?.[0]?.data.data.length ?? 0) > 0 && !fixtureId) {
       const firstLeague = leagues?.pages[0].data.data[0];
@@ -103,14 +102,12 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
     }
   }, [leagues, fixtureId, setFixtureId, filterFixtures]);
 
-  // Load more data when scrolling to the bottom
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  // Count live matches for the badge
   const liveMatchesCount = useMemo(() => {
     if (!leagues?.pages || leagues.pages.length === 0) return 0;
 

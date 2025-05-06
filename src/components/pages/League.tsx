@@ -8,8 +8,9 @@ import {
 } from "../../api/queries";
 import { LeagueType } from "../../types/types";
 import TopScorers from "../TopScorers";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
+import LeagueCard from "../LeagueCard";
 
 type LeagueApiResponse = {
   data: {
@@ -22,43 +23,61 @@ type LeagueApiResponse = {
 const League = () => {
   const { id } = useParams();
   const { theme } = useTheme();
-
-  const { data: league } = useQuery<LeagueApiResponse>({
-    queryKey: ["league", id],
-    queryFn: async () => {
-      if (id === undefined || id === null) {
-        throw new Error("id is undefined or null");
-      }
-      return getLeagueById(+id, "currentSeason", "");
-    },
-  });
-  console.log(league);
-  const seasonId = league?.data.data.currentseason.id;
+  const [seasonId, setSeasonId] = useState<number | undefined>(undefined);
   const [topScorersFilterId, setTopScorersFilterId] = useState<number>(208);
   const [topScorerPage, setTopScorerPage] = useState<number>(1);
-  const { data: standing } = useQuery({
+
+  const { data: league, isLoading: leagueIsLoading } = useQuery<LeagueApiResponse>({
+    queryKey: ["league", id],
+    queryFn: async () => {
+      if (!id) {
+        throw new Error("League ID is required");
+      }
+      return getLeagueById(+id, "currentSeason;country;seasons", "");
+    },
+    retry: 1,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  useEffect(() => {
+    if (league?.data?.data?.currentseason?.id && !seasonId) {
+      setSeasonId(league.data.data.currentseason.id);
+    }
+  }, [league, seasonId]);
+
+  const { 
+    data: standing, 
+    isLoading: standingIsLoading,
+    error: standingError
+  } = useQuery({
     queryKey: ["standing", seasonId],
     queryFn: async () => {
-      if (seasonId === undefined || seasonId === null) {
-        throw new Error("seasonId is undefined or null");
+      if (!seasonId) {
+        throw new Error("Season ID is required");
       }
       return getStandinsBySeasonId(
-        +seasonId,
+        seasonId,
         "participant;group;stage;details.type;rule.type;form.fixture;season",
         ""
       );
     },
     enabled: !!seasonId,
+    retry: 1,
+    staleTime: 5 * 60 * 1000,
   });
 
-  const { data: topScorers, isLoading: topScorersIsLoading } = useQuery({
+  const { 
+    data: topScorers, 
+    isLoading: topScorersIsLoading,
+    error: topScorersError
+  } = useQuery({
     queryKey: ["topscorers", seasonId, topScorersFilterId, topScorerPage],
     queryFn: async () => {
-      if (seasonId === undefined || seasonId === null) {
-        throw new Error("seasonId is undefined or null");
+      if (!seasonId) {
+        throw new Error("Season ID is required");
       }
       return getTopScorersById(
-        +seasonId,
+        seasonId,
         topScorerPage,
         15,
         "player.nationality;player.position;participant;type;season.league",
@@ -66,29 +85,63 @@ const League = () => {
       );
     },
     enabled: !!seasonId,
+    retry: 1,
+    staleTime: 5 * 60 * 1000, 
   });
 
-  console.log(topScorers);
+
+  if (leagueIsLoading) {
+    return (
+      <div className="flex justify-center items-center h-96">
+        <div className="animate-spin text-accent text-4xl">⚽</div>
+      </div>
+    );
+  }
 
   return (
     <div className="grid lg:grid-cols-3 grid-cols-1 gap-4">
-      <div
-        className={`${
-          theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-        } px-2 pt-2 rounded-lg lg:col-span-2 col-span-1`}
-      >
-        <h2 className="text-center text-2xl w-full">Standing</h2>
+      <div className="lg:col-span-2 col-span-1">
+        <div
+          className={`${
+            theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+          } p-3 rounded-lg mb-4`}
+        >
+          <LeagueCard 
+            league={league} 
+            seasonId={seasonId} 
+            setSeasonId={setSeasonId} 
+          />
+        </div>
+        <div
+          className={`${
+            theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+          } px-2 pt-2 rounded-lg`}
+        >
+          <h2 className="text-center text-2xl w-full">Standings</h2>
 
-        <Standing standing={standing} />
+          {standingError ? (
+            <div className="text-red-500 p-4 text-center">
+              Unable to load standings
+            </div>
+          ) : (
+            <Standing standing={standing} isLoading={standingIsLoading}/>
+          )}
+        </div>
       </div>
       <div className="col-span-1">
-        <TopScorers
-          topScorers={topScorers}
-          setTopScorerFilterId={setTopScorersFilterId}
-          isLoading={topScorersIsLoading}
-          topScorerPage={topScorerPage}
-          setTopScorerPage={setTopScorerPage}
-        />
+        {topScorersError ? (
+          <div className={`${theme === "dark" ? "bg-dark-bg" : "bg-light-bg"} p-4 rounded-lg text-red-500 text-center`}>
+            Unable to load top scorers
+          </div>
+        ) : (
+          <TopScorers
+            topScorers={topScorers}
+            setTopScorerFilterId={setTopScorersFilterId}
+            isLoading={topScorersIsLoading}
+            topScorerPage={topScorerPage}
+            setTopScorerPage={setTopScorerPage}
+          />
+        )}
       </div>
     </div>
   );

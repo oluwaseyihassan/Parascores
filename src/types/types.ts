@@ -10,7 +10,12 @@ export type League = {
     country: Country | null;
     currentseason: {
         id: number;
+        name: string | null
     }
+    seasons: {
+        id: number;
+        name: string | null
+    }[]
 }
 
 export type LeagueType = {
@@ -301,6 +306,6 @@ export type TopScorersType = {
         firstname: string | null;
         image_path: string | null;
         lastname: string | null;
-        position: Type
+        position: Type | null
     }
 }

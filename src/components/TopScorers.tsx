@@ -96,7 +96,7 @@ const TopScorers: FC<TopScorersProps> = ({
                     <span>{player.player.common_name}</span>
                     <div className="flex items-center gap-2">
                       <span className="text-gray-400 text-xs">
-                        {player.player.position.name}
+                        {player.player.position?.name ?? "Not available"}
                       </span>
                       <div className="h-3 w-3" title={player.participant.name}>
                         <img

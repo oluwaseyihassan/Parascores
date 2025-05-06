@@ -4,10 +4,12 @@ import { IoIosArrowDown } from "react-icons/io";
 import useAnimationCleanup from "../hooks/useAnimationCleanup";
 
 type CustomSelectProps = {
-  options: {
-    label: string;
-    value: number;
-  }[];
+  options:
+    | {
+        label: string;
+        value: number;
+      }[]
+    | undefined;
   selectedOption: {
     label: string;
     value: number;
@@ -20,6 +22,7 @@ type CustomSelectProps = {
   >;
   setTopScorerFilterId?: Dispatch<SetStateAction<number>>;
   setTopScorerPage?: Dispatch<SetStateAction<number>>;
+  setSeasonId?: Dispatch<SetStateAction<number | undefined>>;
 };
 
 const CustomSelect: FC<CustomSelectProps> = ({
@@ -28,6 +31,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   setSelectedOption,
   setTopScorerFilterId,
   setTopScorerPage,
+  setSeasonId,
 }) => {
   const { theme } = useTheme();
 
@@ -37,7 +41,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   const handleClick = (value: number) => {
     setIsOpen(false);
     setSelectedOption({
-      label: options.find((option) => option.value === value)?.label ?? "",
+      label: options?.find((option) => option.value === value)?.label ?? "",
       value: value,
     });
     if (setTopScorerFilterId) {
@@ -46,10 +50,13 @@ const CustomSelect: FC<CustomSelectProps> = ({
     if (setTopScorerPage) {
       setTopScorerPage(1);
     }
+    if (setSeasonId) {
+      setSeasonId(value);
+    }
   };
 
   return (
-    <div className="relative w-[150px]">
+    <div className="relative w-[150px] ">
       <button
         className={`${
           theme === "dark" ? "bg-dark/70" : "bg-light"
@@ -67,13 +74,19 @@ const CustomSelect: FC<CustomSelectProps> = ({
             isOpen
               ? "animate-dropdown opacity-100"
               : "animate-dropdown-reverse opacity-0 pointer-events-none"
-          } px-2 py-1 rounded-lg w-full absolute flex flex-col gap-2 top-[35px]`}
+          } py-1 rounded-lg w-full absolute flex flex-col top-[35px] overflow-y-scroll h-fit max-h-[500px] z-30 scroll_bar`}
         >
-          {options.map((option) => (
+          {options?.map((option) => (
             <div
               key={option.value}
-              className={`cursor-pointer ${
-                selectedOption.value === option.value ? "font-bold" : ""
+              className={`cursor-pointer px-3 py-1 ${
+                theme === "dark"
+                  ? "hover:bg-dark-bg/80"
+                  : "hover:bg-light-bg/80"
+              } ${
+                selectedOption.value === option.value
+                  ? "font-bold bg-gray-600/20"
+                  : ""
               }`}
               onClick={() => handleClick(+option.value)}
               tabIndex={0}

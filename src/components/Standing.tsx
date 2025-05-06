@@ -1,7 +1,8 @@
 import { FC } from "react";
-import {  StandingType } from "../types/types";
+import { StandingType } from "../types/types";
 import { useTheme } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
+import { RiFootballFill } from "react-icons/ri";
 
 type Props = {
   standing: {
@@ -10,17 +11,25 @@ type Props = {
     };
     success: boolean;
   };
+  isLoading: boolean;
 };
 
-const Standing: FC<Props> = ({ standing }) => {
+const Standing: FC<Props> = ({ standing, isLoading }) => {
   const { theme } = useTheme();
 
   console.log(standing);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-24 animate-spin text-4xl text-accent">
+        <RiFootballFill />
+      </div>
+    );
+  }
   return (
     <div
       className={`${
         theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-      } overflow-x-auto relative p-2 rounded-lg mt-2`}
+      } overflow-x-auto relative p-2 rounded-lg mt-2 scroll_bar overflow-hidden`}
     >
       <div className="grid grid-cols-6 font-bold text-accent">
         <div
