@@ -232,21 +232,26 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                       <div className="flex items-center gap-2">
                         <div className="h-6 w-6 flex justify-center items-center rounded-full overflow-hidden">
                           <img
-                            src={league.country?.image_path || imagePlaceholders.team}
+                            src={
+                              league.country?.image_path ||
+                              imagePlaceholders.team
+                            }
                             alt=""
                             className="w-5 h-5 object-contain"
                           />
                         </div>
                         <div className="flex flex-col text-[10px]">
                           <Link
-                            to={`/${league.country?.id || ""}`}
+                            to={`/country/${league.country}/${
+                              league.country?.id || ""
+                            }`}
                             className=" text-gray-400 hover:text-accent"
                           >
                             {league.country?.name || "International"}
                           </Link>
                           <div className="flex items-center">
                             <Link
-                              to={`/league/${league.id}`}
+                              to={`/league/${league.name.replace(/ +/g, "-")}/${league.id}`}
                               className="font-medium hover:text-accent hover:underline "
                             >
                               {league.name}

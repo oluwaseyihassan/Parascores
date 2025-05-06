@@ -8,6 +8,13 @@ export type League = {
     inplay: Today[] | null;
     today: Today[] | null;
     country: Country | null;
+    currentseason: {
+        id: number;
+    }
+}
+
+export type LeagueType = {
+    league: League
 }
 
 export type Today = {
@@ -187,7 +194,7 @@ export type Type = {
     name: string | null;
     developer_name: string | null;
     model_type: string | null;
-
+    stat_group: string | null;
 }
 
 export type MetaData = {
@@ -277,4 +284,23 @@ export type StandingType = {
         }
 
     }[]
+}
+
+export type TopScorersType = {
+    id: number;
+    season_id: number;
+    player_id: number;
+    total: number;
+    position: number;
+    participant_id: number;
+    participant: Participants
+    player: {
+        id: number;
+        sport_id: number;
+        common_name: string | null;
+        firstname: string | null;
+        image_path: string | null;
+        lastname: string | null;
+        position: Type
+    }
 }

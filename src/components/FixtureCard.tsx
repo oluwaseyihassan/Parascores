@@ -3,8 +3,7 @@ import { useTheme } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
 import { Today } from "../types/types";
 import { formatDateToReadable } from "../utils/helperFunctions";
-import { FaCalendar } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
+// import { FaLocationDot } from "react-icons/fa6";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
 
 type props = {
@@ -94,13 +93,13 @@ const FixtureCard: FC<props> = ({ fixture }) => {
       <div
         className={`${
           theme === "dark" ? "bg-dark/70" : "bg-light"
-        } text-xs text-center rounded-lg mb-2 flex justify-between px-4 py-2 items-center gap-2`}
+        } text-xs text-center rounded-lg mb-2 flex justify-between px-4 py-2 items-center gap-2  text-gray-400`}
       >
         <div className="flex items-center gap-1">
-          <FaCalendar />{" "}
+          {/* <FaCalendar />{" "} */}
           <span>{formatDateToReadable(fixture?.starting_at ?? "")} </span>
         </div>
-        <Link to={``} className="flex items-center gap-1">
+        <Link to={`/league/${fixture?.league.name.replace(/ +/g, "-")}/${fixture?.league.id}`} className="flex items-center gap-1">
           <img
             src={`${fixture?.league.image_path || imagePlaceholders.team}`}
             className="h-3 w-3"
@@ -108,7 +107,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
           />
           <span>{fixture?.league.name}</span>
         </Link>
-        <div className="flex items-center gap-1">
+        {/* <div className="flex items-center gap-1">
           <FaLocationDot className="text-gray-400" />
           <span className="">
             <a
@@ -122,7 +121,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
               {fixture?.venue?.name}
             </a>
           </span>
-        </div>
+        </div> */}
       </div>
       <div
         className={`${

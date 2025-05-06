@@ -1,7 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { Fragment, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getFixtureById, getHeadToHead } from "../../api/queries";
+import {
+  getFixtureById,
+  getHeadToHead,
+  getStandinsBySeasonId,
+} from "../../api/queries";
 import FixtureCard from "../FixtureCard";
 import Events from "../Events";
 import { Today } from "../../types/types";
@@ -67,6 +71,22 @@ const Fixture = () => {
   });
   console.log(h2h);
 
+  const seasonId = data?.data.data?.season_id;
+  const { data: standing } = useQuery({
+    queryKey: ["standing", seasonId],
+    queryFn: async () => {
+      if (seasonId === undefined || seasonId === null) {
+        throw new Error("seasonId is undefined or null");
+      }
+      return getStandinsBySeasonId(
+        seasonId,
+        "participant;group;stage;details.type;rule.type;form.fixture",
+        ""
+      );
+    },
+    enabled: !!seasonId,
+  });
+
   const tabs = [
     { name: "Details" },
     { name: "Lineups" },
@@ -131,6 +151,9 @@ const Fixture = () => {
             } rounded-lg`}
           >
             <LineUp fixture={data?.data.data ?? null} />
+          </section>
+          <section className="mt-4">
+            <Standing standing={standing} />
           </section>
           <section
             className={`${
@@ -215,7 +238,7 @@ const Fixture = () => {
               )}
               {activeTab === 4 && (
                 <div className="">
-                  <Standing fixture={data?.data.data ?? null} />
+                  <Standing standing={standing} />
                 </div>
               )}
               {activeTab === 5 && (

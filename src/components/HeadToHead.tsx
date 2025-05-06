@@ -3,6 +3,7 @@ import { Today } from "../types/types";
 import { useTheme } from "../context/ThemeContext";
 import { formatDateToReadable } from "../utils/helperFunctions";
 import { Link } from "react-router-dom";
+import { imagePlaceholders } from "../utils/imagePlaceholders";
 
 type h2hProps = {
   h2h: {
@@ -17,7 +18,7 @@ type h2hProps = {
 
 const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
   const { theme } = useTheme();
-  const headToHead = h2h?.data.data;
+  const headToHead = h2h?.data?.data || [];
 
   const h2hStats = useMemo(() => {
     if (!headToHead || !homeId || !awayId) {
@@ -115,7 +116,10 @@ const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
           return (
             <Link
               to={`/match/${match.id}`}
-              className={`${theme === "dark" ? "bg-dark/70" : "bg-light"} p-1 rounded-lg flex items-center gap-2 `}
+              className={`${
+                theme === "dark" ? "bg-dark/70" : "bg-light"
+              } p-1 rounded-lg flex items-center gap-2 `}
+               key={match.id}
             >
               <div className="text-xs text-gray-400 w-[50px] text-center">
                 {formatDateToReadable(match.starting_at ?? "")}
@@ -132,7 +136,7 @@ const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
 
                   <div className="h-5 w-5 flex justify-center items-center">
                     <img
-                      src={homeTeam?.image_path || ""}
+                      src={homeTeam?.image_path || imagePlaceholders.team}
                       alt=""
                       className="w-4"
                     />
@@ -146,7 +150,7 @@ const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
                 <div className="flex items-center w-[45%]">
                   <div className="h-5 w-5 flex justify-center items-center">
                     <img
-                      src={awayTeam?.image_path || ""}
+                      src={awayTeam?.image_path || imagePlaceholders.team}
                       alt=""
                       className="w-4"
                     />

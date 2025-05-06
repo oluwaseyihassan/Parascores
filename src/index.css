@@ -8,6 +8,8 @@
   --color-accent: #009b72;
   --animate-blink: blink 1s infinite;
   --breakpoint-xl: 80rem;
+  --animate-dropdown: dropdown 0.3s ease-in-out;
+  --animate-dropdown-reverse: dropdown-reverse 0.3s ease-in-out;
 }
 
 *,
@@ -120,5 +122,26 @@ body {
   }
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes dropdown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes dropdown-reverse {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
   }
 }

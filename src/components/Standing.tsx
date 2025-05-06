@@ -1,44 +1,26 @@
 import { FC } from "react";
-import { Today, StandingType } from "../types/types";
-import { useQuery } from "@tanstack/react-query";
-import { getStandinsBySeasonId } from "../api/queries";
+import {  StandingType } from "../types/types";
 import { useTheme } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
 
 type Props = {
-  fixture: Today | null;
-};
-
-type ApiResponse = {
-  data: {
-    data: StandingType[];
+  standing: {
+    data: {
+      data: StandingType[];
+    };
+    success: boolean;
   };
-  success: boolean;
 };
 
-const Standing: FC<Props> = ({ fixture }) => {
+const Standing: FC<Props> = ({ standing }) => {
   const { theme } = useTheme();
-  const seasonId = fixture?.season_id;
-  const { data } = useQuery<ApiResponse>({
-    queryKey: ["standing", seasonId],
-    queryFn: async () => {
-      if (seasonId === undefined || seasonId === null) {
-        throw new Error("seasonId is undefined or null");
-      }
-      return getStandinsBySeasonId(
-        seasonId,
-        "participant;group;stage;details.type;rule.type;form.fixture",
-        ""
-      );
-    },
-    enabled: !!seasonId,
-  });
-  console.log(data);
+
+  console.log(standing);
   return (
     <div
       className={`${
         theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-      } overflow-x-auto relative p-2 rounded-lg`}
+      } overflow-x-auto relative p-2 rounded-lg mt-2`}
     >
       <div className="grid grid-cols-6 font-bold text-accent">
         <div
@@ -52,20 +34,34 @@ const Standing: FC<Props> = ({ fixture }) => {
           <div className="w-[20px] h-[20px] flex justify-center items-center"></div>
           <div>Team</div>
         </div>
-        <div className="col-span-3 flex justify-between min-w-fit w-full p-2">
+        <div
+          className={`col-span-3 flex justify-between min-w-fit w-full p-2 ${
+            theme === "dark" ? "bg-dark/70" : "bg-light"
+          }`}
+        >
           <div className="min-w-[40px] flex justify-center items-center">P</div>
           <div className="min-w-[40px] flex justify-center items-center">W</div>
           <div className="min-w-[40px] flex justify-center items-center">D</div>
           <div className="min-w-[40px] flex justify-center items-center">L</div>
-          <div className="min-w-[40px] flex justify-center items-center">GF</div>
-          <div className="min-w-[40px] flex justify-center items-center">GA</div>
-          <div className="min-w-[40px] flex justify-center items-center">GD</div>
-          <div className="min-w-[40px] flex justify-center items-center">Pts</div>
-          <div className="min-w-[160px] flex justify-center items-center">Form</div>
+          <div className="min-w-[40px] flex justify-center items-center">
+            GF
+          </div>
+          <div className="min-w-[40px] flex justify-center items-center">
+            GA
+          </div>
+          <div className="min-w-[40px] flex justify-center items-center">
+            GD
+          </div>
+          <div className="min-w-[40px] flex justify-center items-center">
+            Pts
+          </div>
+          <div className="min-w-[160px] flex justify-center items-center">
+            Form
+          </div>
         </div>
       </div>
       <div className={`${theme === "dark" ? "divide-accent" : "divide-light"}`}>
-        {data?.data.data.map((standing) => (
+        {standing?.data.data.map((standing) => (
           <div key={standing.id} className="grid grid-cols-6 text-sm">
             <div
               className={`${
@@ -84,48 +80,55 @@ const Standing: FC<Props> = ({ fixture }) => {
                   <span className="text-gray-400">→</span>
                 ) : null}
               </div>
+              <div className="h-5 w-5">
+                <img src={`${standing.participant.image_path}`} alt="" />
+              </div>
               <div>{standing.participant.name}</div>
             </div>
-            <div className="col-span-3 flex justify-between  min-w-fit w-full p-2">
+            <div
+              className={`col-span-3 flex justify-between  min-w-fit w-full p-2 ${
+                theme === "dark" ? "bg-dark/70" : "bg-light"
+              }`}
+            >
               <div className="min-w-[40px] flex justify-center items-center">
                 {standing.details.find(
                   (det) => det.type.developer_name === "OVERALL_MATCHES"
-                )?.value || "-"}
+                )?.value ?? "-"}
               </div>
               <div className="min-w-[40px] flex justify-center items-center">
                 {standing.details.find(
                   (det) => det.type.developer_name === "OVERALL_WINS"
-                )?.value || "-"}
+                )?.value ?? "-"}
               </div>
               <div className="min-w-[40px] flex justify-center items-center">
                 {standing.details.find(
                   (det) => det.type.developer_name === "OVERALL_DRAWS"
-                )?.value || "-"}
+                )?.value ?? "-"}
               </div>
               <div className="min-w-[40px] flex justify-center items-center">
                 {standing.details.find(
                   (det) => det.type.developer_name === "OVERALL_LOST"
-                )?.value || "-"}
+                )?.value ?? "-"}
               </div>
               <div className="min-w-[40px] flex justify-center items-center">
                 {standing.details.find(
                   (det) => det.type.developer_name === "OVERALL_SCORED"
-                )?.value || "-"}
+                )?.value ?? "-"}
               </div>
               <div className="min-w-[40px] flex justify-center items-center">
                 {standing.details.find(
                   (det) => det.type.developer_name === "OVERALL_CONCEDED"
-                )?.value || "-"}
+                )?.value ?? "-"}
               </div>
               <div className="min-w-[40px] flex justify-center items-center">
                 {standing.details.find(
                   (det) => det.type.developer_name === "OVERALL_GOAL_DIFFERENCE"
-                )?.value || "-"}
+                )?.value ?? "-"}
               </div>
               <div className="min-w-[40px] flex justify-center items-center">
                 {standing.details.find(
                   (det) => det.type.developer_name === "TOTAL_POINTS"
-                )?.value || "-"}
+                )?.value ?? "-"}
               </div>
               <div className="min-w-[160px] flex gap-2 justify-between text-white text-[10px]">
                 {standing.form

@@ -1,7 +1,7 @@
 import { Dispatch, FC, SetStateAction } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getFixtureById } from "../api/queries";
-import {  Today } from "../types/types";
+import { Today } from "../types/types";
 import { RiFootballFill } from "react-icons/ri";
 import Events from "./Events";
 import { Link } from "react-router-dom";
@@ -20,7 +20,6 @@ type ApiResponse = {
 };
 
 const FixtureEvents: FC<Props> = ({ fixtureId }) => {
-
   const { data: fixtureEvents, isLoading } = useQuery<ApiResponse>({
     queryKey: ["fixtureEvents", fixtureId],
     queryFn: async () => {
@@ -37,9 +36,6 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
   });
   console.log(fixtureEvents);
 
-
-
-  
   return (
     <div className="h-[80dvh] overflow-y-scroll scroll_bar ">
       <h2 className="text-accent text-center text-xl font-semibold">
@@ -52,8 +48,15 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
       )}
       {!isLoading && fixtureId && (
         <section>
-         <FixtureCard fixture={fixtureEvents?.data.data || null}/>
-          <Link to={`/match/${fixtureId}`}>GoTo Match</Link>
+          <FixtureCard fixture={fixtureEvents?.data.data || null} />
+          <div className="flex justify-center">
+            <Link
+              to={`/match/${fixtureId}`}
+              className={`text-white w-fit px-4 bg-accent flex justify-center py-1 rounded-lg text-sm hover:bg-accent/80`}
+            >
+              GoTo Match
+            </Link>
+          </div>
           <section>
             <Events
               events={fixtureEvents?.data.data.events ?? null}

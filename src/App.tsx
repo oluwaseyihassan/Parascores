@@ -4,6 +4,7 @@ import Home from "./components/pages/Home";
 import { useTheme } from "./context/ThemeContext";
 import { Routes, Route } from "react-router-dom";
 import Fixture from "./components/pages/Fixture";
+import League from "./components/pages/League";
 function App() {
   const { theme } = useTheme();
 
@@ -31,7 +32,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/match/:id" element={<Fixture />} />
-          <Route path="/contact" element={<div>Contact</div>} />
+          <Route path="/league/:league_name/:id" element={<League />} />
           <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>
       </section>

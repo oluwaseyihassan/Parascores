@@ -41,58 +41,66 @@ const Statistics: FC<props> = ({ fixture }) => {
       } rounded-lg`}
     >
       <h2 className="text-center">Statistics</h2>
-      <div className="flex items-center justify-between py-2">
-        <div className="flex items-center  gap-2 text-xs">
-          <div className="h-6 w-6">
-            <img
-              src={`${
+      {fixture?.statistics?.length ?? 0 > 0 ? (
+        <>
+          <div className="flex items-center justify-between py-2">
+            <div className="flex items-center  gap-2 text-xs">
+              <div className="h-6 w-6">
+                <img
+                  src={`${
+                    fixture?.participants?.find(
+                      (participant) => participant.meta.location === "home"
+                    )?.image_path
+                  }`}
+                  alt=""
+                  className="h-full w-full"
+                />
+              </div>
+              {
                 fixture?.participants?.find(
                   (participant) => participant.meta.location === "home"
-                )?.image_path
-              }`}
-              alt=""
-              className="h-full w-full"
-            />
-          </div>
-          {
-            fixture?.participants?.find(
-              (participant) => participant.meta.location === "home"
-            )?.name
-          }
-        </div>
-        <div className="flex items-center gap-2 text-xs">
-          {
-            fixture?.participants?.find(
-              (participant) => participant.meta.location === "away"
-            )?.name
-          }
-          <div className="h-6 w-6">
-            <img
-              src={`${
+                )?.name
+              }
+            </div>
+            <div className="flex items-center gap-2 text-xs">
+              {
                 fixture?.participants?.find(
                   (participant) => participant.meta.location === "away"
-                )?.image_path
-              }`}
-              alt=""
-              className="h-full w-full"
-            />
+                )?.name
+              }
+              <div className="h-6 w-6">
+                <img
+                  src={`${
+                    fixture?.participants?.find(
+                      (participant) => participant.meta.location === "away"
+                    )?.image_path
+                  }`}
+                  alt=""
+                  className="h-full w-full"
+                />
+              </div>
+            </div>
           </div>
+          <StatisticsCard
+            stats={fixture?.statistics ?? null}
+            homeId={
+              fixture?.participants?.find(
+                (participant) => participant.meta.location === "home"
+              )?.id ?? 0
+            }
+            awayId={
+              fixture?.participants?.find(
+                (participant) => participant.meta.location === "away"
+              )?.id ?? 0
+            }
+            groupedStats={groupedStats}
+          />
+        </>
+      ) : (
+        <div className="flex justify-center items-center h-24">
+          No Statistics Available
         </div>
-      </div>
-      <StatisticsCard
-        stats={fixture?.statistics ?? null}
-        homeId={
-          fixture?.participants?.find(
-            (participant) => participant.meta.location === "home"
-          )?.id ?? 0
-        }
-        awayId={
-          fixture?.participants?.find(
-            (participant) => participant.meta.location === "away"
-          )?.id ?? 0
-        }
-        groupedStats={groupedStats}
-      />
+      )}
     </div>
   );
 };
