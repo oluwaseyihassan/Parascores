@@ -1,8 +1,6 @@
 import { FC } from "react";
 import { Fixture, Periods } from "../types/types";
 import { useTheme } from "../context/ThemeContext";
-import { TbDeviceComputerCamera } from "react-icons/tb";
-import { RiFootballFill } from "react-icons/ri";
 import EventHalf from "./EventHalf";
 
 type Props = {
