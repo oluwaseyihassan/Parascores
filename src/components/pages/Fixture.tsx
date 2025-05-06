@@ -15,6 +15,7 @@ import { RiFootballFill } from "react-icons/ri";
 import Statistics from "../Statistics";
 import Standing from "../Standing";
 import HeadToHead from "../HeadToHead";
+import Venue from "../Venue";
 
 type ApiResponse = {
   data: {
@@ -35,7 +36,7 @@ const Fixture = () => {
       }
       return getFixtureById(
         +id,
-        "participants;events.type;events.subType;state;scores;periods;league;season;sidelined.sideline.player;sidelined.sideline.type;coaches;stage;round;group;aggregate;lineups.player;lineups.details.type;lineups.position;lineups.type;referees.referee;statistics.type;trends.type;venue;comments.player;metadata.type;weatherReport;formations",
+        "participants;events.type;events.period;events.subType;state;scores;periods;league;season;sidelined.sideline.player;sidelined.sideline.type;coaches;stage;round;group;aggregate;lineups.player;lineups.details.type;lineups.position;lineups.type;referees.referee;statistics.type;trends.type;venue;comments.player;metadata.type;weatherReport;formations",
         ""
       );
     },
@@ -69,7 +70,7 @@ const Fixture = () => {
     },
     enabled: !!teamsId.home && !!teamsId.away,
   });
-  console.log(h2h);
+  console.log(data);
 
   const seasonId = data?.data.data?.season_id;
   const { data: standing, isLoading: standingIsLoading } = useQuery({
@@ -133,6 +134,7 @@ const Fixture = () => {
                 }
                 homeStyle="justify-end flex-row-reverse"
                 awayStyle="justify-end text-right"
+                periods={data?.data.data.periods ?? null}
               />
             </div>
           </section>
@@ -213,6 +215,7 @@ const Fixture = () => {
                   }
                   homeStyle="justify-end flex-row-reverse"
                   awayStyle="justify-end text-right"
+                  periods={data?.data.data.periods ?? null}
                 />
               </div>
             )}
@@ -238,7 +241,7 @@ const Fixture = () => {
               )}
               {activeTab === 4 && (
                 <div className="">
-                  <Standing standing={standing} isLoading={standingIsLoading}/>
+                  <Standing standing={standing} isLoading={standingIsLoading} />
                 </div>
               )}
               {activeTab === 5 && (
@@ -260,7 +263,7 @@ const Fixture = () => {
               )}
               {activeTab === 6 && (
                 <div className="p-2">
-                  <h1>Venue</h1>
+                  <Venue venue={data?.data.data.venue ?? null}/>
                 </div>
               )}
             </div>

@@ -28,7 +28,7 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
       }
       return getFixtureById(
         fixtureId,
-        "participants;events.type;events.subType;state;scores;periods;league",
+        "participants;events.type;events.subType;events.period;state;scores;periods;league",
         ""
       );
     },
@@ -72,6 +72,7 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
               }
               homeStyle="justify-end flex-row-reverse"
               awayStyle="justify-end text-right"
+              periods={fixtureEvents?.data.data.periods ?? null}
             />
           </section>
         </section>

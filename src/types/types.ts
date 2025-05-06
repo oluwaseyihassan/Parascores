@@ -41,16 +41,20 @@ export type Today = {
         name: string;
         image_path: string | null
     }
-    venue: Venue | null;
+    venue: VenueType | null;
 }
 
-export type  Venue = {
+export type  VenueType = {
     id: number;
     name: string | null;
     latitude: string | null;
     longitude: string | null;
     image_path: string | null;
     city_name: string | null
+    capacity: number | null
+    surface: string | null
+    city: string | null
+    address: string | null
 }
 
 
@@ -105,6 +109,7 @@ export type Fixture = {
     scores: Scores[] | null;
     starting_at: string | null;
     state: State | null;
+    periods: Periods[]
 }
 
 export type Scores = {
@@ -127,6 +132,7 @@ export type Periods = {
     has_timer: boolean;
     counts_from: number;
     ticking: boolean;
+    description: string
 
 }
 
@@ -153,6 +159,7 @@ export type Events = {
         developer_name: string | null;
         model_type: string | null;
     } | null;
+    period: Periods
 }
 
 export type LineUp = {

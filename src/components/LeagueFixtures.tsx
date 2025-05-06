@@ -113,8 +113,6 @@ const LeagueFixtures: FC<props> = ({
     }
   };
 
-
-
   return (
     <div
       className={`${
@@ -277,6 +275,7 @@ const LeagueFixtures: FC<props> = ({
                       awayId={awayTeam?.id ?? 0}
                       homeStyle="justify-end flex-row-reverse"
                       awayStyle="justify-end text-right"
+                      periods={fixture?.data.data.periods ?? null}
                     />
                   </div>
                 )}
