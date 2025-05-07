@@ -61,7 +61,7 @@ const EventHalf: FC<Props> = ({
   return (
     <div
       className={`${
-        theme === "dark" ? "divide-dark-bg" : "bg-light-bg"
+        theme === "dark" ? "divide-dark-bg" : "divide-light-bg"
       } divide-y px-2 `}
     >
       {(events?.length ?? 0) > 0 &&
@@ -84,7 +84,7 @@ const EventHalf: FC<Props> = ({
                     : awayId === event.participant_id
                     ? awayStyle
                     : ""
-                } flex items-center min-h-[30px] gap-2 px-2`}
+                } flex items-center min-h-[40px] gap-2 px-2`}
               >
                 <div>
                   <div>{event.player_name}</div>

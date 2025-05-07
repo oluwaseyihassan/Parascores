@@ -27,17 +27,17 @@ const Events: FC<Props> = ({
         theme === "dark"
           ? "bg-dark/70 divide-dark-bg"
           : "bg-light divide-light-bg"
-      } lg:mt-2 divide-y-[1px] rounded-lg py-1`}
+      } lg:mt-2 divide-y-[1px] rounded-lg`}
     >
       {events?.length === 0 && (
-        <div className="flex justify-center items-center h-6">
+        <div className="flex justify-center items-center h-24">
           <p>No events</p>
         </div>
       )}
 
       {periods?.map((period) => (
-        <div key={period.id}>
-          <h3 className="text-xl text-center">{period.description}</h3>
+        <div key={period.id} className="p-2">
+          <h3 className={`  border border-solid border-gray-400/70 rounded-tr-lg rounded-tl-lg border-b-0 text-xl text-center py-2`}>{period.description}</h3>
           <EventHalf
             events={events}
             homeId={homeId}

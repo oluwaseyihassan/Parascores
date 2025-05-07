@@ -233,14 +233,14 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <div className="h-6 w-6 flex justify-center items-center rounded-full overflow-hidden">
+                        <div className="h-5 w-5 flex justify-center items-center rounded-full overflow-hidden">
                           <img
                             src={
                               league.country?.image_path ||
                               imagePlaceholders.team
                             }
                             alt=""
-                            className="w-5 h-5 object-contain"
+                            className="w-5 h-5 object-cover"
                           />
                         </div>
                         <div className="flex flex-col text-[0.8rem]">

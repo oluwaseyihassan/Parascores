@@ -8,7 +8,7 @@ type props = {
 
 const LineUp: FC<props> = ({ fixture }) => {
   return (
-    <section className=" h-fit">
+    <section className=" h-fit min-h-[100px]">
       <div className=" p-2 grid grid-cols-2 gap-4">
         <div className="flex items-center lg:justify-start justify-center gap-2 lg:col-span-1 col-span-2 justify-self-start lg:text-base text-sm mt-2 lg:mt-0 w-full ">
           <div className="h-7 w-7">

@@ -116,7 +116,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
       <div
         className={`${
           theme === "dark" ? "bg-dark/70" : "bg-light"
-        } grid grid-cols-3 bg-accent p-2 rounded-lg`}
+        } grid grid-cols-3  p-2 rounded-lg`}
       >
         <div className="col-span-1 wrap-break-word text-center">
           <Link
@@ -148,18 +148,13 @@ const FixtureCard: FC<props> = ({ fixture }) => {
           </Link>
         </div>
         <div
-          className={`${
-            fixture?.state?.developer_name?.split("_")[0] === "INPLAY" ||
-            fixture?.state?.developer_name === "HT"
-              ? "text-accent"
-              : ""
-          } col-span-1 flex flex-col items-center justify-center`}
+          className={` col-span-1 flex flex-col items-center justify-center`}
         >
           <div
             className={`${
               fixture?.state?.developer_name?.split("_")[0] === "INPLAY" ||
               fixture?.state?.developer_name === "HT"
-                ? "bg-accent text-light-bg"
+                ? "bg-live text-light-bg"
                 : ""
             } px-2 rounded-full`}
           >
@@ -193,7 +188,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
             className={`${
               fixture?.state?.developer_name?.split("_")[0] === "INPLAY" ||
               fixture?.state?.developer_name === "HT"
-                ? "text-accent"
+                ? "text-live"
                 : ""
             }`}
           >

@@ -92,7 +92,7 @@ const LeagueFixtures: FC<props> = ({
         currentPeriod.minutes > 45
       ) {
         return (
-          <span>
+          <span className="">
             45<sup>+{currentPeriod.minutes - 45}</sup>
           </span>
         );
@@ -106,7 +106,7 @@ const LeagueFixtures: FC<props> = ({
           </span>
         );
       } else {
-        return <span>{currentPeriod?.minutes}</span>;
+        return <span className="">{currentPeriod?.minutes}</span>;
       }
     } else {
       return matchState(fixture.state?.short_name ?? "");
@@ -162,7 +162,7 @@ const LeagueFixtures: FC<props> = ({
                   theme === "dark"
                     ? "hover:bg-gray-600/10"
                     : "hover:bg-gray-400/10"
-                } flex items-center gap-1 py-1 px-2 justify-between w-full cursor-pointer text-xs relative`}
+                } flex items-center gap-1 py-2 px-2 justify-between w-full cursor-pointer text-xs relative`}
                 onClick={() => {
                   setActiveFixtureId(
                     activeFixtureId === today.id ? null : today.id
@@ -177,7 +177,7 @@ const LeagueFixtures: FC<props> = ({
                   } text-[8px] w-10 flex flex-col items-center justify-center`}
                 >
                   <div
-                    className={isLive ? "text-accent" : ""}
+                    className={isLive ? "text-live font-bold text-[10px]" : ""}
                     title={today.state?.name || ""}
                   >
                     {currentState(today)}
@@ -225,7 +225,7 @@ const LeagueFixtures: FC<props> = ({
                     <span
                       className={`${
                         isLive
-                          ? "bg-accent text-light-bg"
+                          ? "bg-live text-light-bg"
                           : theme === "dark"
                           ? "bg-dark-bg"
                           : "bg-light-bg"

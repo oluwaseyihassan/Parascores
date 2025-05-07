@@ -83,7 +83,7 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
             key={option}
             className={`${theme === "dark" ? "bg-dark/70" : "bg-light"} ${
               standingOption === option ? "text-accent" : ""
-            } text-[1.2rem] sm:text-[1.5rem] font-semibold  px-2 py-1 rounded-lg`}
+            } text-[1.2rem] sm:text-[1.5rem] font-semibold  px-2 py-1 rounded-lg cursor-pointer`}
             onClick={() => handleStandingOptionChange(option)}
             disabled={standingOption === option}
           >
