@@ -83,7 +83,7 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
             key={option}
             className={`${theme === "dark" ? "bg-dark/70" : "bg-light"} ${
               standingOption === option ? "text-accent" : ""
-            } text-sm font-bold  px-2 py-1 rounded-lg`}
+            } text-[1.2rem] sm:text-[1.5rem] font-semibold  px-2 py-1 rounded-lg`}
             onClick={() => handleStandingOptionChange(option)}
             disabled={standingOption === option}
           >
@@ -91,7 +91,7 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
           </button>
         ))}
       </div>
-      <div className="grid grid-cols-6 font-bold text-accent">
+      <div className="grid grid-cols-6 font-bold text-accent sm:text-[1.4rem]">
         <div
           className={`${
             theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
@@ -134,10 +134,10 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
       <div
         className={`${
           theme === "dark" ? "divide-dark" : "divide-light"
-        } divide-y`}
+        } divide-y sm:text-[1.4rem]`}
       >
         {standing?.data.data.map((standing) => (
-          <div key={standing.id} className="grid grid-cols-6 text-sm">
+          <div key={standing.id} className="grid grid-cols-6 ">
             <div
               className={`${
                 theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
@@ -181,7 +181,7 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
                 );
               })}
 
-              <div className="min-w-[160px] flex gap-2 justify-between text-white text-[10px]">
+              <div className="min-w-[160px] flex gap-2 justify-between text-white">
                 {standing.form
                   .sort((a, b) => (b.sort_order ?? 0) - (a.sort_order ?? 0))
                   .slice(0, 5)
@@ -195,7 +195,7 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
                           : form.form?.toLocaleLowerCase() === "l"
                           ? "bg-red-500"
                           : "bg-gray-400"
-                      } w-[18px] h-[18px] flex justify-center items-center rounded-full relative `}
+                      } w-[18px] h-[18px] flex justify-center items-center rounded-full relative text-[0.8rem]`}
                       title={`${form.fixture.name} ${form.fixture.result_info}`}
                     >
                       {form.form}

@@ -99,7 +99,7 @@ const League = () => {
   }
 
   return (
-    <div className="grid lg:grid-cols-3 grid-cols-1 gap-4">
+    <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 p-2">
       <div className="lg:col-span-2 col-span-1">
         <div
           className={`${

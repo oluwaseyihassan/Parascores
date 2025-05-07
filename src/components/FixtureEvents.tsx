@@ -37,13 +37,13 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
   console.log(fixtureEvents);
 
   return (
-    <div className="h-[80dvh] overflow-y-scroll scroll_bar ">
+    <div className="max-h-[90dvh] min-h-[200px]">
       <h2 className="text-accent text-center text-xl font-semibold">
         Match Info
       </h2>
       {isLoading && (
-        <div className="flex justify-center items-center h-24 animate-spin text-4xl text-accent">
-          <RiFootballFill />
+        <div className="flex justify-center h-full items-center mt-10">
+          <RiFootballFill className="animate-spin text-4xl text-accent" />
         </div>
       )}
       {!isLoading && fixtureId && (
@@ -52,12 +52,12 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
           <div className="flex justify-center">
             <Link
               to={`/match/${fixtureId}`}
-              className={`text-white w-fit px-4 bg-accent flex justify-center py-1 rounded-lg text-sm hover:bg-accent/80`}
+              className={`text-white w-fit mt-2 px-4 bg-accent flex justify-center py-1 rounded-lg text-sm hover:bg-accent/80`}
             >
               GoTo Match
             </Link>
           </div>
-          <section>
+          <section className="overflow-y-auto scroll_bar max-h-[70dvh] mt-4">
             <Events
               events={fixtureEvents?.data.data.events ?? null}
               homeId={

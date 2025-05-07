@@ -34,7 +34,7 @@ const Home = () => {
   console.log(leaguesError);
 
   return (
-    <div className="grid col-span-1 lg:grid-cols-4 gap-4 ">
+    <div className="grid col-span-1 lg:grid-cols-4 gap-4 mt-1">
       <div className={`hidden lg:block col-span-1 `}>
         <div
           className={`${

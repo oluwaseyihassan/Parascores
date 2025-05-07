@@ -41,7 +41,7 @@ const TopScorers: FC<TopScorersProps> = ({
     <div
       className={`${
         theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-      } rounded-lg p-4 `}
+      } rounded-lg p-4 sm:text-[1.4rem]`}
     >
       <h2 className="text-center text-2xl">Top Players</h2>
       {isLoading ? (
@@ -67,9 +67,9 @@ const TopScorers: FC<TopScorersProps> = ({
                 : "bg-light divide-light-bg"
             } py-1 rounded-lg mt-4  divide-y`}
           >
-            <div className="flex items-center justify-between gap-2 mb-2 px-3 text-sm font-semibold py-1">
+            <div className="flex items-center justify-between gap-2 mb-2 px-3 text-sm font-semibold py-1 sm:text-[1.4rem]">
               <div className="flex items-center gap-3">
-                <div className="w-7">#</div>
+                <div className="w-7 ">#</div>
                 <div>Player</div>
               </div>
               <div>

@@ -36,7 +36,7 @@ const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
     <div
       className={`${
         theme === "dark" ? "bg-dark/70" : "bg-light"
-      } flex items-center gap-2 p-2 rounded-lg`}
+      } flex items-center gap-2 p-2 rounded-lg sm:text-[1.4rem]`}
     >
       <div className="w-16 h-16">
         <img
@@ -48,7 +48,7 @@ const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
       <div className="flex items-center justify-between w-full flex-wrap">
         <div>
           <div>
-            {league?.data.data.name} {league?.data.data.currentseason.name}
+            {league?.data.data.name}
           </div>
           <div className="flex items-center gap-2">
             <div className=" h-7 rounded-full overflow-hidden w-7">

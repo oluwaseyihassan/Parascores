@@ -162,13 +162,14 @@ const LeagueFixtures: FC<props> = ({
                   theme === "dark"
                     ? "hover:bg-gray-600/10"
                     : "hover:bg-gray-400/10"
-                } flex items-center gap-1 py-1 px-2 justify-between w-full cursor-pointer text-xs`}
+                } flex items-center gap-1 py-1 px-2 justify-between w-full cursor-pointer text-xs relative`}
                 onClick={() => {
                   setActiveFixtureId(
                     activeFixtureId === today.id ? null : today.id
                   );
                   setFixtureId(today.id);
                 }}
+                disabled={windowWidth <= 640}
               >
                 <div
                   className={`${
@@ -193,25 +194,25 @@ const LeagueFixtures: FC<props> = ({
 
                 <div className="flex flex-col sm:flex-row gap-0 sm:gap-2 sm:items-center w-full justify-center">
                   {/* Home team */}
-                  <div className="sm:text-right text-left flex gap-1 items-center sm:w-1/2 w-full flex-row-reverse sm:flex-row justify-end text-[10px] sm:text-[12px]">
+                  <div className="sm:text-right text-left flex gap-1 items-center sm:w-1/2 w-full flex-row-reverse sm:flex-row justify-between sm:justify-end text-[10px] sm:text-[12px]">
                     <span className="block sm:hidden">
                       {today.state?.developer_name !== "NS" && homeScore}
                     </span>
 
                     <div
-                      className={
+                      className={`${
                         homeTeam?.meta.winner === false ? "text-gray-400" : ""
-                      }
+                      } flex gap-1 items-center flex-row-reverse sm:flex-row`}
                     >
-                      {homeTeam?.name || ""}
-                    </div>
+                      <div>{homeTeam?.name || ""}</div>
 
-                    <div className="h-5 w-5 flex justify-center items-center">
-                      <img
-                        src={homeTeam?.image_path || ""}
-                        alt=""
-                        className="w-4"
-                      />
+                      <div className="h-5 w-5 flex justify-center items-center">
+                        <img
+                          src={homeTeam?.image_path || ""}
+                          alt=""
+                          className="w-4"
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -237,32 +238,39 @@ const LeagueFixtures: FC<props> = ({
                   )}
 
                   {/* Away team */}
-                  <div className="text-left flex gap-1 items-center w-full sm:w-1/2 justify-start text-[10px] sm:text-[12px]">
-                    <div className="h-5 w-5 flex justify-center items-center">
-                      <img
-                        src={awayTeam?.image_path || ""}
-                        alt=""
-                        className="w-4"
-                      />
-                    </div>
-
+                  <div className="text-left flex gap-1 items-center w-full sm:w-1/2 justify-between text-[10px] sm:text-[12px] ">
                     <div
-                      className={
+                      className={`${
                         awayTeam?.meta.winner === false ? "text-gray-400" : ""
-                      }
+                      } flex gap-1 items-center`}
                     >
-                      {awayTeam?.name || ""}
+                      <div className="h-5 w-5 flex justify-center items-center">
+                        <img
+                          src={awayTeam?.image_path || ""}
+                          alt=""
+                          className="w-4"
+                        />
+                      </div>
+
+                      <div>{awayTeam?.name || ""}</div>
                     </div>
 
-                    <span className="block sm:hidden">
+                    <span className="block sm:hidden ">
                       {today.state?.developer_name !== "NS" && awayScore}
                     </span>
                   </div>
                 </div>
 
-                <Link to={`/match/${today.id}`} className="sm:text-accent">
-                  {windowWidth <= 640 ? "det" : "Details"}
-                </Link>
+                {windowWidth <= 640 ? (
+                  <Link
+                    to={`/match/${today.id}`}
+                    className="bg-transparent h-full w-full absolute "
+                  ></Link>
+                ) : (
+                  <Link to={`/match/${today.id}`} className="sm:text-accent">
+                    Details
+                  </Link>
+                )}
               </button>
 
               {windowWidth <= 1024 &&

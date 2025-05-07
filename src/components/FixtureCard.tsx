@@ -99,7 +99,12 @@ const FixtureCard: FC<props> = ({ fixture }) => {
           {/* <FaCalendar />{" "} */}
           <span>{formatDateToReadable(fixture?.starting_at ?? "")} </span>
         </div>
-        <Link to={`/league/${fixture?.league.name.replace(/ +/g, "-")}/${fixture?.league.id}`} className="flex items-center gap-1">
+        <Link
+          to={`/league/${fixture?.league.name.replace(/ +/g, "-")}/${
+            fixture?.league.id
+          }`}
+          className="flex items-center gap-1"
+        >
           <img
             src={`${fixture?.league.image_path || imagePlaceholders.team}`}
             className="h-3 w-3"
@@ -107,21 +112,6 @@ const FixtureCard: FC<props> = ({ fixture }) => {
           />
           <span>{fixture?.league.name}</span>
         </Link>
-        {/* <div className="flex items-center gap-1">
-          <FaLocationDot className="text-gray-400" />
-          <span className="">
-            <a
-              href={`https://www.google.com/maps?q=${
-                fixture?.venue?.latitude ?? ""
-              },${fixture?.venue?.longitude ?? ""}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              title="View stadium location on Google Maps"
-            >
-              {fixture?.venue?.name}
-            </a>
-          </span>
-        </div> */}
       </div>
       <div
         className={`${

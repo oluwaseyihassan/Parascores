@@ -124,7 +124,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
   }, [leagues]);
 
   return (
-    <div className="pb-10">
+    <div className="">
       <section className="flex justify-between mb-4">
         <div className="flex gap-2">
           <button
@@ -154,7 +154,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
           >
             Live
             {liveMatchesCount > 0 && (
-              <span className="ml-1 bg-white text-accent rounded-full h-5 w-5 text-[10px] flex justify-center items-center font-bold">
+              <span className="ml-1 bg-white text-accent rounded-full h-5 w-5 text-[0.8rem] flex justify-center items-center font-bold">
                 {liveMatchesCount}
               </span>
             )}
@@ -203,7 +203,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
         </div>
       )}
 
-      <section className="space-y-4">
+      <section className="space-y-3">
         {!isLoading &&
           !isError &&
           leagues?.pages.map((page) => (
@@ -214,15 +214,21 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                     ? (league.today?.length ?? 0) > 0
                     : (league.inplay?.length ?? 0) > 0
                 )
-                .map((league) => (
+                .map((league, index, filteredArray) => (
                   <div
                     key={league.id}
                     className={`rounded-lg overflow-hidden ${
                       theme === "dark" ? "divide-dark-bg" : "divide-light-bg"
                     } divide-y-[1px]`}
+                    ref={
+                      index === filteredArray.length - 1 &&
+                      page === leagues.pages[leagues.pages.length - 1]
+                        ? ref
+                        : null
+                    }
                   >
                     <div
-                      className={`flex items-center gap-2 py-2 rounded-t-lg px-3 justify-between ${
+                      className={`flex items-center gap-2 py-1 rounded-t-lg px-3 justify-between ${
                         theme === "dark" ? "bg-dark/70" : "bg-light"
                       }`}
                     >
@@ -237,18 +243,20 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                             className="w-5 h-5 object-contain"
                           />
                         </div>
-                        <div className="flex flex-col text-[10px]">
+                        <div className="flex flex-col text-[0.8rem]">
                           <Link
                             to={`/country/${league.country}/${
                               league.country?.id || ""
                             }`}
-                            className=" text-gray-400 hover:text-accent"
+                            className=" text-gray-400 hover:text-accent w-fit"
                           >
                             {league.country?.name || "International"}
                           </Link>
                           <div className="flex items-center">
                             <Link
-                              to={`/league/${league.name.replace(/ +/g, "-")}/${league.id}`}
+                              to={`/league/${league.name.replace(/ +/g, "-")}/${
+                                league.id
+                              }`}
                               className="font-medium hover:text-accent hover:underline "
                             >
                               {league.name}
@@ -262,7 +270,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                         </div>
                       </div>
                       <button
-                        className="text-xl cursor-pointer hover:text-accent focus:outline-none"
+                        className="text-md cursor-pointer hover:text-accent focus:outline-none"
                         aria-label="Add to favorites"
                       >
                         <FaStar className="text-gray-400" />
@@ -283,7 +291,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
       </section>
 
       {isFetchingNextPage && (
-        <div className="flex justify-center items-center h-16 mt-4">
+        <div className="flex justify-center items-center h-4 mt-4">
           <div className="animate-spin text-3xl text-accent">
             <RiFootballFill />
           </div>
@@ -291,7 +299,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
       )}
 
       {/* Invisible element for intersection observer */}
-      <div ref={ref} className="h-4" />
+      {/* <div ref={ref} className="" /> */}
     </div>
   );
 };

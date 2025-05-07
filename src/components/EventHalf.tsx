@@ -74,44 +74,51 @@ const EventHalf: FC<Props> = ({
               ((b.minute ?? 0) + (b.extra_minute ?? 0))
           )
           ?.filter((event) => event.period.description === filterTime)
-          .map((event) => (
-            <div
-              key={event.id}
-              className={`${
-                homeId === event.participant_id
-                  ? homeStyle
-                  : awayId === event.participant_id
-                  ? awayStyle
-                  : ""
-              } flex items-center min-h-[30px] gap-2 px-2`}
-            >
-              <div>
-                <div>{event.player_name}</div>
-                {event.related_player_name && (
-                  <div className="text-gray-400">
-                    {event.related_player_name}
-                  </div>
-                )}
-                {event.type.developer_name === "VAR" && (
-                  <div className="text-gray-400">{event.addition}</div>
-                )}
-              </div>
-
+          .map((event) => {
+            console.log(event);
+            return event ? (
               <div
-                title={`${
-                  event.subtype ? event.subtype.name : event.type.name
-                }`}
-                className="w-5 flex justify-center items-center"
+                key={event.id}
+                className={`${
+                  homeId === event.participant_id
+                    ? homeStyle
+                    : awayId === event.participant_id
+                    ? awayStyle
+                    : ""
+                } flex items-center min-h-[30px] gap-2 px-2`}
               >
-                {eventIcon(event.type.developer_name ?? "")}
-              </div>
+                <div>
+                  <div>{event.player_name}</div>
+                  {event.related_player_name && (
+                    <div className="text-gray-400">
+                      {event.related_player_name}
+                    </div>
+                  )}
+                  {event.type.developer_name === "VAR" && (
+                    <div className="text-gray-400">{event.addition}</div>
+                  )}
+                </div>
 
-              <div className="font-semibold">
-                {event.minute}
-                {event.extra_minute && <span>+{event.extra_minute}</span>}'
+                <div
+                  title={`${
+                    event.subtype ? event.subtype.name : event.type.name
+                  }`}
+                  className="w-5 flex justify-center items-center"
+                >
+                  {eventIcon(event.type.developer_name ?? "")}
+                </div>
+
+                <div className="font-semibold">
+                  {event.minute}
+                  {event.extra_minute && <span>+{event.extra_minute}</span>}'
+                </div>
               </div>
-            </div>
-          ))}
+            ) : (
+              <div className="flex justify-center items-center h-6">
+                <p>No events</p>
+              </div>
+            );
+          })}
     </div>
   );
 };

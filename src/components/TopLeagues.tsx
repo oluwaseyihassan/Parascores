@@ -51,7 +51,7 @@ const TopLeagues: FC<topLeaguesProps> = ({ leagues, loading, error }) => {
         {!loading &&
           topLeagues?.map((league) => (
             <Link
-              to={``}
+              to={`/league/${league.name.replace(/ +/g, "-")}/${league.id}`}
               key={league.id}
               className={`flex items-center gap-4 py-1.5 px-2`}
             >
