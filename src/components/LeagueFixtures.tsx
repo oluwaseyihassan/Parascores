@@ -174,7 +174,7 @@ const LeagueFixtures: FC<props> = ({
                 <div
                   className={`${
                     theme === "dark" ? "text-light-bg" : "text-dark-bg"
-                  } text-[8px] w-8 flex flex-col items-start justify-center`}
+                  } text-[8px] w-10 flex flex-col items-center justify-center`}
                 >
                   <div
                     className={isLive ? "text-accent" : ""}
@@ -186,7 +186,7 @@ const LeagueFixtures: FC<props> = ({
                   {windowWidth < 640 &&
                     today.state?.developer_name !== "FT" &&
                     today.state?.developer_name !== "HT" && (
-                      <span className="text-[10px]">
+                      <span className="text-[8px]">
                         {today.state?.developer_name === "NS" && startTime}
                       </span>
                     )}
@@ -195,7 +195,11 @@ const LeagueFixtures: FC<props> = ({
                 <div className="flex flex-col sm:flex-row gap-0 sm:gap-2 sm:items-center w-full justify-center">
                   {/* Home team */}
                   <div className="sm:text-right text-left flex gap-1 items-center sm:w-1/2 w-full flex-row-reverse sm:flex-row justify-between sm:justify-end text-[10px] sm:text-[12px]">
-                    <span className="block sm:hidden">
+                    <span
+                      className={`${
+                        homeTeam?.meta.winner === false ? "text-gray-400" : ""
+                      } block sm:hidden`}
+                    >
                       {today.state?.developer_name !== "NS" && homeScore}
                     </span>
 
@@ -255,7 +259,11 @@ const LeagueFixtures: FC<props> = ({
                       <div>{awayTeam?.name || ""}</div>
                     </div>
 
-                    <span className="block sm:hidden ">
+                    <span
+                      className={`${
+                        awayTeam?.meta.winner === false ? "text-gray-400" : ""
+                      } block sm:hidden `}
+                    >
                       {today.state?.developer_name !== "NS" && awayScore}
                     </span>
                   </div>
