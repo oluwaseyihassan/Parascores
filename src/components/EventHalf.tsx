@@ -75,8 +75,7 @@ const EventHalf: FC<Props> = ({
           )
           ?.filter((event) => event.period.description === filterTime)
           .map((event) => {
-            console.log(event);
-            return event ? (
+             return event ? (
               <div
                 key={event.id}
                 className={`${

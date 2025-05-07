@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { LineUp } from "../types/types";
+import { imagePlaceholders } from "../utils/imagePlaceholders";
 
 type props = {
   side: "home" | "away";
@@ -26,9 +27,12 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
     ) || [];
   console.log(startingPlayers);
 
-
   if (formationArray.length === 0) {
-    return <div className="lg:-rotate-270">{side === "home" ? "Formation Not Available" : ""}</div>;
+    return (
+      <div className="lg:-rotate-270">
+        {side === "home" ? "Formation Not Available" : ""}
+      </div>
+    );
   }
 
   return (
@@ -111,7 +115,9 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
                     <div className="flex flex-col items-center justify-center lg:rotate-90">
                       <div className="h-9 w-9 bg-white flex justify-center items-end rounded-full overflow-hidden">
                         <img
-                          src={`${player.player.image_path}`}
+                          src={`${
+                            player?.player?.image_path || imagePlaceholders.player
+                          }`}
                           alt=""
                           className=" w-8"
                         />
