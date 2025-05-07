@@ -181,7 +181,7 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
                 );
               })}
 
-              <div className="min-w-[160px] flex gap-2 justify-between text-white">
+              <div className="min-w-[160px] flex gap-2 space-x-2 text-white ml-2">
                 {standing.form
                   .sort((a, b) => (b.sort_order ?? 0) - (a.sort_order ?? 0))
                   .slice(0, 5)
