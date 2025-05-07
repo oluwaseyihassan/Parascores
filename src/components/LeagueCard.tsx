@@ -45,17 +45,17 @@ const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
           className="w-full h-full"
         />
       </div>
-      <div className="flex items-center justify-between w-full">
+      <div className="flex items-center justify-between w-full flex-wrap">
         <div>
           <div>
             {league?.data.data.name} {league?.data.data.currentseason.name}
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7">
+            <div className=" h-7 rounded-full overflow-hidden w-7">
               <img
                 src={`${league?.data.data.country?.image_path}`}
                 alt=""
-                className="w-full"
+                className="h-full w-full object-cover"
               />
             </div>
             <div>{league?.data.data.country?.name}</div>
@@ -63,12 +63,14 @@ const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
         </div>
         {((league?.data.data.seasons.length ?? 0) > 0 ||
           league?.data.data.currentseason.id) && (
-          <CustomSelect
-            options={options}
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
-            setSeasonId={setSeasonId}
-          />
+          <div className="w-[150px]">
+            <CustomSelect
+              options={options}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              setSeasonId={setSeasonId}
+            />
+          </div>
         )}
       </div>
     </div>

@@ -50,13 +50,13 @@ const FixtureCard: FC<props> = ({ fixture }) => {
     const isLive = fixture.state?.developer_name?.split("_")[0] === "INPLAY";
 
     if (!isLive) {
-      return matchState(fixture.state?.developer_name ?? "");
+      return matchState(fixture.state?.short_name ?? "");
     }
 
     const currentPeriod = fixture.periods?.find((period) => period.ticking);
 
     if (!currentPeriod?.has_timer) {
-      return matchState(fixture.state?.developer_name ?? "");
+      return matchState(fixture.state?.short_name ?? "");
     }
 
     if (
@@ -89,11 +89,11 @@ const FixtureCard: FC<props> = ({ fixture }) => {
     );
   };
   return (
-    <section className={` p-2 rounded-lg`}>
+    <section className={` rounded-lg`}>
       <div
         className={`${
           theme === "dark" ? "bg-dark/70" : "bg-light"
-        } text-xs text-center rounded-lg mb-2 flex justify-between px-4 py-2 items-center gap-2  text-gray-400`}
+        } text-xs text-center rounded-lg mb-2 flex justify-between px-2 py-2 items-center gap-2  text-gray-400`}
       >
         <div className="flex items-center gap-1">
           {/* <FaCalendar />{" "} */}

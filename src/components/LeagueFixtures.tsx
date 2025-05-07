@@ -109,7 +109,7 @@ const LeagueFixtures: FC<props> = ({
         return <span>{currentPeriod?.minutes}</span>;
       }
     } else {
-      return matchState(fixture.state?.developer_name ?? "");
+      return matchState(fixture.state?.short_name ?? "");
     }
   };
 

@@ -50,13 +50,15 @@ const TopScorers: FC<TopScorersProps> = ({
         </div>
       ) : (
         <>
-          <CustomSelect
-            options={options}
-            selectedOption={selectedOption}
-            setSelectedOption={setSelectedOption}
-            setTopScorerFilterId={setTopScorerFilterId}
-            setTopScorerPage={setTopScorerPage}
-          />
+          <div className="w-[150px]">
+            <CustomSelect
+              options={options}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              setTopScorerFilterId={setTopScorerFilterId}
+              setTopScorerPage={setTopScorerPage}
+            />
+          </div>
 
           <div
             className={`${

@@ -56,7 +56,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   };
 
   return (
-    <div className="relative w-[150px] ">
+    <div className="relative w-full ">
       <button
         className={`${
           theme === "dark" ? "bg-dark/70" : "bg-light"
@@ -76,29 +76,31 @@ const CustomSelect: FC<CustomSelectProps> = ({
               : "animate-dropdown-reverse opacity-0 pointer-events-none"
           } py-1 rounded-lg w-full absolute flex flex-col top-[35px] overflow-y-scroll h-fit max-h-[500px] z-30 scroll_bar`}
         >
-          {options?.map((option) => (
-            <div
-              key={option.value}
-              className={`cursor-pointer px-3 py-1 ${
-                theme === "dark"
-                  ? "hover:bg-dark-bg/80"
-                  : "hover:bg-light-bg/80"
-              } ${
-                selectedOption.value === option.value
-                  ? "font-bold bg-gray-600/20"
-                  : ""
-              }`}
-              onClick={() => handleClick(+option.value)}
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleClick(+option.value);
-                }
-              }}
-            >
-              {option.label}
-            </div>
-          ))}
+          {options
+            ?.sort((a, b) => b.label.localeCompare(a.label))
+            .map((option) => (
+              <div
+                key={option.value}
+                className={`cursor-pointer px-3 py-1 ${
+                  theme === "dark"
+                    ? "hover:bg-dark-bg/80"
+                    : "hover:bg-light-bg/80"
+                } ${
+                  selectedOption.value === option.value
+                    ? "font-bold bg-gray-600/20"
+                    : ""
+                }`}
+                onClick={() => handleClick(+option.value)}
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleClick(+option.value);
+                  }
+                }}
+              >
+                {option.label}
+              </div>
+            ))}
         </div>
       )}
     </div>
