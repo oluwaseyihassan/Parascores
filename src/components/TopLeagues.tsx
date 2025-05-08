@@ -4,6 +4,7 @@ import { League, Pagination } from "../types/types";
 import { useTheme } from "../context/ThemeContext";
 import { RiFootballFill } from "react-icons/ri";
 import { MdErrorOutline } from "react-icons/md";
+import { imagePlaceholders } from "../utils/imagePlaceholders";
 
 type topLeaguesProps = {
   leagues:
@@ -57,11 +58,7 @@ const TopLeagues: FC<topLeaguesProps> = ({ leagues, loading, error }) => {
             >
               <div className="w-5 h-5 flex justify-center items-center">
                 <img
-                  src={`${
-                    league.id === 2 && theme === "dark"
-                      ? "https://img.sofascore.com/api/v1/unique-tournament/7/image/dark"
-                      : league.image_path
-                  }`}
+                  src={`${league.image_path || imagePlaceholders.team}`}
                   alt={`${league.name}`}
                   className="w-5"
                 />
