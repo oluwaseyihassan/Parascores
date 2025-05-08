@@ -1,4 +1,3 @@
-import Countries from "../Countries";
 import FixtureEvents from "../FixtureEvents";
 import Fixtures from "../Fixtures";
 import TopLeagues from "../TopLeagues";
@@ -47,13 +46,7 @@ const Home = () => {
             error={leaguesError}
           />
         </div>
-        <div
-          className={`${
-            theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-          } p-3 rounded-2xl mt-4 sticky top-16`}
-        >
-          <Countries />
-        </div>
+       
       </div>
       <div
         className={`${

@@ -124,7 +124,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
   }, [leagues]);
 
   return (
-    <div className="">
+    <div className="mt-2">
       <section className="flex justify-between mb-4">
         <div className="flex gap-2">
           <button
@@ -160,7 +160,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
             )}
           </button>
 
-          <button
+          {/* <button
             className={`px-4 py-2 rounded-md transition-colors ${
               theme === "dark"
                 ? "bg-dark-bg hover:bg-dark-bg/80"
@@ -169,10 +169,10 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
           >
             <FaStar className="inline mr-1" />
             Favorites
-          </button>
+          </button> */}
         </div>
 
-        <div className="bg-accent rounded-lg overflow-hidden w-[100px] h-fit p-2">
+        <div className="bg-accent rounded-lg overflow-hidden w-[80px] h-fit py-1 px-2">
           <Calendar
             value={date}
             onChange={(e) => handleDateChange(e.value as Date)}

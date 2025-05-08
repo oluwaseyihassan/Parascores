@@ -6,7 +6,7 @@
   --color-dark: #020300;
   --color-light: #ebecef;
   --color-accent: #009b72;
-  --color-live: #FF3B30;
+  --color-live: #ff3b30;
   --animate-blink: blink 1s infinite;
   --breakpoint-xl: 80rem;
   --animate-dropdown: dropdown 0.3s ease-in-out;
@@ -101,6 +101,19 @@ body {
   outline: none;
   cursor: pointer;
   color: var(--color-light);
+}
+.p-datepicker .p-datepicker-buttonbar button[aria-label="Clear"] {
+  display: none !important;
+}
+.p-datepicker-calendar-container span[aria-selected="true"] {
+  background-color: var(--color-accent) !important;
+  color: white !important;
+  opacity: 0.5 !important;
+}
+.p-datepicker-calendar-container td > span[aria-selected="false"]:hover {
+  background-color: var(--color-accent) !important;
+  color: white !important;
+  opacity: 0.5 !important;
 }
 
 .calendar-panel-light .p-datepicker-calendar {

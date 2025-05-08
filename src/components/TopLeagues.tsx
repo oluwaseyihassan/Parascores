@@ -47,14 +47,18 @@ const TopLeagues: FC<topLeaguesProps> = ({ leagues, loading, error }) => {
           theme === "dark"
             ? "bg-dark/70 divide-dark-bg"
             : "bg-light divide-light-bg"
-        } divide-y-[2px] rounded-lg text-[14px]`}
+        } divide-y-[2px] rounded-lg text-[0.9rem]`}
       >
         {!loading &&
           topLeagues?.map((league) => (
             <Link
               to={`/league/${league.name.replace(/ +/g, "-")}/${league.id}`}
               key={league.id}
-              className={`flex items-center gap-4 py-1.5 px-2`}
+              className={`flex items-center gap-4 py-1.5 px-2 ${
+                theme === "dark"
+                  ? " hover:bg-gray-600/10"
+                  : "hover:bg-gray-400/10"
+              }`}
             >
               <div className="w-5 h-5 flex justify-center items-center">
                 <img

@@ -31,7 +31,7 @@ function App() {
       >
         <Header />
       </div>
-      <section className="max-w-[1440px] mx-auto lg:p-2 sm:p-4">
+      <section className="max-w-[1440px] mx-auto lg:p-2 sm:p-4 p-2">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/match/:id" element={<Fixture />} />
