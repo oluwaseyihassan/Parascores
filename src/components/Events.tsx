@@ -27,7 +27,7 @@ const Events: FC<Props> = ({
         theme === "dark"
           ? "bg-dark/70 divide-dark-bg"
           : "bg-light divide-light-bg"
-      } lg:mt-2 divide-y-[1px] rounded-lg`}
+      } lg:mt-2 divide-y-[1px] rounded-lg mb-4`}
     >
       {events?.length === 0 && (
         <div className="flex justify-center items-center h-24">

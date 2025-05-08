@@ -1,54 +1,138 @@
-# React + TypeScript + Vite
+# Parascores
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application for tracking live football scores, statistics, and match information.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Parascores provides real-time football match data, including scores, lineups, statistics, and league tables. Built with React and TypeScript, it offers a responsive and intuitive interface for football fans to follow their favorite teams and competitions.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Live Scores**: Real-time match score updates
+- **Match Statistics**: Comprehensive match stats including possession, shots, and cards
+- **Team Lineups**: View detailed formations and player positions
+- **Head to Head**: Historical matchup statistics between teams
+- **League Tables**: Current standings for all major leagues
+- **Dark/Light Theme**: Toggle between visual modes for comfortable viewing
+- **Responsive Design**: Optimized for mobile, tablet, and desktop devices
+- **Stadium Information**: Venue details with Google Maps integration
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Technologies Used
+
+- React
+- TypeScript
+- Tailwind CSS
+- React Query for data fetching
+- React Router for navigation
+- Context API for state management
+- PrimeReact for UI components
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/yourusername/parascores.git
+cd parascores
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
 ```
+
+3. Create `.env` file with required API keys
+
+```bash
+npm run dev
+```
+
+## Project Structure
+
+parascores/ ├── public/ # Static assets ├── src/ │ ├── api/ # API integration and queries │ ├── components/ # React components │ │ ├── pages/ # Page components │ │ └── ... # UI components │ ├── context/ # React context providers │ ├── hooks/ # Custom React hooks │ ├── types/ # TypeScript type definitions │ ├── utils/ # Utility functions │ ├── App.tsx # Main application component │ ├── index.css # Global styles │ └── main.tsx # Application entry point ├── tailwind.config.js # Tailwind CSS configuration ├── tsconfig.json # TypeScript configuration └── package.json # Project dependencies and scripts
+
+## Key Components
+
+### Match Details
+
+The Match component displays comprehensive information about a specific match, including:
+
+- Live score
+- Match events (goals, cards, substitutions)
+- Team lineups and formations
+- Match statistics
+- Head-to-head historical data
+
+### League Fixtures
+
+The Fixtures component shows all matches for a specific league, with:
+
+- Filtering options for live/upcoming matches
+- Date navigation
+- Quick access to match details
+
+### Team Lineups
+
+The LineUpCard component visualizes team formations with:
+
+- Interactive player positions
+- Formation display (4-3-3, 4-4-2, etc.)
+- Player details on interaction
+
+## Screenshots
+
+### Home Page
+
+![Home Page](screenshots/home.png)
+
+### Match Details
+
+![Match Details](screenshots/match.png)
+
+### League Table
+
+![League Table](screenshots/league.png)
+
+## API Integration
+
+Parascores uses the SportMonks Football API to fetch live and historical football data. API calls are managed through the custom hooks in the `src/api` directory.
+
+## Future Enhancements
+
+- User accounts and favorite teams
+- Push notifications for goals and match events
+- Historical match archives
+- Advanced statistics and player ratings
+- Betting odds integration
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Data provided by SportMonks API
+- Icons from React Icons
+- UI components from PrimeReact
+
+---
+
+Built with ❤️ by Oluwaseyi
