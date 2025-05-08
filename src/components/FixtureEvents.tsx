@@ -33,6 +33,7 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
       );
     },
     enabled: !!fixtureId,
+    refetchInterval: 20000,
   });
   console.log(fixtureEvents);
 

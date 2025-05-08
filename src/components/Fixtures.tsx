@@ -72,7 +72,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
       lastPage.data.pagination.has_more
         ? lastPage.data.pagination.current_page + 1
         : undefined,
-    refetchInterval: 60000,
+    refetchInterval: 20000,
   });
 
   const handleDateChange = (newDate: Date) => {

@@ -35,7 +35,7 @@ const Events: FC<Props> = ({
         </div>
       )}
 
-      {periods?.map((period) => (
+      {events?.length !== 0 && periods?.map((period) => (
         <div key={period.id} className="p-2">
           <h3 className={`  border border-solid border-gray-400/70 rounded-tr-lg rounded-tl-lg border-b-0 text-xl text-center py-2`}>{period.description}</h3>
           <EventHalf
