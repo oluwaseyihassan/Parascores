@@ -5,6 +5,9 @@ import { useTheme } from "./context/ThemeContext";
 import { Routes, Route } from "react-router-dom";
 import Fixture from "./components/pages/Fixture";
 import League from "./components/pages/League";
+import { inject } from "@vercel/analytics";
+
+inject();
 function App() {
   const { theme } = useTheme();
 
