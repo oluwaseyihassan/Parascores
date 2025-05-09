@@ -39,6 +39,20 @@ function App() {
           <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>
       </section>
+      <footer
+        className={` flex flex-col items-center gap-1 text-xs`}
+      >
+        <div>
+          <span>Data provided by </span>
+          <a
+            className="font-bold"
+            href="https://www.sportmonks.com/football-api/"
+            target="_blank"
+          >
+            SportMonks
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

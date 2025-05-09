@@ -22,7 +22,6 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
     setStandingOption(option);
   };
 
-  console.log(standing);
   const OverallStandingType = [
     "OVERALL_MATCHES",
     "OVERALL_WINS",

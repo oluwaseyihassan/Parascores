@@ -9,7 +9,6 @@ type props = {
 
 const Statistics: FC<props> = ({ fixture }) => {
   const { theme } = useTheme();
-  console.log(fixture?.statistics);
   const groupedStats = useMemo(() => {
     if (!fixture?.statistics) return [];
 
@@ -33,7 +32,6 @@ const Statistics: FC<props> = ({ fixture }) => {
 
     return Array.from(statMap.values());
   }, [fixture?.statistics]);
-  console.log(groupedStats);
   return (
     <div
       className={` px-2 py-3 lg:mt-4 ${

@@ -30,7 +30,6 @@ const Home = () => {
     queryFn: () => getLeagues(page, 50, "today;inplay"),
     refetchOnWindowFocus: false,
   });
-  console.log(leaguesError);
 
   return (
     <div className="grid col-span-1 lg:grid-cols-4 gap-4 mt-1">

@@ -20,12 +20,10 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
   const formationLength = formationArray.length;
   formationLength > 0 && formationArray.unshift(1);
 
-  console.log(formationArray, formationLength);
   const startingPlayers =
     lineup?.filter(
       (player) => player.type_id === 11 && player.team_id === teamId
     ) || [];
-  console.log(startingPlayers);
 
   if (formationArray.length === 0) {
     return (

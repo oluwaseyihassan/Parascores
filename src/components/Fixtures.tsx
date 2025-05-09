@@ -209,7 +209,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
       )}
 
       <section className="space-y-3">
-        {filterFixtures === "all" &&
+        {
           !isLoading &&
           !isError &&
           leagues?.pages.map((page) => (

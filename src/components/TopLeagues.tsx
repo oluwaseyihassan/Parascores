@@ -25,7 +25,6 @@ const TopLeagues: FC<topLeaguesProps> = ({ leagues, loading, error }) => {
   const topLeagues = leagues?.data.data.filter(
     (league) => league.category === 1
   );
-  console.log(leagues);
   return (
     <div>
       <h2 className="text-xl text-center text-accent font-semibold mb-4">

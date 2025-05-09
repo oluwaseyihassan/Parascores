@@ -70,7 +70,6 @@ const Fixture = () => {
     },
     enabled: !!teamsId.home && !!teamsId.away,
   });
-  console.log(data);
 
   const seasonId = data?.data.data?.season_id;
   const { data: standing, isLoading: standingIsLoading } = useQuery({

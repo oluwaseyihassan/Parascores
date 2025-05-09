@@ -13,7 +13,6 @@ export const getLeagues = async (page: number,per_page: number,includes: string)
 export const getLeaguesByDate = async (date: string,page: number,per_page: number, includes: string) => {
     try {
         const response = await api.get(`/leagues/date/${date}?page=${page}&per_page=${per_page}&includes=${includes}`);
-        console.log(response.data);
         return response.data;
     } catch (error) {
         console.error("Error fetching leagues by date:", error);

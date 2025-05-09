@@ -35,7 +35,6 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
     enabled: !!fixtureId,
     refetchInterval: 20000,
   });
-  console.log(fixtureEvents);
 
   return (
     <div className="max-h-[90dvh] min-h-[200px]">

@@ -53,7 +53,7 @@ const EventHalf: FC<Props> = ({
       case "PENALTY_SHOOTOUT_MISS":
         return "❌🎯";
       case "VAR_CARD":
-        return "🟨/🟥";
+        return <span className="flex">🟨/🟥</span>;
       default:
         return type;
     }
@@ -75,7 +75,7 @@ const EventHalf: FC<Props> = ({
           )
           ?.filter((event) => event.period.description === filterTime)
           .map((event) => {
-             return event ? (
+            return event ? (
               <div
                 key={event.id}
                 className={`${
