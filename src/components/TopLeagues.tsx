@@ -47,7 +47,7 @@ const TopLeagues: FC<topLeaguesProps> = ({ leagues, loading, error }) => {
           theme === "dark"
             ? "bg-dark/70 divide-dark-bg"
             : "bg-light divide-light-bg"
-        } divide-y-[2px] rounded-lg text-[0.9rem]`}
+        } divide-y-[2px] rounded-sm text-[0.9rem]`}
       >
         {!loading &&
           topLeagues?.map((league) => (

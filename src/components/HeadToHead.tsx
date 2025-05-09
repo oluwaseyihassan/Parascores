@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, useMemo, useState } from "react";
 import { Today } from "../types/types";
 import { useTheme } from "../context/ThemeContext";
 import { formatDateToReadable } from "../utils/helperFunctions";
@@ -19,6 +19,7 @@ type h2hProps = {
 const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
   const { theme } = useTheme();
   const headToHead = h2h?.data?.data || [];
+  const [sliceH2h, setSliceH2h] = useState(10);
 
   const h2hStats = useMemo(() => {
     if (!headToHead || !homeId || !awayId) {
@@ -93,7 +94,7 @@ const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
         </div>
       </div>
       <div className="text-base flex flex-col gap-2 mt-4">
-        {headToHead?.map((match) => {
+        {headToHead?.slice(0, sliceH2h).map((match) => {
           const homeTeam = match.participants?.find(
             (p) => p.meta.location === "home"
           );
@@ -119,7 +120,7 @@ const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
               className={`${
                 theme === "dark" ? "bg-dark/70" : "bg-light"
               } p-1 rounded-lg flex items-center gap-2 `}
-               key={match.id}
+              key={match.id}
             >
               <div className="text-xs text-gray-400 w-[50px] text-center">
                 {formatDateToReadable(match.starting_at ?? "")}
@@ -169,6 +170,23 @@ const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
           );
         })}
       </div>
+      {headToHead.length > sliceH2h && (
+        <button
+          onClick={() => setSliceH2h(headToHead.length)}
+          className="mt-4 w-full bg-accent text-white py-2 rounded-lg hover:bg-accent/80 transition duration-200"
+          disabled={sliceH2h === headToHead.length}
+        >
+          Show All {headToHead.length - sliceH2h} Matches
+        </button>
+      )}
+      {headToHead.length > 10 && sliceH2h === headToHead.length && (
+        <button
+          onClick={() => setSliceH2h(10)}
+          className="mt-4 w-full bg-accent text-white py-2 rounded-lg hover:bg-accent/80 transition duration-200"
+        >
+          Show Less
+        </button>
+      )}
     </div>
   );
 };

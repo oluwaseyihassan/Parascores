@@ -83,7 +83,7 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
             key={option}
             className={`${theme === "dark" ? "bg-dark/70" : "bg-light"} ${
               standingOption === option ? "text-accent" : ""
-            } text-[1.2rem] sm:text-[1.5rem] font-semibold  px-2 py-1 rounded-lg cursor-pointer`}
+            } text-[1.2rem] sm:text-[1.4rem] font-semibold  px-2 py-1 rounded-lg cursor-pointer`}
             onClick={() => handleStandingOptionChange(option)}
             disabled={standingOption === option}
           >
@@ -91,7 +91,7 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
           </button>
         ))}
       </div>
-      <div className="grid grid-cols-6 font-bold text-accent sm:text-[1.4rem]">
+      <div className="grid grid-cols-6 font-bold text-accent sm:text-[1.3rem]">
         <div
           className={`${
             theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
@@ -134,7 +134,7 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
       <div
         className={`${
           theme === "dark" ? "divide-dark" : "divide-light"
-        } divide-y sm:text-[1.4rem]`}
+        } divide-y sm:text-[1.2rem]`}
       >
         {standing?.data.data.map((standing) => (
           <div key={standing.id} className="grid grid-cols-6 ">

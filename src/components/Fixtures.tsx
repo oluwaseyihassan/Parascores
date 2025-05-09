@@ -153,11 +153,11 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
             aria-pressed={filterFixtures === "live"}
           >
             Live
-            {liveMatchesCount > 0 && (
+            {
               <span className="ml-1 bg-white text-accent rounded-full h-5 w-5 text-[0.8rem] flex justify-center items-center font-bold">
                 {liveMatchesCount}
               </span>
-            )}
+            }
           </button>
 
           {/* <button
@@ -202,9 +202,15 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
           </div>
         </div>
       )}
+      {filterFixtures === "live" && liveMatchesCount === 0 && (
+        <div className="text-center py-8 text-gray-500">
+          No live matches found.
+        </div>
+      )}
 
       <section className="space-y-3">
-        {!isLoading &&
+        {filterFixtures === "all" &&
+          !isLoading &&
           !isError &&
           leagues?.pages.map((page) => (
             <Fragment key={page.data.pagination.current_page}>
