@@ -34,11 +34,16 @@ const EventHalf: FC<Props> = ({
       case "MISSED_PENALTY":
         return "❌";
       case "YELLOWCARD":
-        return <div className="h-3 w-2 bg-yellow-500"></div>;
+        return "🟨";
       case "REDCARD":
         return "🟥";
       case "YELLOWREDCARD":
-        return "🟨🟥";
+        return (
+          <div className="relative">
+            <span>🟨</span>
+            <span className="absolute top-1 left-1">🟥</span>
+          </div>
+        );
       case "SUBSTITUTION":
         return (
           <div>

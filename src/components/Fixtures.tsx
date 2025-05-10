@@ -145,16 +145,15 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
             onClick={() => setFilterFixtures("live")}
             className={`px-4 py-1 h-fit cursor-pointer rounded-md transition-colors flex items-center ${
               filterFixtures === "live"
-                ? "bg-accent text-white"
+                ? "bg-live text-white"
                 : theme === "dark"
                 ? "bg-dark-bg hover:bg-dark-bg/80"
                 : "bg-light-bg hover:bg-light-bg/80"
             }`}
-            aria-pressed={filterFixtures === "live"}
           >
             Live
             {
-              <span className="ml-1 bg-white text-accent rounded-full h-5 w-5 text-[0.8rem] flex justify-center items-center font-bold">
+              <span className={`ml-1 ${filterFixtures === "live" ? "bg-white" : ""} text-live rounded-full min-h-6 min-w-6 text-[0.8rem] flex justify-center items-center font-bold p-[2px]`}>
                 {liveMatchesCount}
               </span>
             }

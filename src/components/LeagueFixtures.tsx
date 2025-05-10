@@ -198,7 +198,7 @@ const LeagueFixtures: FC<props> = ({
                     <span
                       className={`${
                         homeTeam?.meta.winner === false ? "text-gray-400" : ""
-                      } block sm:hidden`}
+                      } block sm:hidden ${isLive ? 'text-live' : ''}`}
                     >
                       {today.state?.developer_name !== "NS" && homeScore}
                     </span>
@@ -262,7 +262,7 @@ const LeagueFixtures: FC<props> = ({
                     <span
                       className={`${
                         awayTeam?.meta.winner === false ? "text-gray-400" : ""
-                      } block sm:hidden `}
+                      } block sm:hidden ${isLive ? 'text-live' : ''}`}
                     >
                       {today.state?.developer_name !== "NS" && awayScore}
                     </span>
