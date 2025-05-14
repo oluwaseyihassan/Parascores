@@ -11,6 +11,7 @@ import TopScorers from "../TopScorers";
 import { useState, useEffect } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import LeagueCard from "../LeagueCard";
+import { RiFootballFill } from "react-icons/ri";
 
 type LeagueApiResponse = {
   data: {
@@ -93,7 +94,9 @@ const League = () => {
   if (leagueIsLoading) {
     return (
       <div className="flex justify-center items-center h-96">
-        <div className="animate-spin text-accent text-4xl">⚽</div>
+        <div className="animate-spin text-accent text-4xl">
+          <RiFootballFill />
+        </div>
       </div>
     );
   }

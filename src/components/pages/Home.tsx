@@ -32,8 +32,8 @@ const Home = () => {
   });
 
   return (
-    <div className="grid col-span-1 lg:grid-cols-4 gap-4 mt-1">
-      <div className={`hidden lg:block col-span-1 `}>
+    <div className="grid col-span-1 lg:grid-cols-10 gap-4 mt-1 ">
+      <div className={`hidden lg:block col-span-2 `}>
         <div
           className={`${
             theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
@@ -50,14 +50,14 @@ const Home = () => {
       <div
         className={`${
           theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-        } col-span-2 p-3 rounded-lg sm:rounded-2xl max-w-screen`}
+        } col-span-5 p-3 rounded-lg sm:rounded-2xl max-w-screen`}
       >
         <Fixtures fixtureId={fixtureId} setFixtureId={setFixtureId} />
       </div>
       <div
         className={`${
           theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-        } hidden lg:block col-span-1 bg-dark-bg p-3 h-fit sticky top-16 rounded-2xl`}
+        } hidden lg:block col-span-3 bg-dark-bg p-3 h-fit sticky top-16 rounded-2xl`}
       >
         <FixtureEvents fixtureId={fixtureId} setFixtureId={setFixtureId} />
       </div>

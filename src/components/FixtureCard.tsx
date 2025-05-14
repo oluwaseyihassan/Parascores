@@ -120,7 +120,9 @@ const FixtureCard: FC<props> = ({ fixture }) => {
       >
         <div className="col-span-1 wrap-break-word text-center">
           <Link
-            to={`${
+            to={`/team/${fixture?.participants
+              ?.filter((participant) => participant.meta.location === "home")[0]
+              .name.replace(/ +/g, "-")}/${
               fixture?.participants?.filter(
                 (participant) => participant.meta.location === "home"
               )[0].id
@@ -197,7 +199,9 @@ const FixtureCard: FC<props> = ({ fixture }) => {
         </div>
         <div className="col-span-1 wrap-break-word text-center">
           <Link
-            to={`${
+            to={`/team/${fixture?.participants
+              ?.filter((participant) => participant.meta.location === "away")[0]
+              .name.replace(/ +/g, "-")}/${
               fixture?.participants?.filter(
                 (participant) => participant.meta.location === "away"
               )[0].id
