@@ -7,6 +7,7 @@ import {
   SetStateAction,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { League, Pagination } from "../types/types";
@@ -19,6 +20,7 @@ import { RiFootballFill } from "react-icons/ri";
 import { useInView } from "react-intersection-observer";
 import { FaStar } from "react-icons/fa";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
+import useAddLeagueToFavourite from "../hooks/useAddLeagueToFavourite";
 
 type LeaguesApiResponse = {
   data: {
@@ -40,6 +42,7 @@ type FixturesProps = {
 };
 
 const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
+  const { isLeagueFavorite, toggleFavoriteLeagues } = useAddLeagueToFavourite();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const dateParam = searchParams.get("date");
@@ -48,6 +51,8 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
     dateParam ? new Date(dateParam) : new Date()
   );
   const [activeLeagueId] = useState<number | null>(null);
+
+  const starRef = useRef<HTMLButtonElement>(null);
 
   const { ref, inView } = useInView();
 
@@ -66,7 +71,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
         formatDate(date),
         pageParam as number,
         50,
-        "today.scores;today.participants;today.stage;today.round;today.state;today.aggregate;today.group;today.periods;inplay.scores;inplay.participants;inplay.stage;inplay.round;inplay.state;inplay.aggregate;inplay.group;inplay.periods;country"
+        "today.scores;today.participants;today.stage;today.round;today.state;today.aggregate;today.group;today.periods;inplay.scores;inplay.participants;inplay.stage;inplay.round;inplay.state;inplay.aggregate;inplay.group;inplay.periods;country;today.league;inplay.league"
       ),
     getNextPageParam: (lastPage) =>
       lastPage.data.pagination.has_more
@@ -153,7 +158,11 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
           >
             Live
             {
-              <span className={`ml-1 ${filterFixtures === "live" ? "bg-white" : ""} text-live rounded-full min-h-6 min-w-6 text-[0.8rem] flex justify-center items-center font-bold p-[2px]`}>
+              <span
+                className={`ml-1 ${
+                  filterFixtures === "live" ? "bg-white" : ""
+                } text-live rounded-full min-h-6 min-w-6 text-[0.8rem] flex justify-center items-center font-bold p-[2px]`}
+              >
                 {liveMatchesCount}
               </span>
             }
@@ -201,15 +210,14 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
           </div>
         </div>
       )}
-      {filterFixtures === "live" && liveMatchesCount === 0 && (
+      {filterFixtures === "live" && liveMatchesCount === 0 && !isLoading && (
         <div className="text-center py-8 text-gray-500">
           No live matches found.
         </div>
       )}
 
       <section className="space-y-3">
-        {
-          !isLoading &&
+        {!isLoading &&
           !isError &&
           leagues?.pages.map((page) => (
             <Fragment key={page.data.pagination.current_page}>
@@ -275,10 +283,20 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                         </div>
                       </div>
                       <button
-                        className="text-md cursor-pointer hover:text-accent focus:outline-none"
+                        className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none`}
+                        style={{
+                          color: isLeagueFavorite(league.id)
+                            ? "#009b72"
+                            : "gray",
+                        }}
                         aria-label="Add to favorites"
+                        ref={starRef}
+                        onClick={() => {
+                          console.log(league.today?.map((today) => today.id));
+                          toggleFavoriteLeagues(league.id);
+                        }}
                       >
-                        <FaStar className="text-gray-400" />
+                        <FaStar />
                       </button>
                     </div>
 
@@ -288,6 +306,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                       setFixtureId={setFixtureId}
                       fixtureId={fixtureId}
                       filterFixtures={filterFixtures}
+                      isLeagueFavorite={isLeagueFavorite}
                     />
                   </div>
                 ))}

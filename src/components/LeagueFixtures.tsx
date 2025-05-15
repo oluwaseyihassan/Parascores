@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getFixtureById } from "../api/queries";
 import Events from "./Events";
+import { FaStar } from "react-icons/fa";
 // import {useCountDown} from "../hooks/useCountDown";
 
 type props = {
@@ -13,6 +14,7 @@ type props = {
   fixtureId: number | undefined;
   setFixtureId: Dispatch<SetStateAction<number | undefined>>;
   filterFixtures: string;
+  isLeagueFavorite: (id: number) => boolean;
 };
 
 type ApiResponse = {
@@ -28,6 +30,7 @@ const LeagueFixtures: FC<props> = ({
   fixtureId,
   setFixtureId,
   filterFixtures,
+  isLeagueFavorite,
 }) => {
   const [activeFixtureId, setActiveFixtureId] = useState<number | null>(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -199,7 +202,7 @@ const LeagueFixtures: FC<props> = ({
                     <span
                       className={`${
                         homeTeam?.meta.winner === false ? "text-gray-400" : ""
-                      } block sm:hidden ${isLive ? 'text-live' : ''}`}
+                      } block sm:hidden ${isLive ? "text-live" : ""}`}
                     >
                       {today.state?.developer_name !== "NS" && homeScore}
                     </span>
@@ -263,23 +266,31 @@ const LeagueFixtures: FC<props> = ({
                     <span
                       className={`${
                         awayTeam?.meta.winner === false ? "text-gray-400" : ""
-                      } block sm:hidden ${isLive ? 'text-live' : ''}`}
+                      } block sm:hidden ${isLive ? "text-live" : ""}`}
                     >
                       {today.state?.developer_name !== "NS" && awayScore}
                     </span>
                   </div>
                 </div>
 
-                {windowWidth <= 640 ? (
+                {windowWidth <= 1024 && (
                   <Link
                     to={`/match/${today.id}`}
                     className="bg-transparent h-full w-full absolute "
                   ></Link>
-                ) : (
-                  <Link to={`/match/${today.id}`} className="sm:text-accent">
-                    Details
-                  </Link>
                 )}
+                <div
+                  className={`${
+                    isLeagueFavorite(today.league?.id)
+                      ? "text-accent"
+                      : "text-gray-400"
+                  } text-md z-10`}
+                  onClick={() => {
+                    console.log(today.league?.id);
+                  }}
+                >
+                  <FaStar />
+                </div>
               </button>
 
               {windowWidth <= 1024 &&

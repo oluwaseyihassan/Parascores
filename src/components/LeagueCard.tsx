@@ -2,6 +2,8 @@ import { Dispatch, FC, SetStateAction, useMemo, useState } from "react";
 import { LeagueType } from "../types/types";
 import CustomSelect from "./CustomSelect";
 import { useTheme } from "../context/ThemeContext";
+import { FaStar } from "react-icons/fa";
+import useAddLeagueToFavourite from "../hooks/useAddLeagueToFavourite";
 
 type leagueCardProps = {
   league:
@@ -18,6 +20,7 @@ type leagueCardProps = {
 };
 
 const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
+  const { isLeagueFavorite, toggleFavoriteLeagues } = useAddLeagueToFavourite();
   const { theme } = useTheme();
   const options = useMemo(() => {
     if (!league?.data.data.seasons) return [];
@@ -47,8 +50,22 @@ const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
       </div>
       <div className="flex items-center justify-between w-full flex-wrap">
         <div>
-          <div>
-            {league?.data.data.name}
+          <div className="flex gap-2">
+            <span>{league?.data.data.name}</span>
+            <button
+              className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none`}
+              style={{
+                color: isLeagueFavorite(league?.data.data.id ?? 0)
+                  ? "#009b72"
+                  : "gray",
+              }}
+              aria-label="Add to favorites"
+              onClick={() => {
+                toggleFavoriteLeagues(league?.data.data.id ?? 0);
+              }}
+            >
+              <FaStar />
+            </button>
           </div>
           <div className="flex items-center gap-2">
             <div className=" h-7 rounded-full overflow-hidden w-7">
