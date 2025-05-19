@@ -120,9 +120,9 @@ const FixtureCard: FC<props> = ({ fixture }) => {
           theme === "dark" ? "bg-dark/70" : "bg-light"
         } grid grid-cols-3  p-2 rounded-lg`}
       >
-        <div className="col-span-1 wrap-break-word text-center flex">
+        <div className="col-span-1 wrap-break-word text-center flex items-center justify-start">
           <button
-            className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none`}
+            className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none h-fit`}
             style={{
               color: isTeamFavorite(
                 fixture?.participants?.filter(
@@ -230,7 +230,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
             {fixture && currentState(fixture)}
           </div>
         </div>
-        <div className="col-span-1 wrap-break-word text-center flex">
+        <div className="col-span-1 wrap-break-word text-center flex justify-end items-center">
           <Link
             to={`/team/${fixture?.participants
               ?.filter((participant) => participant.meta.location === "away")[0]
@@ -261,7 +261,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
             </span>
           </Link>
           <button
-            className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none`}
+            className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none h-fit`}
             style={{
               color: isTeamFavorite(
                 fixture?.participants?.filter(
