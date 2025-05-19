@@ -6,6 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getLeagues } from "../../api/queries";
 import { useState } from "react";
 import { League, Pagination } from "../../types/types";
+import FavoriteLeagues from "../FavoriteLeagues";
+import FavoriteTeams from "../FavoriteTeams";
 
 type ApiResponse = {
   leagues: {
@@ -45,7 +47,20 @@ const Home = () => {
             error={leaguesError}
           />
         </div>
-       
+        <div
+          className={`${
+            theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+          } p-3 rounded-2xl mt-2`}
+        >
+          <FavoriteLeagues />
+        </div>
+        <div
+          className={`${
+            theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+          } p-3 rounded-2xl mt-2`}
+        >
+          <FavoriteTeams />
+        </div>
       </div>
       <div
         className={`${
@@ -60,6 +75,16 @@ const Home = () => {
         } hidden lg:block col-span-3 bg-dark-bg p-3 h-fit sticky top-16 rounded-2xl`}
       >
         <FixtureEvents fixtureId={fixtureId} setFixtureId={setFixtureId} />
+        <div className="flex items-center justify-center mt-1 gap-1">
+          <span>Data provided by </span>
+          <a
+            className="font-bold"
+            href="https://www.sportmonks.com/football-api/"
+            target="_blank"
+          >
+            SportMonks
+          </a>
+        </div>
       </div>
     </div>
   );

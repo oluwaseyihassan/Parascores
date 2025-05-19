@@ -15,6 +15,7 @@ type props = {
   setFixtureId: Dispatch<SetStateAction<number | undefined>>;
   filterFixtures: string;
   isLeagueFavorite: (id: number) => boolean;
+  isTeamFavorite: (id: number) => boolean;
 };
 
 type ApiResponse = {
@@ -31,6 +32,7 @@ const LeagueFixtures: FC<props> = ({
   setFixtureId,
   filterFixtures,
   isLeagueFavorite,
+  isTeamFavorite,
 }) => {
   const [activeFixtureId, setActiveFixtureId] = useState<number | null>(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -281,7 +283,9 @@ const LeagueFixtures: FC<props> = ({
                 )}
                 <div
                   className={`${
-                    isLeagueFavorite(today.league?.id)
+                    isLeagueFavorite(today.league?.id) ||
+                    isTeamFavorite(homeTeam?.id ?? 0) ||
+                    isTeamFavorite(awayTeam?.id ?? 0)
                       ? "text-accent"
                       : "text-gray-400"
                   } text-md z-10`}

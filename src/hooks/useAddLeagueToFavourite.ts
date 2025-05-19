@@ -4,7 +4,7 @@ const useAddLeagueToFavourite = () => {
       const [favoritesVersion, setFavoritesVersion] = useState(0);
       const {getItem,setItem, } = useLocalStorage()
 
-const toggleFavoriteLeagues = (leagueId: number) => {
+const toggleFavoriteLeagues = (leagueId: number, leagueName: string, leagueLogo: string) => {
     const favouriteLeagues = getItem("favouritesLeagues") || [];
 
     const leagueIndex = favouriteLeagues.findIndex(
@@ -19,6 +19,8 @@ const toggleFavoriteLeagues = (leagueId: number) => {
     } else {
       const newLeague = {
         id: leagueId,
+        name: leagueName,
+        logo: leagueLogo,
       };
       setItem("favouritesLeagues", [...favouriteLeagues, newLeague]);
     }
@@ -35,7 +37,6 @@ const toggleFavoriteLeagues = (leagueId: number) => {
     }, [favoritesVersion]); 
   
     const isLeagueFavorite = (leagueId: number): boolean => {
-      console.log(favoriteLeagues);
       return favoriteLeagues.includes(leagueId);
     };
   
@@ -43,7 +44,7 @@ const toggleFavoriteLeagues = (leagueId: number) => {
   return {
     toggleFavoriteLeagues,
     isLeagueFavorite,
-    favoriteLeagues,
+    favoriteLeagues
   }
 }
 

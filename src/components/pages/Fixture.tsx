@@ -193,7 +193,7 @@ const Fixture = () => {
               </div>
             ))}
           </div>
-          <div className="h-full">
+          <div className="h">
             {activeTab === 0 && (
               <div
                 className={`${
@@ -218,9 +218,9 @@ const Fixture = () => {
                 />
               </div>
             )}
-            <div className="h-full">
+            <div className="">
               {activeTab === 1 && (
-                <div className=" h-full">
+                <div className="">
                   <LineUp fixture={data?.data.data ?? null} />
                 </div>
               )}

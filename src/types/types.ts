@@ -71,6 +71,9 @@ export type Country = {
     id: number;
     name: string;
     image_path: string | null;
+    official_name: string | null;
+    latitude: string | null;
+    longitude: string | null;
 }
 
 export type Participants = {
@@ -315,4 +318,115 @@ export type TopScorersType = {
         lastname: string | null;
         position: Type | null
     }
+}
+
+export type TeamType = {
+    id: number;
+    country_id: number;
+    name: string;
+    short_code: string | null;
+    image_path: string | null;
+    type: string | null;
+    founded: number | null;
+    venue_id: number | null;
+    country: Country | null;
+    rivals: {
+        id: number;
+        name: string | null;
+        image_path: string | null;
+        type: string | null;
+        country_id: number | null;
+        short_code: string | null;
+        founded: number | null;
+        venue_id: number | null;
+    }[] | null;
+    players: {
+        id: number;
+        name: string | null;
+        jersey_number: number | null;
+        player: {
+            id: number;
+            common_name: string | null;
+            firstname: string | null;
+            lastname: string | null;
+            name: string | null;
+            display_name: string | null;
+            height: number | null;
+            weight: number | null;
+            date_of_birth: string | null;
+            image_path: string | null;
+            gender: string | null;
+        }
+        position: {
+            id: number;
+            name: string | null;
+            developer_name: string | null;
+            model_type: string | null;
+            stat_group: string | null;
+        }
+    }[] | null;
+    latest: {
+        id: number;
+        name: string | null;
+        result_info: string | null;
+        starting_at: string | null;
+        leg: string | null;
+        meta: {
+            location: string | null;
+        }
+        scores: {
+            id: number;
+            participant_id: number;
+            score: {
+                goals: number;
+                participant: string
+            }
+            description: string | null;
+        }
+    }[] | null;
+    upcoming: {
+        id: number;
+        name: string | null;
+        result_info: string | null;
+        starting_at: string | null;
+        leg: string | null;
+        meta: {
+            location: string | null;
+        }
+    }[] | null;
+    seasons: {
+        id: number;
+        name: string | null;
+        league_id: number | null;
+        finished: boolean | null;
+        is_current: boolean | null;
+    }[] | null;
+    activeseasons: {
+        id: number;
+        name: string | null;
+        league_id: number | null;
+        finished: boolean | null;
+        is_current: boolean | null;
+    }[] | null;
+    statistics: {
+        id: number;
+        season_id: number;
+        
+    }[] | null;
+    socials: {
+        id: number;
+        value: string | null;
+        channel: {
+            id: number;
+            name: string | null;
+            base_url: string | null;
+            hex_color: string | null;
+        } | null;
+    }[] | null;
+    rankings: {
+        id: number;
+        position: number | null;
+        points: number | null;
+        type: string | null
+    }[] | null;
 }

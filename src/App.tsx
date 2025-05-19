@@ -45,18 +45,9 @@ function App() {
         </Routes>
       </section>
       <footer className={` flex flex-col items-center gap-1 text-xs mb-20`}>
-        <div>
-          <span>Data provided by </span>
-          <a
-            className="font-bold"
-            href="https://www.sportmonks.com/football-api/"
-            target="_blank"
-          >
-            SportMonks
-          </a>
-        </div>
+        
       </footer>
-      <div className="fixed bottom-0 left-0 right-0 z-[100] block lg:hidden">
+      <div className="fixed bottom-0 left-0 w-full z-[100] block lg:hidden">
         <div
           className={`${
             theme === "dark" ? "bg-dark-bg" : "bg-light-bg"

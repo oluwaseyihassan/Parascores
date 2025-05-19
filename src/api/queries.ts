@@ -70,3 +70,13 @@ export const getTopScorersById = async (season_id: number, page: number, per_pag
         throw error
     }
 }
+
+export const getTeamById = async (id: number, includes: string, filters: string) => {
+    try {
+        const response = await api.get(`/teams/${id}?includes=${includes}&filters=${filters}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching team by ID:", error);
+        throw error;
+    }
+}

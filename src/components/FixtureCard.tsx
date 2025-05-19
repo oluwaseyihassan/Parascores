@@ -3,8 +3,9 @@ import { useTheme } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
 import { Today } from "../types/types";
 import { formatDateToReadable } from "../utils/helperFunctions";
-// import { FaLocationDot } from "react-icons/fa6";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
+import { useFavorites } from "../context/FavoritesContext";
+import { FaStar } from "react-icons/fa";
 
 type props = {
   fixture: Today | null;
@@ -12,6 +13,7 @@ type props = {
 
 const FixtureCard: FC<props> = ({ fixture }) => {
   const { theme } = useTheme();
+  const { isTeamFavorite, toggleFavoriteTeams } = useFavorites();
 
   const matchState = (state: string | null) => {
     switch (state) {
@@ -118,7 +120,38 @@ const FixtureCard: FC<props> = ({ fixture }) => {
           theme === "dark" ? "bg-dark/70" : "bg-light"
         } grid grid-cols-3  p-2 rounded-lg`}
       >
-        <div className="col-span-1 wrap-break-word text-center">
+        <div className="col-span-1 wrap-break-word text-center flex">
+          <button
+            className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none`}
+            style={{
+              color: isTeamFavorite(
+                fixture?.participants?.filter(
+                  (participant) => participant.meta.location === "home"
+                )[0].id ?? 0
+              )
+                ? "#009b72"
+                : "gray",
+            }}
+            aria-label="Add to favorites"
+            onClick={() => {
+              toggleFavoriteTeams({
+                id:
+                  fixture?.participants?.filter(
+                    (participant) => participant.meta.location === "home"
+                  )[0].id ?? 0,
+                name:
+                  fixture?.participants?.filter(
+                    (participant) => participant.meta.location === "home"
+                  )[0].name ?? "",
+                logo:
+                  fixture?.participants?.filter(
+                    (participant) => participant.meta.location === "home"
+                  )[0].image_path ?? imagePlaceholders.team,
+              });
+            }}
+          >
+            <FaStar />
+          </button>
           <Link
             to={`/team/${fixture?.participants
               ?.filter((participant) => participant.meta.location === "home")[0]
@@ -197,7 +230,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
             {fixture && currentState(fixture)}
           </div>
         </div>
-        <div className="col-span-1 wrap-break-word text-center">
+        <div className="col-span-1 wrap-break-word text-center flex">
           <Link
             to={`/team/${fixture?.participants
               ?.filter((participant) => participant.meta.location === "away")[0]
@@ -227,6 +260,37 @@ const FixtureCard: FC<props> = ({ fixture }) => {
               }
             </span>
           </Link>
+          <button
+            className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none`}
+            style={{
+              color: isTeamFavorite(
+                fixture?.participants?.filter(
+                  (participant) => participant.meta.location === "away"
+                )[0].id ?? 0
+              )
+                ? "#009b72"
+                : "gray",
+            }}
+            aria-label="Add to favorites"
+            onClick={() => {
+              toggleFavoriteTeams({
+                id:
+                  fixture?.participants?.filter(
+                    (participant) => participant.meta.location === "away"
+                  )[0].id ?? 0,
+                name:
+                  fixture?.participants?.filter(
+                    (participant) => participant.meta.location === "away"
+                  )[0].name ?? "",
+                logo:
+                  fixture?.participants?.filter(
+                    (participant) => participant.meta.location === "away"
+                  )[0].image_path ?? imagePlaceholders.team,
+              });
+            }}
+          >
+            <FaStar />
+          </button>
         </div>
       </div>
     </section>

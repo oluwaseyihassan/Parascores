@@ -20,7 +20,7 @@ import { RiFootballFill } from "react-icons/ri";
 import { useInView } from "react-intersection-observer";
 import { FaStar } from "react-icons/fa";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
-import useAddLeagueToFavourite from "../hooks/useAddLeagueToFavourite";
+import { useFavorites } from "../context/FavoritesContext";
 
 type LeaguesApiResponse = {
   data: {
@@ -42,7 +42,7 @@ type FixturesProps = {
 };
 
 const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
-  const { isLeagueFavorite, toggleFavoriteLeagues } = useAddLeagueToFavourite();
+  const { isLeagueFavorite, toggleFavorite, isTeamFavorite } = useFavorites();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const dateParam = searchParams.get("date");
@@ -293,7 +293,11 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                         ref={starRef}
                         onClick={() => {
                           console.log(league.today?.map((today) => today.id));
-                          toggleFavoriteLeagues(league.id);
+                          toggleFavorite({
+                            id: league.id,
+                            name: league.name,
+                            logo: league.image_path || imagePlaceholders.team,
+                          });
                         }}
                       >
                         <FaStar />
@@ -307,6 +311,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                       fixtureId={fixtureId}
                       filterFixtures={filterFixtures}
                       isLeagueFavorite={isLeagueFavorite}
+                      isTeamFavorite={isTeamFavorite}
                     />
                   </div>
                 ))}

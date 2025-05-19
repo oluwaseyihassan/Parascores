@@ -92,7 +92,7 @@ const EventHalf: FC<Props> = ({
                 } flex items-center min-h-[40px] gap-2 px-2`}
               >
                 <div>
-                  <div>{event.player_name}</div>
+                  <div>{event.player_name || "Name not available"}</div>
                   {event.related_player_name && (
                     <div className="text-gray-400">
                       {event.related_player_name}

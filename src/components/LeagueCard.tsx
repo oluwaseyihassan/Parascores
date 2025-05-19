@@ -3,7 +3,8 @@ import { LeagueType } from "../types/types";
 import CustomSelect from "./CustomSelect";
 import { useTheme } from "../context/ThemeContext";
 import { FaStar } from "react-icons/fa";
-import useAddLeagueToFavourite from "../hooks/useAddLeagueToFavourite";
+import { imagePlaceholders } from "../utils/imagePlaceholders";
+import { useFavorites } from "../context/FavoritesContext";
 
 type leagueCardProps = {
   league:
@@ -20,7 +21,7 @@ type leagueCardProps = {
 };
 
 const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
-  const { isLeagueFavorite, toggleFavoriteLeagues } = useAddLeagueToFavourite();
+  const { isLeagueFavorite, toggleFavorite } = useFavorites();
   const { theme } = useTheme();
   const options = useMemo(() => {
     if (!league?.data.data.seasons) return [];
@@ -61,7 +62,11 @@ const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
               }}
               aria-label="Add to favorites"
               onClick={() => {
-                toggleFavoriteLeagues(league?.data.data.id ?? 0);
+                toggleFavorite({
+                  id: league?.data.data.id ?? 0,
+                  name: league?.data.data.name || "",
+                  logo: league?.data.data.image_path || imagePlaceholders.team,
+                });
               }}
             >
               <FaStar />

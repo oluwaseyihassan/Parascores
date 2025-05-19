@@ -37,7 +37,7 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
   });
 
   return (
-    <div className="max-h-[90dvh] min-h-[200px]">
+    <div className="max-h-[85dvh] min-h-[200px]">
       <h2 className="text-accent text-center text-xl font-semibold">
         Match Info
       </h2>
@@ -57,7 +57,7 @@ const FixtureEvents: FC<Props> = ({ fixtureId }) => {
               GoTo Match
             </Link>
           </div>
-          <section className="overflow-y-auto scroll_bar max-h-[70dvh] mt-4">
+          <section className="overflow-y-auto scroll_bar max-h-[65dvh] mt-4">
             <Events
               events={fixtureEvents?.data.data.events ?? null}
               homeId={
