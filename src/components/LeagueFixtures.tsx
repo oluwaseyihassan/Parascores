@@ -119,6 +119,23 @@ const LeagueFixtures: FC<props> = ({
     }
   };
 
+  const filterLogic = () => {
+    if (filterFixtures === "live") {
+      return league.inplay || [];
+    } else if (filterFixtures === "fav") {
+      return league.today?.filter(
+        (today) =>
+          isLeagueFavorite(today.league?.id ?? 0) ||
+          isTeamFavorite(
+            today.participants?.find((p) => p.meta.location === "home")?.id ?? 0
+          ) ||
+          isTeamFavorite(
+            today.participants?.find((p) => p.meta.location === "away")?.id ?? 0
+          )
+      ) || [];
+    } else return league.today || [];
+  };
+
   return (
     <div
       className={`${
@@ -133,7 +150,7 @@ const LeagueFixtures: FC<props> = ({
         </div>
       )}
 
-      {(filterFixtures === "live" ? league.inplay : league.today)
+      {filterLogic()
         ?.sort((a, b) => a.id - b.id)
         .map((today) => {
           const homeTeam = today.participants?.find(

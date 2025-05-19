@@ -82,7 +82,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
 
   const handleDateChange = (newDate: Date) => {
     setDate(newDate);
-
+    setFilterFixtures("all");
     const isToday = isSameDay(newDate, new Date());
 
     if (isToday) {
@@ -168,16 +168,19 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
             }
           </button>
 
-          {/* <button
-            className={`px-4 py-2 rounded-md transition-colors ${
-              theme === "dark"
+          <button
+            className={`px-2 py-1 cursor-pointer bg-accent rounded-md transition-colors ${
+              filterFixtures === "fav"
+                ? "bg-accent text-white"
+                : theme === "dark"
                 ? "bg-dark-bg hover:bg-dark-bg/80"
                 : "bg-light-bg hover:bg-light-bg/80"
             }`}
+            onClick={() => setFilterFixtures("fav")}
           >
             <FaStar className="inline mr-1" />
             Favorites
-          </button> */}
+          </button>
         </div>
 
         <div className="bg-accent rounded-lg overflow-hidden w-[80px] h-fit py-1 px-2">
@@ -225,6 +228,22 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                 .filter((league) =>
                   filterFixtures === "all"
                     ? (league.today?.length ?? 0) > 0
+                    : filterFixtures === "fav"
+                    ? isLeagueFavorite(league.id) ||
+                      (league.today?.some(
+                        (today) =>
+                          isTeamFavorite(
+                            today.participants?.find(
+                              (p) => p.meta.location === "home"
+                            )?.id ?? 0
+                          ) ||
+                          isTeamFavorite(
+                            today.participants?.find(
+                              (p) => p.meta.location === "away"
+                            )?.id ?? 0
+                          )
+                      ) ??
+                        false)
                     : (league.inplay?.length ?? 0) > 0
                 )
                 .map((league, index, filteredArray) => (
