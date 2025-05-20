@@ -13,6 +13,12 @@ type FavoriteLeague = {
   name?: string;
   logo?: string;
 };
+type FavoriteMatch = {
+  id: number;
+  leagueId: number;
+  homeTeamId: number;
+  awayTeamId: number;
+};
 
 type FavoritesContextType = {
   favoriteLeagues: FavoriteLeague[];
@@ -21,6 +27,9 @@ type FavoritesContextType = {
   favoriteTeams: FavoriteLeague[];
   toggleFavoriteTeams: (team: FavoriteLeague) => void;
   isTeamFavorite: (teamId: number) => boolean;
+  favoriteMatches: FavoriteMatch[];
+  toggleFavoriteMatches: (match: FavoriteMatch) => void;
+  isMatchFavorite: (matchId: number) => boolean;
 };
 
 const FavoritesContext = createContext<FavoritesContextType | null>(null);
@@ -35,6 +44,11 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   const [favoriteTeams, setFavoriteTeams] = useState<FavoriteLeague[]>(() => {
     return getItem("favouritesTeams") || [];
   });
+  const [favoriteMatches, setFavoriteMatches] = useState<FavoriteMatch[]>(
+    () => {
+      return getItem("favouritesMatches") || [];
+    }
+  );
 
   // Update localStorage whenever state changes
   useEffect(() => {
@@ -44,6 +58,10 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     setItem("favouritesTeams", favoriteTeams);
   }, [favoriteTeams, setItem]);
+  
+  useEffect(() => {
+    setItem("favouritesMatches", favoriteMatches);
+  }, [favoriteMatches, setItem]);
 
   const toggleFavorite = (league: FavoriteLeague) => {
     setFavoriteLeagues((prevLeagues) => {
@@ -79,6 +97,24 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
     return favoriteTeams.some((team) => team.id === teamId);
   };
 
+  const toggleFavoriteMatches = (match: FavoriteMatch) => {
+    setFavoriteMatches((prevMatches) => {
+      const isAlreadyFavorite = prevMatches.some(
+        (item) => item.id === match.id
+      );
+
+      if (isAlreadyFavorite) {
+        return prevMatches.filter((item) => item.id !== match.id);
+      } else {
+        return [...prevMatches, match];
+      }
+    });
+  };
+
+  const isMatchFavorite = (matchId: number) => {
+    return favoriteMatches.some((match) => match.id === matchId);
+  };
+
   return (
     <FavoritesContext.Provider
       value={{
@@ -88,6 +124,9 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
         favoriteTeams,
         toggleFavoriteTeams,
         isTeamFavorite,
+        favoriteMatches,
+        toggleFavoriteMatches,
+        isMatchFavorite,
       }}
     >
       {children}

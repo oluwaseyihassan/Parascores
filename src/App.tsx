@@ -9,17 +9,30 @@ import { inject } from "@vercel/analytics";
 import Team from "./components/pages/Team";
 import BottomNavBar from "./components/BottomNavBar";
 import Favorites from "./components/pages/Favorites";
+import Search from "./components/Search";
+import { useSearchToggle } from "./context/SearchToggleContext";
 
 inject();
 function App() {
   const { theme } = useTheme();
+  const { isSearchOpen } = useSearchToggle();
 
   useEffect(() => {
     document.documentElement.style.backgroundColor =
       theme === "dark" ? "#020300 " : "#ebecef ";
     document.body.style.backgroundColor =
       theme === "dark" ? "#020300 " : "#ebecef ";
-  }, [theme]);
+
+    if (isSearchOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [theme, isSearchOpen]);
 
   return (
     <div
@@ -34,19 +47,26 @@ function App() {
       >
         <Header />
       </div>
+
       <section className="max-w-[1440px] mx-auto lg:p-2 sm:p-4 p-2">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/match/:id" element={<Fixture />} />
           <Route path="/league/:league_name/:id" element={<League />} />
           <Route path="/team/:team_name/:id" element={<Team />} />
-          <Route path="/favorites" element={<Favorites />}/>
+          <Route path="/favorites" element={<Favorites />} />
           <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>
       </section>
-      <footer className={` flex flex-col items-center gap-1 text-xs mb-20`}>
-        
-      </footer>
+      {isSearchOpen && (
+        <section className="h-full fixed w-full lg:hidden inset-0 top-16 z-[99]">
+          <Search />
+        </section>
+      )}
+      <footer
+        className={` flex flex-col items-center gap-1 text-xs mb-20`}
+      ></footer>
+
       <div className="fixed bottom-0 left-0 w-full z-[100] block lg:hidden">
         <div
           className={`${

@@ -24,46 +24,50 @@ const FavoriteLeagues = () => {
         } divide-y-[2px] rounded-sm text-[0.9rem]`}
       >
         {favoriteLeagues.length > 0 ? (
-          favoriteLeagues.map((league) => (
-            <div
-              className={`flex items-center justify-between gap-2 py-1.5 px-2 ${
-                theme === "dark"
-                  ? " hover:bg-gray-600/10"
-                  : "hover:bg-gray-400/10"
-              }`}
-              key={league.id}
-            >
-              <Link
-                to={`/league/${league.name?.replace(/ +/g, "-")}/${league.id}`}
-                className="flex items-center gap-2 w-full "
+          favoriteLeagues
+            .slice(0, showAllLeagues ? favoriteLeagues.length : 5)
+            .map((league) => (
+              <div
+                className={`flex items-center justify-between gap-2 py-1.5 px-2 ${
+                  theme === "dark"
+                    ? " hover:bg-gray-600/10"
+                    : "hover:bg-gray-400/10"
+                }`}
+                key={league.id}
               >
-                <div className="w-5 h-5 flex justify-center items-center">
-                  <img
-                    src={`${league.logo || imagePlaceholders.league}`}
-                    alt=""
-                  />
-                </div>
-                <span>{league.name || "Unknown League"}</span>
-              </Link>
-              <button
-                className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none z-10`}
-                style={{
-                  color: isLeagueFavorite(league.id) ? "#009b72" : "gray",
-                }}
-                aria-label="Add to favorites"
-                onClick={() => {
-                  toggleFavorite({
-                    id: league.id,
-                    name: league.name,
-                    logo: league.logo || imagePlaceholders.team,
-                  });
-                }}
-                title="Remove from favorites"
-              >
-                <FaStar />
-              </button>
-            </div>
-          ))
+                <Link
+                  to={`/league/${league.name?.replace(/ +/g, "-")}/${
+                    league.id
+                  }`}
+                  className="flex items-center gap-2 w-full "
+                >
+                  <div className="w-5 h-5 flex justify-center items-center">
+                    <img
+                      src={`${league.logo || imagePlaceholders.league}`}
+                      alt=""
+                    />
+                  </div>
+                  <span>{league.name || "Unknown League"}</span>
+                </Link>
+                <button
+                  className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none z-10`}
+                  style={{
+                    color: isLeagueFavorite(league.id) ? "#009b72" : "gray",
+                  }}
+                  aria-label="Add to favorites"
+                  onClick={() => {
+                    toggleFavorite({
+                      id: league.id,
+                      name: league.name,
+                      logo: league.logo || imagePlaceholders.team,
+                    });
+                  }}
+                  title="Remove from favorites"
+                >
+                  <FaStar />
+                </button>
+              </div>
+            ))
         ) : (
           <div className="flex items-center justify-center w-full h-full py-1">
             <p className="text-gray-500">No favorite leagues found.</p>

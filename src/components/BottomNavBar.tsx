@@ -2,24 +2,18 @@ import { FaRegClock, FaClock, FaRegStar, FaStar } from "react-icons/fa6";
 import { IoMdSearch } from "react-icons/io";
 import { FaUserCircle } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useSearchToggle } from "../context/SearchToggleContext";
 
 const BottomNavBar = () => {
   const location = useLocation();
   const pathname = location.pathname;
-  const [currentTab, setCurrentTab] = useState(pathname);
+  const { openSearch, closeSearch, isSearchOpen } = useSearchToggle();
 
   const isActive = (path: string) => {
-    if (currentTab !== "search" && path === "/" && pathname === "/")
-      return true;
-    if (currentTab !== "search" && path !== "/" && pathname.startsWith(path))
-      return true;
+    if (!isSearchOpen && path === "/" && pathname === "/") return true;
+    if (!isSearchOpen && path !== "/" && pathname.startsWith(path)) return true;
 
     return false;
-  };
-
-  const handleTabClick = (path: string) => {
-    setCurrentTab(path);
   };
 
   return (
@@ -29,7 +23,9 @@ const BottomNavBar = () => {
         className={`flex justify-center items-center cursor-pointer flex-1 h-full  ${
           isActive("/") ? "text-accent" : ""
         }`}
-        onClick={() => handleTabClick("/")}
+        onClick={() => {
+          closeSearch();
+        }}
       >
         <div
           className={`border-b border-solid w-1/2 flex flex-col items-center ${
@@ -43,18 +39,18 @@ const BottomNavBar = () => {
 
       <div
         className={`flex items-center justify-center cursor-pointer flex-1 h-full ${
-          currentTab === "search" ? "text-accent" : ""
+          isSearchOpen ? "text-accent" : ""
         }`}
-        onClick={() => handleTabClick("search")}
+        onClick={() => {
+          openSearch();
+        }}
       >
         <div
           className={`border-b border-solid w-1/2 flex flex-col items-center ${
-            currentTab === "search" ? "border-accent" : "border-transparent"
+            isSearchOpen ? "border-accent" : "border-transparent"
           }`}
         >
-          <IoMdSearch
-            className={currentTab === "search" ? "text-accent" : ""}
-          />
+          <IoMdSearch className={isSearchOpen ? "text-accent" : ""} />
           <span className="text-xs mt-1">Search</span>
         </div>
       </div>
@@ -64,7 +60,9 @@ const BottomNavBar = () => {
         className={`flex items-center justify-center cursor-pointer flex-1 h-full ${
           isActive("/favorites") ? "text-accent" : ""
         }`}
-        onClick={() => handleTabClick("/favorites")}
+        onClick={() => {
+          closeSearch();
+        }}
       >
         <div
           className={`border-b border-solid w-1/2 flex flex-col items-center ${
@@ -85,7 +83,9 @@ const BottomNavBar = () => {
         className={`flex items-center justify-center cursor-pointer flex-1 h-full ${
           isActive("/profile") ? "text-accent" : ""
         }`}
-        onClick={() => handleTabClick("/profile")}
+        onClick={() => {
+          closeSearch();
+        }}
       >
         <div
           className={`border-b border-solid w-1/2 flex flex-col items-center ${
