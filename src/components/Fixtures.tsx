@@ -42,7 +42,8 @@ type FixturesProps = {
 };
 
 const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
-  const { isLeagueFavorite, toggleFavorite, isTeamFavorite } = useFavorites();
+  const { isLeagueFavorite, toggleFavorite, isTeamFavorite, isMatchFavorite } =
+    useFavorites();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const dateParam = searchParams.get("date");
@@ -241,7 +242,8 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                             today.participants?.find(
                               (p) => p.meta.location === "away"
                             )?.id ?? 0
-                          )
+                          ) ||
+                          isMatchFavorite(today.id)
                       ) ??
                         false)
                     : (league.inplay?.length ?? 0) > 0
