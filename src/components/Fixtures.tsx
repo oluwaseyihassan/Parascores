@@ -11,9 +11,7 @@ import {
   useState,
 } from "react";
 import { League, Pagination } from "../types/types";
-import { Calendar } from "primereact/calendar";
 import { useTheme } from "../context/ThemeContext";
-import { formatDate, isSameDay } from "../utils/helperFunctions";
 import LeagueFixtures from "./LeagueFixtures";
 import { Link, useSearchParams } from "react-router-dom";
 import { RiFootballFill } from "react-icons/ri";
@@ -21,6 +19,8 @@ import { useInView } from "react-intersection-observer";
 import { FaStar } from "react-icons/fa";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
 import { useFavorites } from "../context/FavoritesContext";
+import Calendar from "./Calendar";
+import { format } from "date-fns";
 
 type LeaguesApiResponse = {
   data: {
@@ -69,7 +69,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
       getLeaguesByDate(
-        formatDate(date),
+        format(date, "yyyy-MM-dd"),
         pageParam as number,
         50,
         "today.scores;today.participants;today.stage;today.round;today.state;today.aggregate;today.group;today.periods;inplay.scores;inplay.participants;inplay.stage;inplay.round;inplay.state;inplay.aggregate;inplay.group;inplay.periods;country;today.league;inplay.league"
@@ -81,19 +81,6 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
     refetchInterval: 20000,
   });
 
-  const handleDateChange = (newDate: Date) => {
-    setDate(newDate);
-    setFilterFixtures("all");
-    const isToday = isSameDay(newDate, new Date());
-
-    if (isToday) {
-      const newParams = new URLSearchParams(searchParams);
-      newParams.delete("date");
-      setSearchParams(newParams);
-    } else {
-      setSearchParams({ date: formatDate(newDate) });
-    }
-  };
 
   useEffect(() => {
     if ((leagues?.pages?.[0]?.data.data.length ?? 0) > 0 && !fixtureId) {
@@ -131,8 +118,8 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
 
   return (
     <div className="mt-2">
-      <section className="flex justify-between mb-4">
-        <div className="flex gap-2">
+      <section className="flex justify-between mb-4 flex-wrap relative">
+        <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setFilterFixtures("all")}
             className={`px-4 py-1 h-fit rounded-md transition-colors cursor-pointer ${
@@ -170,7 +157,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
           </button>
 
           <button
-            className={`px-2 py-1 cursor-pointer bg-accent rounded-md transition-colors ${
+            className={`px-2 py-1 cursor-pointer bg-accent rounded-md transition-colors flex items-center ${
               filterFixtures === "fav"
                 ? "bg-accent text-white"
                 : theme === "dark"
@@ -183,20 +170,13 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
             Favorites
           </button>
         </div>
-
-        <div className="bg-accent rounded-lg overflow-hidden w-[80px] h-fit py-1 px-2">
+        <div className="flex justify-end">
           <Calendar
-            value={date}
-            onChange={(e) => handleDateChange(e.value as Date)}
-            showIcon
-            dateFormat="dd/mm"
-            readOnlyInput
-            showButtonBar
-            panelClassName={
-              theme === "dark" ? "calendar-panel-dark" : "calendar-panel-light"
-            }
-            inputClassName="calendar-input"
-            variant="filled"
+            selectedDate={date}
+            setSelectedDate={setDate}
+            setFilterFixtures={setFilterFixtures}
+            setSearchParams={setSearchParams}
+            searchParams={searchParams}
           />
         </div>
       </section>

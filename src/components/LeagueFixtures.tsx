@@ -272,7 +272,7 @@ const LeagueFixtures: FC<props> = ({
                           : theme === "dark"
                           ? "bg-dark-bg"
                           : "bg-light-bg"
-                      } w-14 rounded-full text-[10px] py-[2px]`}
+                      } w-14 rounded-full text-[10px] py-[2px] text-center`}
                     >
                       {today.state?.developer_name === "NS" ? (
                         startTime

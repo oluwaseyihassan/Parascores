@@ -4,17 +4,20 @@ import { IoMoonOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useSearchToggle } from "../context/SearchToggleContext";
 
-
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
-  const {closeSearch} = useSearchToggle()
+  const { closeSearch } = useSearchToggle();
   return (
     <header
-      className={`px-3 py-2 max-w-[1440px] mx-auto flex justify-between items-center `}
+      className={`px-3 py-2 max-w-[1440px] mx-auto grid grid-cols-2 lg:grid-cols-10 gap-4 items-center`}
     >
-      <h1 className="text-4xl text-accent font-bold">
-        <Link to={`/`} onClick={closeSearch}>ParaScores</Link></h1>
-      <button onClick={toggleTheme} className="text-2xl cursor-pointer">
+      <h1 className="text-4xl text-accent font-bold lg:col-span-2">
+        <Link to={`/`} onClick={closeSearch}>
+          ParaScores
+        </Link>
+      </h1>
+      <input type="search" name="" id="" className="col-span-5 w-[70%] justify-self-center lg:block hidden"/>
+      <button onClick={toggleTheme} className="text-2xl cursor-pointer lg:col-span-3 justify-self-end">
         {theme === "dark" ? (
           <CiSun title="light" />
         ) : (
