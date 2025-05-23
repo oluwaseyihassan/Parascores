@@ -15,6 +15,7 @@ import {
 import { FaRegCalendarDays } from "react-icons/fa6";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
+import { useTheme } from "../context/ThemeContext";
 
 type Event = {
   date: string;
@@ -42,6 +43,7 @@ const Calendar: FC<CalendarProps> = ({
   setFilterFixtures,
   setSearchParams,
 }) => {
+  const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState<Date>(() => {
     const dateParam = searchParams.get("date");
@@ -65,16 +67,16 @@ const Calendar: FC<CalendarProps> = ({
         onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
         className="p-2 text-gray-600 hover:text-black cursor-pointer"
       >
-        &lt;
+        <IoIosArrowBack />
       </button>
-      <h2 className="text-lg font-semibold text-gray-800">
+      <h2 className="text-lg font-semibold">
         {format(currentMonth, "MMMM yyyy")}
       </h2>
       <button
         onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
         className="p-2 text-gray-600 hover:text-black cursor-pointer"
       >
-        &gt;
+        <IoIosArrowForward />
       </button>
     </div>
   );
@@ -84,7 +86,11 @@ const Calendar: FC<CalendarProps> = ({
     const date = new Date();
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div key={i} className="text-center text-sm font-medium text-gray-500">
+        <div
+          key={i}
+          className="text-center text-sm font-medium text-gray-400"
+          title={`${format(addDays(startOfWeek(date), i), "EEEE")}`}
+        >
           {format(addDays(startOfWeek(date), i), "EEE")}
         </div>
       );
@@ -119,8 +125,12 @@ const Calendar: FC<CalendarProps> = ({
                 isToday
                   ? "bg-blue-300 text-blue-800 font-semibold hover:bg-blue-200"
                   : isCurrentMonth
-                  ? "text-gray-800 hover:bg-gray-100"
-                  : "text-gray-400 hover:bg-gray-100 "
+                  ? theme === "dark"
+                    ? "hover:bg-gray-800"
+                    : "hover:bg-gray-300"
+                  : theme === "dark"
+                  ? "hover:bg-gray-800 text-gray-400 "
+                  : "text-gray-400 hover:bg-gray-300 "
               } ${
               format(cloneDay, "yyyy-MM-dd") ===
               format(selectedDate, "yyyy-MM-dd")
@@ -173,29 +183,32 @@ const Calendar: FC<CalendarProps> = ({
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-md p-1">
-      <div className="flex items-center justify-between cursor-pointer p-1 gap-2">
-        <button
-          onClick={() => {
-            setSelectedDate(subDays(selectedDate, 1));
-            const newParams = new URLSearchParams(searchParams);
-            newParams.set(
-              "date",
-              format(subDays(selectedDate, 1), "yyyy-MM-dd")
-            );
-            setSearchParams(newParams);
-          }}
-          className="text-accent hover:text-gray-600 cursor-pointer"
-        >
-          <IoIosArrowBack />
-        </button>
-        <FaRegCalendarDays className="text-xl text-accent mx-auto" />
-        <h1
-          className=" font-bold text-center text-accent cursor-pointer"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {format(selectedDate, "dd/MM")}
-        </h1>
+    <div className="rounded-md p-1">
+      <div
+        className={`${
+          theme === "dark" ? "bg-dark" : "bg-light"
+        } flex items-center justify-between cursor-pointer p-1 gap-2 rounded-lg`}
+      >
+        <div className="flex gap-2" onClick={() => setIsOpen(!isOpen)}>
+          <button
+            onClick={() => {
+              setSelectedDate(subDays(selectedDate, 1));
+              const newParams = new URLSearchParams(searchParams);
+              newParams.set(
+                "date",
+                format(subDays(selectedDate, 1), "yyyy-MM-dd")
+              );
+              setSearchParams(newParams);
+            }}
+            className="text-accent hover:text-gray-600 cursor-pointer"
+          >
+            <IoIosArrowBack />
+          </button>
+          <FaRegCalendarDays className="text-xl text-accent mx-auto" />
+          <h1 className=" text-center cursor-pointer">
+            {format(selectedDate, "dd/MM")}
+          </h1>
+        </div>
         <button
           onClick={() => {
             setSelectedDate(addDays(selectedDate, 1));
@@ -212,7 +225,11 @@ const Calendar: FC<CalendarProps> = ({
         </button>
       </div>
       {isOpen && (
-        <div className="absolute right-0 bg-light-bg p-2 rounded-lg z-50 top-0">
+        <div
+          className={`${
+            theme === "dark" ? "bg-dark" : "bg-light"
+          } absolute right-0 p-2 rounded-lg z-50 top-0 shadow-2xl`}
+        >
           <button
             onClick={() => setIsOpen(false)}
             className=" flex justify-self-end text-gray-500 cursor-pointer text-2xl"
