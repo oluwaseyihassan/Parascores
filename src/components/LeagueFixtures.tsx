@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getFixtureById } from "../api/queries";
 import Events from "./Events";
-import { FaStar } from "react-icons/fa";
+import { FaRegStar, FaStar } from "react-icons/fa";
 import { useFavorites } from "../context/FavoritesContext";
 // import {useCountDown} from "../hooks/useCountDown";
 
@@ -319,12 +319,12 @@ const LeagueFixtures: FC<props> = ({
                   ></Link>
                 )}
                 <button
-                  className={`cursor-pointer ${
+                  className={`cursor-pointer hover:bg-fav/10 p-1 rounded-md ${
                     isLeagueFavorite(today.league?.id) ||
                     isTeamFavorite(homeTeam?.id ?? 0) ||
                     isTeamFavorite(awayTeam?.id ?? 0) ||
                     isMatchFavorite(today.id)
-                      ? "text-accent"
+                      ? "text-fav"
                       : "text-gray-400"
                   } text-md z-10`}
                   onClick={() => {
@@ -350,7 +350,14 @@ const LeagueFixtures: FC<props> = ({
                     }
                   }}
                 >
-                  <FaStar />
+                  {isLeagueFavorite(today.league?.id) ||
+                  isTeamFavorite(homeTeam?.id ?? 0) ||
+                  isTeamFavorite(awayTeam?.id ?? 0) ||
+                  isMatchFavorite(today.id) ? (
+                    <FaStar />
+                  ) : (
+                    <FaRegStar />
+                  )}
                 </button>
               </div>
 

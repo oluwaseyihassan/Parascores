@@ -50,9 +50,9 @@ const FavoriteLeagues = () => {
                   <span>{league.name || "Unknown League"}</span>
                 </Link>
                 <button
-                  className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none z-10`}
+                  className={`text-md cursor-pointer p-1 transition-colors duration-100 hover:bg-fav/10 rounded-md focus:outline-none z-10`}
                   style={{
-                    color: isLeagueFavorite(league.id) ? "#009b72" : "gray",
+                    color: isLeagueFavorite(league.id) ? "#ffcc00" : "gray",
                   }}
                   aria-label="Add to favorites"
                   onClick={() => {
@@ -82,7 +82,7 @@ const FavoriteLeagues = () => {
             } text-accent text-center py-1 rounded-md cursor-pointer transition-colors duration-100 focus:outline-none w-full`}
             onClick={() => setShowAllLeagues(!showAllLeagues)}
           >
-            {showAllLeagues ? "Show less" : "Show all"}
+            {showAllLeagues ? "Show less" : `Show all (${favoriteLeagues.length - 5})`}
           </button>
         )}
       </div>

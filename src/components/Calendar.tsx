@@ -189,24 +189,29 @@ const Calendar: FC<CalendarProps> = ({
           theme === "dark" ? "bg-dark" : "bg-light"
         } flex items-center justify-between cursor-pointer p-1 gap-2 rounded-lg`}
       >
-        <div className="flex gap-2" onClick={() => setIsOpen(!isOpen)}>
-          <button
-            onClick={() => {
-              setSelectedDate(subDays(selectedDate, 1));
-              const newParams = new URLSearchParams(searchParams);
-              newParams.set(
-                "date",
-                format(subDays(selectedDate, 1), "yyyy-MM-dd")
-              );
-              setSearchParams(newParams);
-            }}
-            className="text-accent hover:text-gray-600 cursor-pointer"
-          >
-            <IoIosArrowBack />
-          </button>
+        <button
+          onClick={() => {
+            setSelectedDate(subDays(selectedDate, 1));
+            const newParams = new URLSearchParams(searchParams);
+            newParams.set(
+              "date",
+              format(subDays(selectedDate, 1), "yyyy-MM-dd")
+            );
+            setSearchParams(newParams);
+            setFilterFixtures("all");
+            setIsOpen(false);
+          }}
+          className="text-accent hover:text-gray-600 cursor-pointer text-lg p-[2px] hover:bg-accent/10"
+        >
+          <IoIosArrowBack />
+        </button>
+        <div
+          className="flex gap-2 items-center"
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <FaRegCalendarDays className="text-xl text-accent mx-auto" />
-          <h1 className=" text-center cursor-pointer">
-            {format(selectedDate, "dd/MM")}
+          <h1 className=" text-center cursor-pointer text-lg">
+            {format(selectedDate, "dd/MM")} {format(selectedDate, "EEE")}
           </h1>
         </div>
         <button
@@ -218,8 +223,10 @@ const Calendar: FC<CalendarProps> = ({
               format(addDays(selectedDate, 1), "yyyy-MM-dd")
             );
             setSearchParams(newParams);
+            setFilterFixtures("all");
+            setIsOpen(false);
           }}
-          className="text-accent hover:text-gray-600 cursor-pointer"
+          className="text-accent cursor-pointer text-lg p-[2px] hover:bg-accent/10"
         >
           <IoIosArrowForward />
         </button>

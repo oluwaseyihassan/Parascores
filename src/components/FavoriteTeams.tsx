@@ -48,9 +48,9 @@ const FavoriteTeams = () => {
                   <span>{team.name || "Unknown team"}</span>
                 </Link>
                 <button
-                  className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none z-10`}
+                  className={`text-md cursor-pointer p-1 transition-colors duration-100 hover:bg-fav/10 rounded-md focus:outline-none z-10`}
                   style={{
-                    color: isTeamFavorite(team.id) ? "#009b72" : "gray",
+                    color: isTeamFavorite(team.id) ? "#ffcc00" : "gray",
                   }}
                   aria-label="Add to favorites"
                   onClick={() => {
@@ -80,7 +80,9 @@ const FavoriteTeams = () => {
             } text-accent text-center py-1 rounded-md cursor-pointer transition-colors duration-100 focus:outline-none w-full`}
             onClick={() => setShowAllteams(!showAllteams)}
           >
-            {showAllteams ? "Show less" : "Show all"}
+            {showAllteams
+              ? "Show less"
+              : `Show all (${favoriteTeams.length - 5})`}
           </button>
         )}
       </div>

@@ -16,7 +16,7 @@ import LeagueFixtures from "./LeagueFixtures";
 import { Link, useSearchParams } from "react-router-dom";
 import { RiFootballFill } from "react-icons/ri";
 import { useInView } from "react-intersection-observer";
-import { FaStar } from "react-icons/fa";
+import { FaRegStar, FaStar } from "react-icons/fa";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
 import { useFavorites } from "../context/FavoritesContext";
 import Calendar from "./Calendar";
@@ -122,12 +122,12 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
         <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setFilterFixtures("all")}
-            className={`px-4 py-1 h-fit rounded-md transition-colors cursor-pointer ${
+            className={`px-4 py-1 h-fit rounded-md cursor-pointer ${
               filterFixtures === "all"
                 ? "bg-accent text-white"
                 : theme === "dark"
-                ? "bg-dark-bg hover:bg-dark-bg/80"
-                : "bg-light-bg hover:bg-light-bg/80"
+                ? "bg-dark hover:bg-dark/80"
+                : "bg-light hover:bg-light/80"
             }`}
             aria-pressed={filterFixtures === "all"}
           >
@@ -136,12 +136,12 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
 
           <button
             onClick={() => setFilterFixtures("live")}
-            className={`px-4 py-1 h-fit cursor-pointer rounded-md transition-colors flex items-center ${
+            className={`px-4 py-1 h-fit cursor-pointer rounded-md flex items-center ${
               filterFixtures === "live"
                 ? "bg-live text-white"
                 : theme === "dark"
-                ? "bg-dark-bg hover:bg-dark-bg/80"
-                : "bg-light-bg hover:bg-light-bg/80"
+                ? "bg-dark hover:bg-dark/80"
+                : "bg-light hover:bg-light/80"
             }`}
           >
             Live
@@ -157,12 +157,12 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
           </button>
 
           <button
-            className={`px-2 py-1 cursor-pointer bg-accent rounded-md transition-colors flex items-center ${
+            className={`px-2 py-1 h-fit cursor-pointer  rounded-md flex items-center ${
               filterFixtures === "fav"
-                ? "bg-accent text-white"
+                ? "bg-fav text-dark"
                 : theme === "dark"
-                ? "bg-dark-bg hover:bg-dark-bg/80"
-                : "bg-light-bg hover:bg-light-bg/80"
+                ? "bg-dark hover:bg-dark/80"
+                : "bg-light hover:bg-light/80"
             }`}
             onClick={() => setFilterFixtures("fav")}
           >
@@ -284,10 +284,10 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                         </div>
                       </div>
                       <button
-                        className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none`}
+                        className={`text-md cursor-pointer p-1 duration-100 hover:bg-fav/10 rounded-md focus:outline-none`}
                         style={{
                           color: isLeagueFavorite(league.id)
-                            ? "#009b72"
+                            ? "#ffcc00"
                             : "gray",
                         }}
                         aria-label="Add to favorites"
@@ -301,7 +301,11 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                           });
                         }}
                       >
-                        <FaStar />
+                        {
+                          isLeagueFavorite(league.id)
+                            ? <FaStar />
+                            : <FaRegStar />
+                        }
                       </button>
                     </div>
 
