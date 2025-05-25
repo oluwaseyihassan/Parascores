@@ -80,3 +80,13 @@ export const getTeamById = async (id: number, includes: string, filters: string)
         throw error;
     }
 }
+
+export const getTeamFixturesByDateRange = async (teamId: number, startDate: string, endDate: string, includes: string, filters: string) => {
+    try {
+        const response = await api.get(`/fixtures/between/${startDate}/${endDate}/${teamId}?includes=${includes}&filters=${filters}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching team fixtures by date range:", error);
+        throw error;
+    }
+}

@@ -1,5 +1,5 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getLeaguesByDate } from "../api/queries";
+import { useInfiniteQuery, useQueries } from "@tanstack/react-query";
+import { getLeaguesByDate, getTeamFixturesByDateRange } from "../api/queries";
 import {
   Dispatch,
   FC,
@@ -20,7 +20,7 @@ import { FaRegStar, FaStar } from "react-icons/fa";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
 import { useFavorites } from "../context/FavoritesContext";
 import Calendar from "./Calendar";
-import { format } from "date-fns";
+import { addMonths, format, subMonths } from "date-fns";
 
 type LeaguesApiResponse = {
   data: {
@@ -42,8 +42,13 @@ type FixturesProps = {
 };
 
 const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
-  const { isLeagueFavorite, toggleFavorite, isTeamFavorite, isMatchFavorite } =
-    useFavorites();
+  const {
+    isLeagueFavorite,
+    toggleFavorite,
+    isTeamFavorite,
+    isMatchFavorite,
+    favoriteTeams,
+  } = useFavorites();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const dateParam = searchParams.get("date");
@@ -81,6 +86,40 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
     refetchInterval: 20000,
   });
 
+  const favoriteTeamQueries = useQueries({
+    queries: (favoriteTeams || []).map((team) => ({
+      queryKey: ["team-fixtures", team.id],
+      queryFn: () => {
+        const startDate = format(subMonths(new Date(), 6), "yyyy-MM-dd");
+        const endDate = format(addMonths(new Date(), 6), "yyyy-MM-dd");
+        console.log(startDate,endDate)
+        return getTeamFixturesByDateRange(
+          team.id,
+          startDate,
+          endDate,
+          "",
+          "populate"
+        );
+      },
+      enabled: Boolean(team?.id),
+      staleTime: 5 * 60 * 1000, // 5 minutes cache
+    })),
+  });
+
+  // Fix 2: Process favorite team fixtures properly
+  const favoriteTeamFixtures = useMemo(() => {
+    const fixtures: any[] = [];
+
+    favoriteTeamQueries.forEach((query) => {
+      if (query.data?.data?.data) {
+        fixtures.push(...query.data.data.data);
+      }
+    });
+
+    return fixtures;
+  }, [favoriteTeamQueries]);
+
+  console.log(favoriteTeamFixtures);
 
   useEffect(() => {
     if ((leagues?.pages?.[0]?.data.data.length ?? 0) > 0 && !fixtureId) {
@@ -177,6 +216,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
             setFilterFixtures={setFilterFixtures}
             setSearchParams={setSearchParams}
             searchParams={searchParams}
+            favoriteTeamsFixtures={favoriteTeamFixtures}
           />
         </div>
       </section>
@@ -301,11 +341,11 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                           });
                         }}
                       >
-                        {
-                          isLeagueFavorite(league.id)
-                            ? <FaStar />
-                            : <FaRegStar />
-                        }
+                        {isLeagueFavorite(league.id) ? (
+                          <FaStar />
+                        ) : (
+                          <FaRegStar />
+                        )}
                       </button>
                     </div>
 

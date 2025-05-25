@@ -16,11 +16,9 @@ import { FaRegCalendarDays } from "react-icons/fa6";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { useTheme } from "../context/ThemeContext";
+import { Today } from "../types/types";
 
-type Event = {
-  date: string;
-  title: string;
-};
+
 
 type CalendarProps = {
   selectedDate: Date;
@@ -28,13 +26,10 @@ type CalendarProps = {
   setFilterFixtures: (filter: string) => void;
   setSearchParams: (params: URLSearchParams) => void;
   searchParams: URLSearchParams;
+  favoriteTeamsFixtures: Today[];
 };
 
-const sampleEvents: Event[] = [
-  { date: "2025-05-10", title: "Match Day" },
-  { date: "2025-05-15", title: "Team Meeting" },
-  { date: "2025-05-22", title: "Training Session" },
-];
+
 
 const Calendar: FC<CalendarProps> = ({
   selectedDate,
@@ -42,6 +37,7 @@ const Calendar: FC<CalendarProps> = ({
   searchParams,
   setFilterFixtures,
   setSearchParams,
+  favoriteTeamsFixtures,
 }) => {
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
@@ -113,8 +109,8 @@ const Calendar: FC<CalendarProps> = ({
         const cloneDay = day;
         const isCurrentMonth = isSameMonth(day, monthStart);
         const isToday = isSameDay(day, today);
-        const event = sampleEvents.find(
-          (e) => e.date === format(day, "yyyy-MM-dd")
+        const favorite = favoriteTeamsFixtures.find(
+          (e) => e.starting_at?.split(" ")[0] === format(day, "yyyy-MM-dd")
         );
 
         days.push(
@@ -134,7 +130,7 @@ const Calendar: FC<CalendarProps> = ({
               } ${
               format(cloneDay, "yyyy-MM-dd") ===
               format(selectedDate, "yyyy-MM-dd")
-                ? "bg-blue-100 text-blue-700 font-semibold"
+                ? "bg-accent text-white font-semibold"
                 : ""
             }`}
             onClick={() => {
@@ -165,8 +161,8 @@ const Calendar: FC<CalendarProps> = ({
             }}
           >
             {format(day, "d")}
-            {event && (
-              <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-red-500 rounded-full"></div>
+            {favorite && (
+              <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-fav rounded-full"></div>
             )}
           </div>
         );
@@ -183,7 +179,7 @@ const Calendar: FC<CalendarProps> = ({
   };
 
   return (
-    <div className="rounded-md p-1">
+    <div className="rounded-md px-1">
       <div
         className={`${
           theme === "dark" ? "bg-dark" : "bg-light"
@@ -209,8 +205,8 @@ const Calendar: FC<CalendarProps> = ({
           className="flex gap-2 items-center"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <FaRegCalendarDays className="text-xl text-accent mx-auto" />
-          <h1 className=" text-center cursor-pointer text-lg">
+          <FaRegCalendarDays className="text-lg sm:text-xl text-accent mx-auto" />
+          <h1 className=" text-center cursor-pointer text-base sm:text-lg">
             {format(selectedDate, "dd/MM")} {format(selectedDate, "EEE")}
           </h1>
         </div>
@@ -226,7 +222,7 @@ const Calendar: FC<CalendarProps> = ({
             setFilterFixtures("all");
             setIsOpen(false);
           }}
-          className="text-accent cursor-pointer text-lg p-[2px] hover:bg-accent/10"
+          className="text-accent cursor-pointer text-base sm:text-lg p-[2px] hover:bg-accent/10"
         >
           <IoIosArrowForward />
         </button>
