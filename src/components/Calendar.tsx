@@ -18,8 +18,6 @@ import { RxCross2 } from "react-icons/rx";
 import { useTheme } from "../context/ThemeContext";
 import { Today } from "../types/types";
 
-
-
 type CalendarProps = {
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
@@ -28,8 +26,6 @@ type CalendarProps = {
   searchParams: URLSearchParams;
   favoriteTeamsFixtures: Today[];
 };
-
-
 
 const Calendar: FC<CalendarProps> = ({
   selectedDate,
@@ -61,7 +57,7 @@ const Calendar: FC<CalendarProps> = ({
     <div className="flex items-center justify-between mb-4">
       <button
         onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-        className="p-2 text-gray-600 hover:text-black cursor-pointer"
+        className="p-1 hover:bg-gray-400/10 rounded-md text-gray-600 cursor-pointer focus:outline outline-accent"
       >
         <IoIosArrowBack />
       </button>
@@ -70,7 +66,7 @@ const Calendar: FC<CalendarProps> = ({
       </h2>
       <button
         onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-        className="p-2 text-gray-600 hover:text-black cursor-pointer"
+        className="p-1 hover:bg-gray-400/10 rounded-md text-gray-600  cursor-pointer focus:outline outline-accent"
       >
         <IoIosArrowForward />
       </button>
@@ -114,12 +110,12 @@ const Calendar: FC<CalendarProps> = ({
         );
 
         days.push(
-          <div
+          <button
             key={day.toString()}
-            className={`relative p-2 text-center text-sm cursor-pointer rounded-full transition 
+            className={`relative h-10 w-10 flex justify-center items-center text-center text-sm cursor-pointer rounded-full transition focus:outline outline-accent 
               ${
                 isToday
-                  ? "bg-blue-300 text-blue-800 font-semibold hover:bg-blue-200"
+                  ? "bg-accent text-white font-semibold hover:bg-blue-200"
                   : isCurrentMonth
                   ? theme === "dark"
                     ? "hover:bg-gray-800"
@@ -130,7 +126,7 @@ const Calendar: FC<CalendarProps> = ({
               } ${
               format(cloneDay, "yyyy-MM-dd") ===
               format(selectedDate, "yyyy-MM-dd")
-                ? "bg-accent text-white font-semibold"
+                ? "bg-accent/30 text-white font-semibold"
                 : ""
             }`}
             onClick={() => {
@@ -164,7 +160,7 @@ const Calendar: FC<CalendarProps> = ({
             {favorite && (
               <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-fav rounded-full"></div>
             )}
-          </div>
+          </button>
         );
         day = addDays(day, 1);
       }
@@ -181,9 +177,7 @@ const Calendar: FC<CalendarProps> = ({
   return (
     <div className="rounded-md px-1">
       <div
-        className={`${
-          theme === "dark" ? "bg-dark" : "bg-light"
-        } flex items-center justify-between cursor-pointer p-1 gap-2 rounded-lg`}
+        className={`${theme === "dark" ? "bg-dark/40" : "bg-light"} flex items-center justify-between cursor-pointer p-1 gap-2 rounded-lg`}
       >
         <button
           onClick={() => {
@@ -197,19 +191,22 @@ const Calendar: FC<CalendarProps> = ({
             setFilterFixtures("all");
             setIsOpen(false);
           }}
-          className="text-accent hover:text-gray-600 cursor-pointer text-lg p-[2px] hover:bg-accent/10"
+          className="text-accent cursor-pointer rounded-md text-lg p-[2px] hover:bg-accent/10"
         >
           <IoIosArrowBack />
         </button>
-        <div
+        <button
           className="flex gap-2 items-center"
           onClick={() => setIsOpen(!isOpen)}
         >
           <FaRegCalendarDays className="text-lg sm:text-xl text-accent mx-auto" />
-          <h1 className=" text-center cursor-pointer text-base sm:text-lg">
-            {format(selectedDate, "dd/MM")} {format(selectedDate, "EEE")}
+          <h1 className=" text-center cursor-pointer text-base sm:text-lg flex gap-1">
+            <span>{format(selectedDate, "dd/MM")}</span>
+            <span className="hidden sm:block">
+              {format(selectedDate, "EEE")}
+            </span>
           </h1>
-        </div>
+        </button>
         <button
           onClick={() => {
             setSelectedDate(addDays(selectedDate, 1));
@@ -222,7 +219,7 @@ const Calendar: FC<CalendarProps> = ({
             setFilterFixtures("all");
             setIsOpen(false);
           }}
-          className="text-accent cursor-pointer text-base sm:text-lg p-[2px] hover:bg-accent/10"
+          className="text-accent cursor-pointer rounded-md text-lg p-[2px] hover:bg-accent/10"
         >
           <IoIosArrowForward />
         </button>
@@ -235,13 +232,17 @@ const Calendar: FC<CalendarProps> = ({
         >
           <button
             onClick={() => setIsOpen(false)}
-            className=" flex justify-self-end text-gray-500 cursor-pointer text-2xl"
+            className=" flex justify-self-end text-gray-500 cursor-pointer text-2xl hover:bg-gray-400/10 rounded-md focus:outline outline-accent"
           >
             <RxCross2 />
           </button>
           {renderHeader()}
           {renderDays()}
           {renderCells()}
+          <div className="flex items-center gap-2 mt-4">
+            <div className="h-1 w-3 bg-fav rounded-sm"/>
+            <span className="text-[8px]">Event days for your favorite teams.</span>
+          </div>
           <button
             onClick={goToToday}
             className="mt-4 text-white hover:underline hover:bg-accent/90 flex px-2 py-1 rounded-md justify-self-center cursor-pointer w-fit bg-accent"

@@ -319,15 +319,9 @@ const LeagueFixtures: FC<props> = ({
                   ></Link>
                 )}
                 <button
-                  className={`cursor-pointer hover:bg-fav/10 p-1 rounded-md ${
-                    isLeagueFavorite(today.league?.id) ||
-                    isTeamFavorite(homeTeam?.id ?? 0) ||
-                    isTeamFavorite(awayTeam?.id ?? 0) ||
-                    isMatchFavorite(today.id)
-                      ? "text-fav"
-                      : "text-gray-400"
-                  } text-md z-10`}
-                  onClick={() => {
+                  className={`cursor-pointer hover:bg-fav/10 p-1 mr-1 rounded-md text-base text-md z-10`}
+                  onClick={(e) => {
+                    e.stopPropagation();
                     if (isLeagueFavorite(today.league?.id)) {
                       return alert(
                         `Match is favorite because of ${today.league?.name}`
@@ -354,9 +348,9 @@ const LeagueFixtures: FC<props> = ({
                   isTeamFavorite(homeTeam?.id ?? 0) ||
                   isTeamFavorite(awayTeam?.id ?? 0) ||
                   isMatchFavorite(today.id) ? (
-                    <FaStar />
+                    <FaStar className="text-fav"/>
                   ) : (
-                    <FaRegStar />
+                    <FaRegStar className="text-gray-500"/>
                   )}
                 </button>
               </div>

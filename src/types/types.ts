@@ -181,6 +181,8 @@ export type LineUp = {
         common_name: string | null;
         image_path: string | null;
         gender: string | null;
+        firstname: string | null;
+        lastname: string | null;
     },
     details: {
         id: number;

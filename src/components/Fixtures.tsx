@@ -92,7 +92,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
       queryFn: () => {
         const startDate = format(subMonths(new Date(), 6), "yyyy-MM-dd");
         const endDate = format(addMonths(new Date(), 6), "yyyy-MM-dd");
-        console.log(startDate,endDate)
+        console.log(startDate, endDate);
         return getTeamFixturesByDateRange(
           team.id,
           startDate,
@@ -102,11 +102,9 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
         );
       },
       enabled: Boolean(team?.id),
-      staleTime: 5 * 60 * 1000, // 5 minutes cache
     })),
   });
 
-  // Fix 2: Process favorite team fixtures properly
   const favoriteTeamFixtures = useMemo(() => {
     const fixtures: any[] = [];
 
@@ -155,9 +153,39 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
     return count;
   }, [leagues]);
 
+  const fixturesFilterLogic = (league: League): boolean => {
+    if (filterFixtures === "all") {
+      return (
+        (league.today?.length ?? 0) > 0 || (league.inplay?.length ?? 0) > 0
+      );
+    }
+    if (filterFixtures === "fav") {
+      return (
+        isLeagueFavorite(league.id) ||
+        (league.today?.some(
+          (today) =>
+            isTeamFavorite(
+              today.participants?.find((p) => p.meta.location === "home")?.id ??
+                0
+            ) ||
+            isTeamFavorite(
+              today.participants?.find((p) => p.meta.location === "away")?.id ??
+                0
+            ) ||
+            isMatchFavorite(today.id)
+        ) ??
+          false)
+      );
+    }
+    if (filterFixtures === "live") {
+      return (league.inplay?.length ?? 0) > 0;
+    }
+    return false;
+  };
+
   return (
     <div className="mt-2">
-      <section className="flex justify-between mb-4 flex-wrap relative">
+      <section className="flex justify-between mb-4 flex-wrap relative gap-2">
         <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setFilterFixtures("all")}
@@ -165,7 +193,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
               filterFixtures === "all"
                 ? "bg-accent text-white"
                 : theme === "dark"
-                ? "bg-dark hover:bg-dark/80"
+                ? "bg-dark/40 hover:bg-dark/60"
                 : "bg-light hover:bg-light/80"
             }`}
             aria-pressed={filterFixtures === "all"}
@@ -179,7 +207,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
               filterFixtures === "live"
                 ? "bg-live text-white"
                 : theme === "dark"
-                ? "bg-dark hover:bg-dark/80"
+                ? "bg-dark/40 hover:bg-dark/60"
                 : "bg-light hover:bg-light/80"
             }`}
           >
@@ -200,7 +228,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
               filterFixtures === "fav"
                 ? "bg-fav text-dark"
                 : theme === "dark"
-                ? "bg-dark hover:bg-dark/80"
+                ? "bg-dark/40 hover:bg-dark/60"
                 : "bg-light hover:bg-light/80"
             }`}
             onClick={() => setFilterFixtures("fav")}
@@ -240,34 +268,42 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
         </div>
       )}
 
+      {filterFixtures === "fav" &&
+        (!leagues?.pages ||
+          leagues.pages.flatMap((page) =>
+            page.data.data.filter(
+              (league) =>
+                isLeagueFavorite(league.id) ||
+                (league.today?.some(
+                  (today) =>
+                    isTeamFavorite(
+                      today.participants?.find(
+                        (p) => p.meta.location === "home"
+                      )?.id ?? 0
+                    ) ||
+                    isTeamFavorite(
+                      today.participants?.find(
+                        (p) => p.meta.location === "away"
+                      )?.id ?? 0
+                    ) ||
+                    isMatchFavorite(today.id)
+                ) ??
+                  false)
+            )
+          ).length === 0) &&
+        !isLoading && (
+          <div className="text-center py-8 text-gray-500">
+            No favorite team fixtures found.
+          </div>
+        )}
+
       <section className="space-y-3">
         {!isLoading &&
           !isError &&
           leagues?.pages.map((page) => (
             <Fragment key={page.data.pagination.current_page}>
               {page.data.data
-                .filter((league) =>
-                  filterFixtures === "all"
-                    ? (league.today?.length ?? 0) > 0
-                    : filterFixtures === "fav"
-                    ? isLeagueFavorite(league.id) ||
-                      (league.today?.some(
-                        (today) =>
-                          isTeamFavorite(
-                            today.participants?.find(
-                              (p) => p.meta.location === "home"
-                            )?.id ?? 0
-                          ) ||
-                          isTeamFavorite(
-                            today.participants?.find(
-                              (p) => p.meta.location === "away"
-                            )?.id ?? 0
-                          ) ||
-                          isMatchFavorite(today.id)
-                      ) ??
-                        false)
-                    : (league.inplay?.length ?? 0) > 0
-                )
+                .filter((league) => fixturesFilterLogic(league))
                 .map((league, index, filteredArray) => (
                   <div
                     key={league.id}
@@ -324,12 +360,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                         </div>
                       </div>
                       <button
-                        className={`text-md cursor-pointer p-1 duration-100 hover:bg-fav/10 rounded-md focus:outline-none`}
-                        style={{
-                          color: isLeagueFavorite(league.id)
-                            ? "#ffcc00"
-                            : "gray",
-                        }}
+                        className={`text-md cursor-pointer p-1 duration-100 hover:bg-fav/10 rounded-md focus:outline outline-fav`}
                         aria-label="Add to favorites"
                         ref={starRef}
                         onClick={() => {
@@ -342,9 +373,9 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                         }}
                       >
                         {isLeagueFavorite(league.id) ? (
-                          <FaStar />
+                          <FaStar className="text-fav"/>
                         ) : (
-                          <FaRegStar />
+                          <FaRegStar className="text-gray-500"/>
                         )}
                       </button>
                     </div>

@@ -65,7 +65,7 @@ const Home = () => {
       <div
         className={`${
           theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-        } col-span-5 p-3 rounded-lg sm:rounded-2xl max-w-screen`}
+        } col-span-5 p-3 rounded-lg sm:rounded-2xl max-w-screen h-fit`}
       >
         <Fixtures fixtureId={fixtureId} setFixtureId={setFixtureId} />
       </div>

@@ -5,7 +5,7 @@ import { Today } from "../types/types";
 import { formatDateToReadable } from "../utils/helperFunctions";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
 import { useFavorites } from "../context/FavoritesContext";
-import { FaStar } from "react-icons/fa";
+import { FaRegStar, FaStar } from "react-icons/fa";
 
 type props = {
   fixture: Today | null;
@@ -122,7 +122,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
       >
         <div className="col-span-1 wrap-break-word text-center flex items-center justify-start">
           <button
-            className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none h-fit`}
+            className={`text-md cursor-pointer  p-1 transition-colors duration-100 hover:bg-fav/10 rounded-md text-lg focus:outline outline-fav h-fit mr-2`}
             style={{
               color: isTeamFavorite(
                 fixture?.participants?.filter(
@@ -150,7 +150,15 @@ const FixtureCard: FC<props> = ({ fixture }) => {
               });
             }}
           >
-            <FaStar />
+            {isTeamFavorite(
+              fixture?.participants?.filter(
+                (participant) => participant.meta.location === "home"
+              )[0].id ?? 0
+            ) ? (
+              <FaStar className="text-fav" />
+            ) : (
+              <FaRegStar className="text-gray-400" />
+            )}
           </button>
           <Link
             to={`/team/${fixture?.participants
@@ -261,16 +269,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
             </span>
           </Link>
           <button
-            className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none h-fit`}
-            style={{
-              color: isTeamFavorite(
-                fixture?.participants?.filter(
-                  (participant) => participant.meta.location === "away"
-                )[0].id ?? 0
-              )
-                ? "#009b72"
-                : "gray",
-            }}
+            className={`text-md cursor-pointer p-1 transition-colors duration-100 hover:bg-fav/10 rounded-md focus:outline outline-fav h-fit text-lg ml-2`}
             aria-label="Add to favorites"
             onClick={() => {
               toggleFavoriteTeams({
@@ -289,7 +288,15 @@ const FixtureCard: FC<props> = ({ fixture }) => {
               });
             }}
           >
-            <FaStar />
+            {isTeamFavorite(
+              fixture?.participants?.filter(
+                (participant) => participant.meta.location === "away"
+              )[0].id ?? 0
+            ) ? (
+              <FaStar className="text-fav" />
+            ) : (
+              <FaRegStar className="text-gray-400" />
+            )}
           </button>
         </div>
       </div>
