@@ -277,7 +277,7 @@ const LeagueFixtures: FC<props> = ({
                       {today.state?.developer_name === "NS" ? (
                         startTime
                       ) : (
-                        <div className="flex justify-center items-center gap-1">
+                        <div className="flex justify-center items-center gap-1 font-serif">
                           <span>{homeScore}</span>-<span>{awayScore}</span>
                         </div>
                       )}

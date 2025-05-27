@@ -12,6 +12,7 @@ type props = {
 
 const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
   const { theme } = useTheme();
+
   const formationArray =
     ((formation?.length ?? 0 > 0) &&
       formation?.split("-").map((num) => parseInt(num))) ||
@@ -90,7 +91,7 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
           return (
             <div
               key={lineIndex}
-              className={`flex justify-center gap-2 z-30 `}
+              className={`flex justify-center gap-2 z-30`}
               style={{
                 display: "grid",
                 gridTemplateColumns: `repeat(${num}, minmax(0, 1fr))`, // Changed to columns
@@ -110,25 +111,63 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
                 })
                 .map((player) => (
                   <div key={player.id} className="z-30">
-                    <div className="flex flex-col items-center justify-center lg:rotate-90">
-                      <div className="h-9 w-9 bg-white flex justify-center items-end rounded-full overflow-hidden">
+                    <div className="flex flex-col items-center justify-center lg:rotate-90 relative">
+                      <div className="h-9 w-9 bg-white flex justify-center items-end rounded-full overflow-hidden ">
                         <img
                           src={`${
-                            player?.player?.image_path || imagePlaceholders.player
+                            player?.player?.image_path ||
+                            imagePlaceholders.player
                           }`}
                           alt=""
                           className=" w-8"
                         />
                       </div>
+                      {player?.details?.find(
+                        (detail) => detail.type.developer_name === "RATING"
+                      )?.data.value && (
+                        <div
+                          className={`${
+                            (player?.details?.find(
+                              (detail) =>
+                                detail.type.developer_name === "RATING"
+                            )?.data.value || 0) > 9
+                              ? "bg-blue-500"
+                              : (player?.details?.find(
+                                  (detail) =>
+                                    detail.type.developer_name === "RATING"
+                                )?.data.value || 0) > 8
+                              ? "bg-blue-400"
+                              : (player?.details?.find(
+                                  (detail) =>
+                                    detail.type.developer_name === "RATING"
+                                )?.data.value || 0) > 7
+                              ? "bg-green-500"
+                              : (player?.details?.find(
+                                  (detail) =>
+                                    detail.type.developer_name === "RATING"
+                                )?.data.value || 0) > 6
+                              ? "bg-yellow-600"
+                              : "bg-red-500"
+                          } -mt-1 font-bold text-xs text-center text-white px-1`}
+                        >
+                          {(
+                            player?.details?.find(
+                              (detail) =>
+                                detail.type.developer_name === "RATING"
+                            )?.data.value || 0
+                          ).toFixed(1) || 0}
+                        </div>
+                      )}
                       <div className="text-[10px] text-center flex gap-[2px]">
                         <div className="text-gray-400">
                           {player.jersey_number}
                         </div>
-                        <div>{player.player.lastname?.split(' ')[0]}</div>
+                        <div>{player.player.lastname?.split(" ")[0]}</div>
                       </div>
                     </div>
                   </div>
                 ))}
+              {/* <div className="h-20 w-10 absolute bg-accent top-1/2 left-1/2 -translate-1/2"></div> */}
             </div>
           );
         })}

@@ -115,17 +115,32 @@ const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
           )?.score.goals;
 
           return (
-            <Link
-              to={`/match/${match.id}`}
+            <div
               className={`${
                 theme === "dark" ? "bg-dark/70" : "bg-light"
-              } p-1 rounded-lg flex items-center gap-2 `}
+              } p-1 rounded-lg flex items-center gap-2 flex-col`}
               key={match.id}
             >
-              <div className="text-xs text-gray-400 w-[50px] text-center">
-                {formatDateToReadable(match.starting_at ?? "")}
+              <div className="justify-between px-2 flex items-center gap-x-2 w-full">
+                <div className="flex items-center gap-2">
+                  <div className="h-5 w-5 flex justify-center items-center">
+                    <img
+                      src={`${
+                        match.league.image_path || imagePlaceholders.team
+                      }`}
+                      alt=""
+                    />
+                  </div>
+                  <span>{match.league.name}</span>
+                </div>
+                <div className="text-xs text-gray-400 text-center">
+                  {formatDateToReadable(match.starting_at ?? "")}
+                </div>
               </div>
-              <div className="flex w-full justify-center">
+              <Link
+                to={`/match/${match.id}`}
+                className="flex w-full justify-center"
+              >
                 <div className="flex items-center w-[45%] justify-end text-right">
                   <div
                     className={
@@ -165,8 +180,8 @@ const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
                     {awayTeam?.name || ""}
                   </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           );
         })}
       </div>

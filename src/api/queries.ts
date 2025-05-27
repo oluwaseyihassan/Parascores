@@ -51,6 +51,16 @@ export const getStandinsBySeasonId = async (seasonId: number, includes: string, 
     }
 }
 
+export const getStandinsByRoundId = async (roundId: number, includes: string, filters: string) => {
+    try {
+        const response = await api.get(`/standings/rounds/${roundId}?includes=${includes}&filters=${filters}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching standings by round ID:", error);
+        throw error;
+    }
+}
+
 export const getHeadToHead = async (team1Id: number, team2Id: number, includes: string, filters: string) => {
     try {
         const response = await api.get(`/fixtures/headtohead/${team1Id}/${team2Id}?includes=${includes}&filters=${filters}`);
@@ -87,6 +97,18 @@ export const getTeamFixturesByDateRange = async (teamId: number, startDate: stri
         return response.data;
     } catch (error) {
         console.error("Error fetching team fixtures by date range:", error);
+        throw error;
+    }
+}
+
+
+export const getRoundsBySeasonId = async (seasonId: number, includes: string, filters: string) => {
+    try {
+        const response = await api.get(`/rounds/seasons/${seasonId}?includes=${includes}&filters=${filters}`);
+        return response.data;
+    }
+    catch (error) {
+        console.error("Error fetching rounds by season ID:", error);
         throw error;
     }
 }

@@ -1,14 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import { Fragment, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   getFixtureById,
   getHeadToHead,
+  getRoundsBySeasonId,
+  getStandinsByRoundId,
   getStandinsBySeasonId,
 } from "../../api/queries";
 import FixtureCard from "../FixtureCard";
 import Events from "../Events";
-import { Today } from "../../types/types";
+import { Round, Today } from "../../types/types";
 import { useTheme } from "../../context/ThemeContext";
 import LineUp from "../LineUp";
 import { RiFootballFill } from "react-icons/ri";
@@ -16,6 +18,7 @@ import Statistics from "../Statistics";
 import Standing from "../Standing";
 import HeadToHead from "../HeadToHead";
 import Venue from "../Venue";
+import StandingTracker from "../StandingTracker";
 
 type ApiResponse = {
   data: {
@@ -72,7 +75,11 @@ const Fixture = () => {
   });
 
   const seasonId = data?.data.data?.season_id;
-  const { data: standing, isLoading: standingIsLoading } = useQuery({
+  const {
+    data: standing,
+    isLoading: standingIsLoading,
+    isError: standingError,
+  } = useQuery({
     queryKey: ["standing", seasonId],
     queryFn: async () => {
       if (seasonId === undefined || seasonId === null) {
@@ -87,6 +94,41 @@ const Fixture = () => {
     enabled: !!seasonId,
   });
 
+  const { data: seasonRounds } = useQuery({
+    queryKey: ["rounds", seasonId],
+    queryFn: async () => {
+      if (!seasonId) throw new Error("Season ID is required");
+      return getRoundsBySeasonId(seasonId, "", "");
+    },
+    enabled: Boolean(seasonId),
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
+
+  // Fix 6: Properly handle useQueries with safety checks
+  const roundQueries = useQueries({
+    queries: (seasonRounds?.data?.data || []).map((round: Round) => ({
+      queryKey: ["round", round.id],
+      queryFn: async () =>
+        getStandinsByRoundId(round.id, "stage;participant", ""),
+      enabled: Boolean(round?.id),
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    })),
+  });
+
+  // Fix 7: Process round data properly
+  const roundsData = roundQueries
+    .filter((query) => query.isSuccess && query.data)
+    .map(
+      (query) =>
+        query.data as {
+          data: { data: Round[] };
+          success: boolean;
+          message?: string;
+        }
+    );
+
+  console.log("Rounds Data:", roundsData);
+
   const tabs = [
     { name: "Details" },
     { name: "Lineups" },
@@ -95,6 +137,7 @@ const Fixture = () => {
     { name: "Standing" },
     { name: "Head to Head" },
     { name: "Venue" },
+    { name: "Standing Tracker" },
   ];
 
   if (isLoading) {
@@ -154,7 +197,24 @@ const Fixture = () => {
             <LineUp fixture={data?.data.data ?? null} />
           </section>
           <section className="mt-4">
-            <Standing standing={standing} isLoading={standingIsLoading} />
+            <Standing
+              standing={standing}
+              isLoading={standingIsLoading}
+              isError={standingError}
+            />
+          </section>
+          <section>
+            <StandingTracker
+              roundsData={roundsData}
+              teamIds={[
+                data?.data.data.participants?.find(
+                  (participant) => participant.meta.location === "home"
+                )?.id ?? 0,
+                data?.data.data.participants?.find(
+                  (participant) => participant.meta.location === "away"
+                )?.id ?? 0,
+              ]}
+            />
           </section>
           <section
             className={`${
@@ -240,7 +300,11 @@ const Fixture = () => {
               )}
               {activeTab === 4 && (
                 <div className="">
-                  <Standing standing={standing} isLoading={standingIsLoading} />
+                  <Standing
+                    standing={standing}
+                    isLoading={standingIsLoading}
+                    isError={standingError}
+                  />
                 </div>
               )}
               {activeTab === 5 && (
@@ -262,7 +326,22 @@ const Fixture = () => {
               )}
               {activeTab === 6 && (
                 <div className="p-2">
-                  <Venue venue={data?.data.data.venue ?? null}/>
+                  <Venue venue={data?.data.data.venue ?? null} />
+                </div>
+              )}
+              {activeTab === 7 && (
+                <div className={`${theme === "dark" ? "bg-dark" : "bg-light" } p-2`}>
+                  <StandingTracker
+                    roundsData={roundsData}
+                    teamIds={[
+                      data?.data.data.participants?.find(
+                        (participant) => participant.meta.location === "home"
+                      )?.id ?? 0,
+                      data?.data.data.participants?.find(
+                        (participant) => participant.meta.location === "away"
+                      )?.id ?? 0,
+                    ]}
+                  />
                 </div>
               )}
             </div>

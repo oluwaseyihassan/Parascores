@@ -93,8 +93,23 @@ export type Round = {
     id: number;
     name: string | null;
     league_id: number | null;
-
-
+    participant_id: number
+    points: number
+    position: number
+    result: string
+    round_id: number
+    season_id: number
+    stage: {
+        starting_at: string | null;
+        ending_at: string | null
+        sort_order: number
+        id: number
+    }
+    participant: {
+        id: number
+        name: string | null
+    }
+    
 }
 
 export type State = {
@@ -195,7 +210,7 @@ export type LineUp = {
             developer_name: string | null;
             model_type: string | null;
         }
-    },
+    }[],
     type: {
         id: number;
         name: string | null;

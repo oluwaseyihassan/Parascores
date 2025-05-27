@@ -10,11 +10,13 @@ type Props = {
       data: StandingType[];
     };
     success: boolean;
+    message?: string;
   };
   isLoading: boolean;
+  isError?: boolean;
 };
 
-const Standing: FC<Props> = ({ standing, isLoading }) => {
+const Standing: FC<Props> = ({ standing, isLoading, isError }) => {
   const { theme } = useTheme();
 
   const [standingOption, setStandingOption] = useState<string>("All");
@@ -70,6 +72,15 @@ const Standing: FC<Props> = ({ standing, isLoading }) => {
       </div>
     );
   }
+
+  if (isError) {
+    return (
+      <div className="text-red-500 text-center">
+        Error loading standings. Please try again later.
+      </div>
+    );
+  }
+
   return (
     <div
       className={`${
