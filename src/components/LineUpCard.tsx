@@ -162,7 +162,7 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
                         <div className="text-gray-400">
                           {player.jersey_number}
                         </div>
-                        <div>{player.player.lastname?.split(" ")[0]}</div>
+                        <div>{player.player?.lastname?.split(" ")[0] || player.player?.firstname?.split(" ")[0]}</div>
                       </div>
                     </div>
                   </div>
