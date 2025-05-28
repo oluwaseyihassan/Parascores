@@ -75,8 +75,8 @@ const Standing: FC<Props> = ({ standing, isLoading, isError }) => {
 
   if (isError) {
     return (
-      <div className="text-red-500 text-center">
-        Error loading standings. Please try again later.
+      <div className="text-gray-500 text-center">
+        No Standings available for this league.
       </div>
     );
   }

@@ -92,6 +92,8 @@ const Fixture = () => {
       );
     },
     enabled: !!seasonId,
+    retry: 1,
+    refetchOnWindowFocus: false,
   });
 
   const { data: seasonRounds } = useQuery({
@@ -101,21 +103,17 @@ const Fixture = () => {
       return getRoundsBySeasonId(seasonId, "", "");
     },
     enabled: Boolean(seasonId),
-    staleTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  // Fix 6: Properly handle useQueries with safety checks
   const roundQueries = useQueries({
     queries: (seasonRounds?.data?.data || []).map((round: Round) => ({
       queryKey: ["round", round.id],
       queryFn: async () =>
         getStandinsByRoundId(round.id, "stage;participant", ""),
       enabled: Boolean(round?.id),
-      staleTime: 5 * 60 * 1000, // 5 minutes
     })),
   });
 
-  // Fix 7: Process round data properly
   const roundsData = roundQueries
     .filter((query) => query.isSuccess && query.data)
     .map(
@@ -127,7 +125,6 @@ const Fixture = () => {
         }
     );
 
-  console.log("Rounds Data:", roundsData);
 
   const tabs = [
     { name: "Details" },
