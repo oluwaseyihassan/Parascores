@@ -5,6 +5,7 @@ import { useTheme } from "../context/ThemeContext";
 import { RiFootballFill } from "react-icons/ri";
 import { MdErrorOutline } from "react-icons/md";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
+import FavStar from "./FavStar";
 
 type topLeaguesProps = {
   leagues:
@@ -59,14 +60,24 @@ const TopLeagues: FC<topLeaguesProps> = ({ leagues, loading, error }) => {
                   : "hover:bg-gray-400/10"
               }`}
             >
-              <div className="w-5 h-5 flex justify-center items-center">
-                <img
-                  src={`${league.image_path || imagePlaceholders.team}`}
-                  alt={`${league.name}`}
-                  className="w-5"
-                />
+              <div className="flex items-center gap-2 w-full">
+                <div className="w-5 h-5 flex justify-center items-center">
+                  <img
+                    src={`${league.image_path || imagePlaceholders.team}`}
+                    alt={`${league.name}`}
+                    className="w-5"
+                  />
+                </div>
+                <div className=" max-w-[80%] wrap-break-word">
+                  {league.name}
+                </div>
               </div>
-              <div className=" max-w-[80%] wrap-break-word">{league.name}</div>
+              <FavStar
+                leagueId={league.id}
+                leagueName={league.name}
+                image_path={league.image_path || imagePlaceholders.league}
+                type="league"
+              />
             </Link>
           ))}
       </div>

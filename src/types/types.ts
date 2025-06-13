@@ -198,6 +198,7 @@ export type LineUp = {
         gender: string | null;
         firstname: string | null;
         lastname: string | null;
+        display_name: string | null
     },
     details: {
         id: number;

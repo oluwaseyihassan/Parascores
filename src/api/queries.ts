@@ -112,3 +112,33 @@ export const getRoundsBySeasonId = async (seasonId: number, includes: string, fi
         throw error;
     }
 }
+
+export const getLeaguesBySearch = async (search_param: string, page: number, per_page: number, includes: string, filters: string) => {
+    try {
+        const response = await api.get(`/leagues/search/${search_param}?page=${page}&per_page=${per_page}&includes=${includes}&filters=${filters}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching leagues by search:", error);
+        throw error;
+    }
+}
+
+export const getPlayersBySearch = async (search_param: string, page: number, per_page: number, includes: string, filters: string) => {
+    try {
+        const response = await api.get(`/players/search/${search_param}?page=${page}&per_page=${per_page}&includes=${includes}&filters=${filters}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching players by search:", error);
+        throw error;
+    }
+}
+
+export const getTeamsBySearch = async (search_param: string, page: number, per_page: number, includes: string, filters: string) => {
+    try {
+        const response = await api.get(`/teams/search/${search_param}?page=${page}&per_page=${per_page}&includes=${includes}&filters=${filters}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching teams by search:", error);
+        throw error;
+    }
+}

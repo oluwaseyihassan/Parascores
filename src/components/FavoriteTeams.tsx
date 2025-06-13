@@ -2,13 +2,12 @@ import { useState } from "react";
 import { useFavorites } from "../context/FavoritesContext";
 import { Link } from "react-router-dom";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
-import { FaStar } from "react-icons/fa";
 import { useTheme } from "../context/ThemeContext";
+import FavStar from "./FavStar";
 
 const FavoriteTeams = () => {
   const { theme } = useTheme();
-  const { favoriteTeams, isTeamFavorite, toggleFavoriteTeams } = useFavorites();
-  console.log(favoriteTeams);
+  const { favoriteTeams } = useFavorites();
   const [showAllteams, setShowAllteams] = useState(false);
 
   return (
@@ -47,23 +46,12 @@ const FavoriteTeams = () => {
                   </div>
                   <span>{team.name || "Unknown team"}</span>
                 </Link>
-                <button
-                  className={`text-md cursor-pointer p-1 transition-colors duration-100 hover:bg-fav/10 rounded-md focus:outline-none z-10`}
-                  style={{
-                    color: isTeamFavorite(team.id) ? "#ffcc00" : "gray",
-                  }}
-                  aria-label="Add to favorites"
-                  onClick={() => {
-                    toggleFavoriteTeams({
-                      id: team.id,
-                      name: team.name,
-                      logo: team.logo || imagePlaceholders.team,
-                    });
-                  }}
-                  title="Remove from favorites"
-                >
-                  <FaStar />
-                </button>
+                <FavStar
+                  teamId={team.id}
+                  teamName={team.name}
+                  image_path={team.logo || imagePlaceholders.team}
+                  type="team"
+                />
               </div>
             ))
         ) : (

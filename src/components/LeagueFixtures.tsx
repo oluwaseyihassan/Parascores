@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getFixtureById } from "../api/queries";
 import Events from "./Events";
-import { FaRegStar, FaStar } from "react-icons/fa";
 import { useFavorites } from "../context/FavoritesContext";
+import FavStar from "./FavStar";
 // import {useCountDown} from "../hooks/useCountDown";
 
 type props = {
@@ -36,7 +36,7 @@ const LeagueFixtures: FC<props> = ({
   isTeamFavorite,
 }) => {
   const [activeFixtureId, setActiveFixtureId] = useState<number | null>(null);
-  const { isMatchFavorite, toggleFavoriteMatches } = useFavorites();
+  const { isMatchFavorite } = useFavorites();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { theme } = useTheme();
   const { data: fixture } = useQuery<ApiResponse>({
@@ -318,41 +318,14 @@ const LeagueFixtures: FC<props> = ({
                     className="bg-transparent h-full w-full absolute "
                   ></Link>
                 )}
-                <button
-                  className={`cursor-pointer hover:bg-fav/10 p-1 mr-1 rounded-md text-base text-md z-10`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (isLeagueFavorite(today.league?.id)) {
-                      return alert(
-                        `Match is favorite because of ${today.league?.name}`
-                      );
-                    } else if (isTeamFavorite(homeTeam?.id ?? 0)) {
-                      return alert(
-                        `Match is favorite because of ${homeTeam?.name}`
-                      );
-                    } else if (isTeamFavorite(awayTeam?.id ?? 0)) {
-                      return alert(
-                        `Match is favorite because of ${awayTeam?.name}`
-                      );
-                    } else {
-                      toggleFavoriteMatches({
-                        id: today.id,
-                        leagueId: today.league?.id,
-                        homeTeamId: homeTeam?.id ?? 0,
-                        awayTeamId: awayTeam?.id ?? 0,
-                      });
-                    }
-                  }}
-                >
-                  {isLeagueFavorite(today.league?.id) ||
-                  isTeamFavorite(homeTeam?.id ?? 0) ||
-                  isTeamFavorite(awayTeam?.id ?? 0) ||
-                  isMatchFavorite(today.id) ? (
-                    <FaStar className="text-fav"/>
-                  ) : (
-                    <FaRegStar className="text-gray-500"/>
-                  )}
-                </button>
+                <FavStar
+                  leagueId={today.league?.id ?? 0}
+                  homeTeamId={homeTeam?.id ?? 0}
+                  awayTeamId={awayTeam?.id ?? 0}
+                  matchId={today.id}
+                  type="match"
+                  leagueName={today.league?.name || ""}
+                />
               </div>
 
               {windowWidth <= 1024 &&

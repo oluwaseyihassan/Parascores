@@ -3,11 +3,11 @@ import { useFavorites } from "../context/FavoritesContext";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
 import { useTheme } from "../context/ThemeContext";
 import { useState } from "react";
-import { FaStar } from "react-icons/fa";
+import FavStar from "./FavStar";
 
 const FavoriteLeagues = () => {
   const { theme } = useTheme();
-  const { favoriteLeagues, isLeagueFavorite, toggleFavorite } = useFavorites();
+  const { favoriteLeagues } = useFavorites();
   console.log(favoriteLeagues);
   const [showAllLeagues, setShowAllLeagues] = useState(false);
 
@@ -49,23 +49,12 @@ const FavoriteLeagues = () => {
                   </div>
                   <span>{league.name || "Unknown League"}</span>
                 </Link>
-                <button
-                  className={`text-md cursor-pointer p-1 transition-colors duration-100 hover:bg-fav/10 rounded-md focus:outline-none z-10`}
-                  style={{
-                    color: isLeagueFavorite(league.id) ? "#ffcc00" : "gray",
-                  }}
-                  aria-label="Add to favorites"
-                  onClick={() => {
-                    toggleFavorite({
-                      id: league.id,
-                      name: league.name,
-                      logo: league.logo || imagePlaceholders.team,
-                    });
-                  }}
-                  title="Remove from favorites"
-                >
-                  <FaStar />
-                </button>
+                <FavStar
+                  leagueId={league.id}
+                  leagueName={league.name}
+                  image_path={league.logo || imagePlaceholders.league}
+                  type="league"
+                />
               </div>
             ))
         ) : (
@@ -82,7 +71,9 @@ const FavoriteLeagues = () => {
             } text-accent text-center py-1 rounded-md cursor-pointer transition-colors duration-100 focus:outline-none w-full`}
             onClick={() => setShowAllLeagues(!showAllLeagues)}
           >
-            {showAllLeagues ? "Show less" : `Show all (${favoriteLeagues.length - 5})`}
+            {showAllLeagues
+              ? "Show less"
+              : `Show all (${favoriteLeagues.length - 5})`}
           </button>
         )}
       </div>

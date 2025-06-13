@@ -7,7 +7,6 @@ import {
   SetStateAction,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import { League, Pagination } from "../types/types";
@@ -16,11 +15,12 @@ import LeagueFixtures from "./LeagueFixtures";
 import { Link, useSearchParams } from "react-router-dom";
 import { RiFootballFill } from "react-icons/ri";
 import { useInView } from "react-intersection-observer";
-import { FaRegStar, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
 import { useFavorites } from "../context/FavoritesContext";
 import Calendar from "./Calendar";
 import { addMonths, format, subMonths } from "date-fns";
+import FavStar from "./FavStar";
 
 type LeaguesApiResponse = {
   data: {
@@ -44,7 +44,6 @@ type FixturesProps = {
 const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
   const {
     isLeagueFavorite,
-    toggleFavorite,
     isTeamFavorite,
     isMatchFavorite,
     favoriteTeams,
@@ -58,7 +57,6 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
   );
   const [activeLeagueId] = useState<number | null>(null);
 
-  const starRef = useRef<HTMLButtonElement>(null);
 
   const { ref, inView } = useInView();
 
@@ -344,9 +342,10 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                           </Link>
                           <div className="flex items-center">
                             <Link
-                              to={`/league/${league.name.replace(/ +/g, "-")}/${
-                                league.id
-                              }`}
+                              to={`/league/${league.name?.replace(
+                                / +/g,
+                                "-"
+                              )}/${league.id}`}
                               className="font-medium hover:text-accent hover:underline "
                             >
                               {league.name}
@@ -359,25 +358,13 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                           </div>
                         </div>
                       </div>
-                      <button
-                        className={`text-md cursor-pointer p-1 duration-100 hover:bg-fav/10 rounded-md focus:outline outline-fav`}
-                        aria-label="Add to favorites"
-                        ref={starRef}
-                        onClick={() => {
-                          console.log(league.today?.map((today) => today.id));
-                          toggleFavorite({
-                            id: league.id,
-                            name: league.name,
-                            logo: league.image_path || imagePlaceholders.team,
-                          });
-                        }}
-                      >
-                        {isLeagueFavorite(league.id) ? (
-                          <FaStar className="text-fav"/>
-                        ) : (
-                          <FaRegStar className="text-gray-500"/>
-                        )}
-                      </button>
+
+                      <FavStar
+                        leagueId={league.id ?? 0}
+                        image_path={league.image_path ?? imagePlaceholders.team}
+                        type="League"
+                        leagueName={league.name}
+                      />
                     </div>
 
                     <LeagueFixtures

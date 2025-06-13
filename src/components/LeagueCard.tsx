@@ -2,9 +2,8 @@ import { Dispatch, FC, SetStateAction, useMemo, useState } from "react";
 import { LeagueType } from "../types/types";
 import CustomSelect from "./CustomSelect";
 import { useTheme } from "../context/ThemeContext";
-import { FaStar } from "react-icons/fa";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
-import { useFavorites } from "../context/FavoritesContext";
+import FavStar from "./FavStar";
 
 type leagueCardProps = {
   league:
@@ -21,7 +20,6 @@ type leagueCardProps = {
 };
 
 const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
-  const { isLeagueFavorite, toggleFavorite } = useFavorites();
   const { theme } = useTheme();
   const options = useMemo(() => {
     if (!league?.data.data.seasons) return [];
@@ -53,24 +51,14 @@ const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
         <div>
           <div className="flex gap-2">
             <span>{league?.data.data.name}</span>
-            <button
-              className={`text-md cursor-pointer hover:text-accent p-1 transition-colors duration-100 hover:bg-accent/10 rounded-md focus:outline-none`}
-              style={{
-                color: isLeagueFavorite(league?.data.data.id ?? 0)
-                  ? "#009b72"
-                  : "gray",
-              }}
-              aria-label="Add to favorites"
-              onClick={() => {
-                toggleFavorite({
-                  id: league?.data.data.id ?? 0,
-                  name: league?.data.data.name || "",
-                  logo: league?.data.data.image_path || imagePlaceholders.team,
-                });
-              }}
-            >
-              <FaStar />
-            </button>
+            <FavStar
+              leagueId={league?.data.data.id ?? 0}
+              leagueName={league?.data.data.name || ""}
+              image_path={
+                league?.data.data.image_path || imagePlaceholders.league
+              }
+              type="league"
+            />
           </div>
           <div className="flex items-center gap-2">
             <div className=" h-7 rounded-full overflow-hidden w-7">

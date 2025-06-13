@@ -4,8 +4,7 @@ import { Link } from "react-router-dom";
 import { Today } from "../types/types";
 import { formatDateToReadable } from "../utils/helperFunctions";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
-import { useFavorites } from "../context/FavoritesContext";
-import { FaRegStar, FaStar } from "react-icons/fa";
+import FavStar from "./FavStar";
 
 type props = {
   fixture: Today | null;
@@ -13,7 +12,6 @@ type props = {
 
 const FixtureCard: FC<props> = ({ fixture }) => {
   const { theme } = useTheme();
-  const { isTeamFavorite, toggleFavoriteTeams } = useFavorites();
 
   const matchState = (state: string | null) => {
     switch (state) {
@@ -121,45 +119,24 @@ const FixtureCard: FC<props> = ({ fixture }) => {
         } grid grid-cols-3  p-2 rounded-lg`}
       >
         <div className="col-span-1 wrap-break-word text-center flex items-center justify-start">
-          <button
-            className={`text-md cursor-pointer  p-1 transition-colors duration-100 hover:bg-fav/10 rounded-md text-lg focus:outline outline-fav h-fit mr-2`}
-            style={{
-              color: isTeamFavorite(
-                fixture?.participants?.filter(
-                  (participant) => participant.meta.location === "home"
-                )[0].id ?? 0
-              )
-                ? "#009b72"
-                : "gray",
-            }}
-            aria-label="Add to favorites"
-            onClick={() => {
-              toggleFavoriteTeams({
-                id:
-                  fixture?.participants?.filter(
-                    (participant) => participant.meta.location === "home"
-                  )[0].id ?? 0,
-                name:
-                  fixture?.participants?.filter(
-                    (participant) => participant.meta.location === "home"
-                  )[0].name ?? "",
-                logo:
-                  fixture?.participants?.filter(
-                    (participant) => participant.meta.location === "home"
-                  )[0].image_path ?? imagePlaceholders.team,
-              });
-            }}
-          >
-            {isTeamFavorite(
+          <FavStar
+            teamId={
               fixture?.participants?.filter(
                 (participant) => participant.meta.location === "home"
-              )[0].id ?? 0
-            ) ? (
-              <FaStar className="text-fav" />
-            ) : (
-              <FaRegStar className="text-gray-400" />
-            )}
-          </button>
+              )[0].id || 0
+            }
+            teamName={
+              fixture?.participants?.filter(
+                (participant) => participant.meta.location === "home"
+              )[0].name || ""
+            }
+            image_path={
+              fixture?.participants?.filter(
+                (participant) => participant.meta.location === "home"
+              )[0].image_path || imagePlaceholders.team
+            }
+            type="team"
+          />
           <Link
             to={`/team/${fixture?.participants
               ?.filter((participant) => participant.meta.location === "home")[0]
@@ -268,36 +245,24 @@ const FixtureCard: FC<props> = ({ fixture }) => {
               }
             </span>
           </Link>
-          <button
-            className={`text-md cursor-pointer p-1 transition-colors duration-100 hover:bg-fav/10 rounded-md focus:outline outline-fav h-fit text-lg ml-2`}
-            aria-label="Add to favorites"
-            onClick={() => {
-              toggleFavoriteTeams({
-                id:
-                  fixture?.participants?.filter(
-                    (participant) => participant.meta.location === "away"
-                  )[0].id ?? 0,
-                name:
-                  fixture?.participants?.filter(
-                    (participant) => participant.meta.location === "away"
-                  )[0].name ?? "",
-                logo:
-                  fixture?.participants?.filter(
-                    (participant) => participant.meta.location === "away"
-                  )[0].image_path ?? imagePlaceholders.team,
-              });
-            }}
-          >
-            {isTeamFavorite(
+          <FavStar
+            teamId={
               fixture?.participants?.filter(
                 (participant) => participant.meta.location === "away"
-              )[0].id ?? 0
-            ) ? (
-              <FaStar className="text-fav" />
-            ) : (
-              <FaRegStar className="text-gray-400" />
-            )}
-          </button>
+              )[0].id || 0
+            }
+            teamName={
+              fixture?.participants?.filter(
+                (participant) => participant.meta.location === "away"
+              )[0].name || ""
+            }
+            image_path={
+              fixture?.participants?.filter(
+                (participant) => participant.meta.location === "away"
+              )[0].image_path || imagePlaceholders.team
+            }
+            type="team"
+          />
         </div>
       </div>
     </section>
