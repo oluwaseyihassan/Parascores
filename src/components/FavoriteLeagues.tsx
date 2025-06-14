@@ -8,7 +8,6 @@ import FavStar from "./FavStar";
 const FavoriteLeagues = () => {
   const { theme } = useTheme();
   const { favoriteLeagues } = useFavorites();
-  console.log(favoriteLeagues);
   const [showAllLeagues, setShowAllLeagues] = useState(false);
 
   return (

@@ -3,6 +3,7 @@ import { CiSun } from "react-icons/ci";
 import { IoMoonOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useSearchToggle } from "../context/SearchToggleContext";
+// import Search from "./Search";
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
@@ -16,8 +17,19 @@ const Header = () => {
           ParaScores
         </Link>
       </h1>
-      <input type="search" name="" id="" className="col-span-5 w-[70%] justify-self-center lg:block hidden"/>
-      <button onClick={toggleTheme} className="text-2xl cursor-pointer lg:col-span-3 justify-self-end">
+      <input
+        type="search"
+        name=""
+        id=""
+        className="col-span-5 w-[70%] justify-self-center lg:block hidden"
+      />
+      {/* <div className="absolute top-2 left-1/2 -translate-x-1/2">
+        <Search />
+      </div> */}
+      <button
+        onClick={toggleTheme}
+        className="text-2xl cursor-pointer lg:col-span-3 justify-self-end"
+      >
         {theme === "dark" ? (
           <CiSun title="light" />
         ) : (

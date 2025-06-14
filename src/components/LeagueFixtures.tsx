@@ -318,14 +318,18 @@ const LeagueFixtures: FC<props> = ({
                     className="bg-transparent h-full w-full absolute "
                   ></Link>
                 )}
-                <FavStar
-                  leagueId={today.league?.id ?? 0}
-                  homeTeamId={homeTeam?.id ?? 0}
-                  awayTeamId={awayTeam?.id ?? 0}
-                  matchId={today.id}
-                  type="match"
-                  leagueName={today.league?.name || ""}
-                />
+                <div
+                  className="mr-1 text-sm z-10"
+                >
+                  <FavStar
+                    leagueId={today.league?.id ?? 0}
+                    homeTeamId={homeTeam?.id ?? 0}
+                    awayTeamId={awayTeam?.id ?? 0}
+                    matchId={today.id}
+                    type="match"
+                    leagueName={today.league?.name || ""}
+                  />
+                </div>
               </div>
 
               {windowWidth <= 1024 &&

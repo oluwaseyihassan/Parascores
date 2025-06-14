@@ -51,8 +51,7 @@ const TopLeagues: FC<topLeaguesProps> = ({ leagues, loading, error }) => {
       >
         {!loading &&
           topLeagues?.map((league) => (
-            <Link
-              to={`/league/${league.name.replace(/ +/g, "-")}/${league.id}`}
+            <div
               key={league.id}
               className={`flex items-center gap-4 py-1.5 px-2 ${
                 theme === "dark"
@@ -60,7 +59,10 @@ const TopLeagues: FC<topLeaguesProps> = ({ leagues, loading, error }) => {
                   : "hover:bg-gray-400/10"
               }`}
             >
-              <div className="flex items-center gap-2 w-full">
+              <Link
+                className="flex items-center gap-2 w-full"
+                to={`/league/${league.name?.replace(/ +/g, "-")}/${league.id}`}
+              >
                 <div className="w-5 h-5 flex justify-center items-center">
                   <img
                     src={`${league.image_path || imagePlaceholders.team}`}
@@ -71,14 +73,16 @@ const TopLeagues: FC<topLeaguesProps> = ({ leagues, loading, error }) => {
                 <div className=" max-w-[80%] wrap-break-word">
                   {league.name}
                 </div>
+              </Link>
+              <div className="z-10" onClick={(e) => e.stopPropagation()}>
+                <FavStar
+                  leagueId={league.id}
+                  leagueName={league.name}
+                  image_path={league.image_path || imagePlaceholders.league}
+                  type="league"
+                />
               </div>
-              <FavStar
-                leagueId={league.id}
-                leagueName={league.name}
-                image_path={league.image_path || imagePlaceholders.league}
-                type="league"
-              />
-            </Link>
+            </div>
           ))}
       </div>
     </div>

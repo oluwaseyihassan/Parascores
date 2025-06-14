@@ -91,8 +91,6 @@ const Search = () => {
     refetchOnWindowFocus: false,
   });
 
-  console.log(leagues);
-
   const searchTypes = ["teams", "leagues", "players"];
 
   return (

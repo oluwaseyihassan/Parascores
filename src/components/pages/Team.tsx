@@ -17,7 +17,6 @@ type TeamApiResponse = {
 const Team = () => {
   const { id: teamId } = useParams();
   const [activeTab, setActiveTab] = useState(1);
-  console.log(teamId);
   const { data: team, isLoading: teamIsLoading } = useQuery<TeamApiResponse>({
     queryKey: ["team", teamId],
     queryFn: () => {
@@ -30,7 +29,6 @@ const Team = () => {
     enabled: !!teamId,
     refetchOnWindowFocus: false,
   });
-  console.log(team);
   if (teamIsLoading) {
     return (
       <div className="flex justify-center items-center h-[calc(100vh-80px)]">

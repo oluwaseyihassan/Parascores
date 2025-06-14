@@ -90,7 +90,6 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
       queryFn: () => {
         const startDate = format(subMonths(new Date(), 6), "yyyy-MM-dd");
         const endDate = format(addMonths(new Date(), 6), "yyyy-MM-dd");
-        console.log(startDate, endDate);
         return getTeamFixturesByDateRange(
           team.id,
           startDate,
@@ -115,7 +114,6 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
     return fixtures;
   }, [favoriteTeamQueries]);
 
-  console.log(favoriteTeamFixtures);
 
   useEffect(() => {
     if ((leagues?.pages?.[0]?.data.data.length ?? 0) > 0 && !fixtureId) {

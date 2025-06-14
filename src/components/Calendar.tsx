@@ -132,15 +132,9 @@ const Calendar: FC<CalendarProps> = ({
             onClick={() => {
               setSelectedDate(cloneDay);
               setCurrentMonth(cloneDay);
-              console.log("Selected date:", format(cloneDay, "yyyy-MM-dd"));
               const isToday = isSameDay(
                 format(cloneDay, "yyyy-MM-dd"),
                 format(new Date(), "yyyy-MM-dd")
-              );
-              console.log(
-                format(cloneDay, "yyyy-MM-dd"),
-                format(new Date(), "yyyy-MM-dd"),
-                isToday
               );
               setFilterFixtures("all");
 
