@@ -163,8 +163,7 @@ const Search = () => {
               </div>
             ) : (
               teams.data?.data?.map((team) => (
-                <Link
-                  to={`/team/${team.name}/${team.id}`}
+                <div
                   key={team.id}
                   className="mb-4 flex items-center justify-between"
                   onClick={(e) => {
@@ -172,7 +171,10 @@ const Search = () => {
                     e.stopPropagation();
                   }}
                 >
-                  <div className="flex items-center gap-4">
+                  <Link
+                    to={`/team/${team.name?.replace(/ +/g, "-")}/${team.id}`}
+                    className="flex items-center gap-4 w-full"
+                  >
                     <div className="flex items-center gap-2 w-12">
                       <img
                         src={`${team.image_path || imagePlaceholders.team}`}
@@ -196,14 +198,14 @@ const Search = () => {
                         </span>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                   <FavStar
                     teamId={team.id ?? 0}
                     teamName={team.name || ""}
                     image_path={team.image_path || imagePlaceholders.team}
                     type="team"
                   />
-                </Link>
+                </div>
               ))
             )}
           </div>
@@ -216,10 +218,7 @@ const Search = () => {
               </div>
             ) : (
               leagues.data?.data?.map((league) => (
-                <Link
-                  to={`/league/${league.name?.replace(/ +/g, "-")}/${
-                    league.id
-                  }`}
+                <div
                   key={league.id}
                   className="mb-4 flex items-center justify-between"
                   onClick={(e) => {
@@ -227,7 +226,12 @@ const Search = () => {
                     e.stopPropagation();
                   }}
                 >
-                  <div className="flex items-center gap-4">
+                  <Link
+                    to={`/league/${league.name?.replace(/ +/g, "-")}/${
+                      league.id
+                    }`}
+                    className="flex items-center gap-4 w-full"
+                  >
                     <div className="flex items-center gap-2 w-12">
                       <img
                         src={`${league.image_path || imagePlaceholders.league}`}
@@ -235,14 +239,14 @@ const Search = () => {
                       />
                     </div>
                     <p>{league.name}</p>
-                  </div>
+                  </Link>
                   <FavStar
                     leagueId={league.id ?? 0}
                     leagueName={league.name || ""}
                     image_path={league.image_path || imagePlaceholders.league}
                     type="league"
                   />
-                </Link>
+                </div>
               ))
             )}
           </div>
