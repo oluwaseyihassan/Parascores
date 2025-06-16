@@ -4,12 +4,13 @@ import { imagePlaceholders } from "../utils/imagePlaceholders";
 import { useTheme } from "../context/ThemeContext";
 import { useState } from "react";
 import FavStar from "./FavStar";
+import { useSearchToggle } from "../context/SearchToggleContext";
 
 const FavoriteLeagues = () => {
   const { theme } = useTheme();
   const { favoriteLeagues } = useFavorites();
   const [showAllLeagues, setShowAllLeagues] = useState(false);
-
+  const { openSearch } = useSearchToggle();
   return (
     <div>
       <h2 className="text-xl text-center text-accent font-semibold mb-4">
@@ -57,8 +58,9 @@ const FavoriteLeagues = () => {
               </div>
             ))
         ) : (
-          <div className="flex items-center justify-center w-full h-full py-1">
-            <p className="text-gray-500">No favorite leagues found.</p>
+          <div className="flex items-center justify-center flex-col w-full text-center h-fit py-1 text-gray-500">
+            <p >No favorite leagues found.</p>
+            <p onClick={openSearch} className="">Click to Add to favorite</p>
           </div>
         )}
         {favoriteLeagues.length > 5 && (
