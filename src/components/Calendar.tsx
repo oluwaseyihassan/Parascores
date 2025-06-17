@@ -17,6 +17,7 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { useTheme } from "../context/ThemeContext";
 import { Today } from "../types/types";
+import ClickAway from "./ClickAway";
 
 type CalendarProps = {
   selectedDate: Date;
@@ -169,83 +170,89 @@ const Calendar: FC<CalendarProps> = ({
   };
 
   return (
-    <div className="rounded-md px-1">
-      <div
-        className={`${theme === "dark" ? "bg-dark/40" : "bg-light"} flex items-center justify-between cursor-pointer p-1 gap-2 rounded-lg`}
-      >
-        <button
-          onClick={() => {
-            setSelectedDate(subDays(selectedDate, 1));
-            const newParams = new URLSearchParams(searchParams);
-            newParams.set(
-              "date",
-              format(subDays(selectedDate, 1), "yyyy-MM-dd")
-            );
-            setSearchParams(newParams);
-            setFilterFixtures("all");
-            setIsOpen(false);
-          }}
-          className="text-accent cursor-pointer rounded-md text-lg p-[2px] hover:bg-accent/10"
-        >
-          <IoIosArrowBack />
-        </button>
-        <button
-          className="flex gap-2 items-center"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <FaRegCalendarDays className="text-lg sm:text-xl text-accent mx-auto" />
-          <h1 className=" text-center cursor-pointer text-base sm:text-lg flex gap-1">
-            <span>{format(selectedDate, "dd/MM")}</span>
-            <span className="hidden sm:block">
-              {format(selectedDate, "EEE")}
-            </span>
-          </h1>
-        </button>
-        <button
-          onClick={() => {
-            setSelectedDate(addDays(selectedDate, 1));
-            const newParams = new URLSearchParams(searchParams);
-            newParams.set(
-              "date",
-              format(addDays(selectedDate, 1), "yyyy-MM-dd")
-            );
-            setSearchParams(newParams);
-            setFilterFixtures("all");
-            setIsOpen(false);
-          }}
-          className="text-accent cursor-pointer rounded-md text-lg p-[2px] hover:bg-accent/10"
-        >
-          <IoIosArrowForward />
-        </button>
-      </div>
-      {isOpen && (
+    <ClickAway onClickAway={() => setIsOpen(false)}>
+      <div className="rounded-md px-1">
         <div
           className={`${
-            theme === "dark" ? "bg-dark" : "bg-light"
-          } absolute right-0 p-2 rounded-lg z-50 top-0 shadow-2xl`}
+            theme === "dark" ? "bg-dark/40" : "bg-light"
+          } flex items-center justify-between cursor-pointer p-1 gap-2 rounded-lg`}
         >
           <button
-            onClick={() => setIsOpen(false)}
-            className=" flex justify-self-end text-gray-500 cursor-pointer text-2xl hover:bg-gray-400/10 rounded-md focus:outline outline-accent"
+            onClick={() => {
+              setSelectedDate(subDays(selectedDate, 1));
+              const newParams = new URLSearchParams(searchParams);
+              newParams.set(
+                "date",
+                format(subDays(selectedDate, 1), "yyyy-MM-dd")
+              );
+              setSearchParams(newParams);
+              setFilterFixtures("all");
+              setIsOpen(false);
+            }}
+            className="text-accent cursor-pointer rounded-md text-lg p-[2px] hover:bg-accent/10"
           >
-            <RxCross2 />
+            <IoIosArrowBack />
           </button>
-          {renderHeader()}
-          {renderDays()}
-          {renderCells()}
-          <div className="flex items-center gap-2 mt-4">
-            <div className="h-1 w-3 bg-fav rounded-sm"/>
-            <span className="text-[8px]">Event days for your favorite teams.</span>
-          </div>
           <button
-            onClick={goToToday}
-            className="mt-4 text-white hover:underline hover:bg-accent/90 flex px-2 py-1 rounded-md justify-self-center cursor-pointer w-fit bg-accent"
+            className="flex gap-2 items-center"
+            onClick={() => setIsOpen(!isOpen)}
           >
-            Today
+            <FaRegCalendarDays className="text-lg sm:text-xl text-accent mx-auto" />
+            <h1 className=" text-center cursor-pointer text-base sm:text-lg flex gap-1">
+              <span>{format(selectedDate, "dd/MM")}</span>
+              <span className="hidden sm:block">
+                {format(selectedDate, "EEE")}
+              </span>
+            </h1>
+          </button>
+          <button
+            onClick={() => {
+              setSelectedDate(addDays(selectedDate, 1));
+              const newParams = new URLSearchParams(searchParams);
+              newParams.set(
+                "date",
+                format(addDays(selectedDate, 1), "yyyy-MM-dd")
+              );
+              setSearchParams(newParams);
+              setFilterFixtures("all");
+              setIsOpen(false);
+            }}
+            className="text-accent cursor-pointer rounded-md text-lg p-[2px] hover:bg-accent/10"
+          >
+            <IoIosArrowForward />
           </button>
         </div>
-      )}
-    </div>
+        {isOpen && (
+          <div
+            className={`${
+              theme === "dark" ? "bg-dark" : "bg-light"
+            } absolute right-0 p-2 rounded-lg z-50 top-0 shadow-2xl`}
+          >
+            <button
+              onClick={() => setIsOpen(false)}
+              className=" flex justify-self-end text-gray-500 cursor-pointer text-2xl hover:bg-gray-400/10 rounded-md focus:outline outline-accent"
+            >
+              <RxCross2 />
+            </button>
+            {renderHeader()}
+            {renderDays()}
+            {renderCells()}
+            <div className="flex items-center gap-2 mt-4">
+              <div className="h-1 w-3 bg-fav rounded-sm" />
+              <span className="text-[8px]">
+                Event days for your favorite teams.
+              </span>
+            </div>
+            <button
+              onClick={goToToday}
+              className="mt-4 text-white hover:underline hover:bg-accent/90 flex px-2 py-1 rounded-md justify-self-center cursor-pointer w-fit bg-accent"
+            >
+              Today
+            </button>
+          </div>
+        )}
+      </div>
+    </ClickAway>
   );
 };
 
