@@ -221,8 +221,8 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
             {
               <span
                 className={`ml-1 ${
-                  filterFixtures === "live" ? "bg-white" : ""
-                } text-live rounded-full min-h-6 min-w-6 text-[0.8rem] flex justify-center items-center font-bold p-[2px]`}
+                  filterFixtures === "live" ? "text-white" : ""
+                } text-live rounded-full min-h-6 min-w-6 text-[0.8rem] flex justify-center items-center font-bold`}
               >
                 {liveMatchesCount}
               </span>
