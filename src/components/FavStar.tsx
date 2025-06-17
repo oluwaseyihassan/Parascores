@@ -13,6 +13,8 @@ interface StarProps {
   teamId?: number;
   matchId?: number;
   type: string;
+  homeTeamName?: string;
+  awayTeamName?: string
 }
 
 const FavStar: FC<StarProps> = ({
@@ -25,6 +27,8 @@ const FavStar: FC<StarProps> = ({
   teamId,
   leagueName,
   teamName,
+  homeTeamName,
+  awayTeamName
 }) => {
   const {
     toggleFavorite,
@@ -33,6 +37,7 @@ const FavStar: FC<StarProps> = ({
     isMatchFavorite,
     toggleFavoriteMatches,
     toggleFavoriteTeams,
+
   } = useFavorites();
 
   const condition = (): boolean => {
@@ -80,9 +85,9 @@ const FavStar: FC<StarProps> = ({
       if (isLeagueFavorite(leagueId ?? 0)) {
         return alert(`Match is favorite because of ${leagueName}`);
       } else if (isTeamFavorite(homeTeamId ?? 0)) {
-        return alert(`Match is favorite because of ${teamName}`);
+        return alert(`Match is favorite because of ${homeTeamName}`);
       } else if (isTeamFavorite(awayTeamId ?? 0)) {
-        return alert(`Match is favorite because of ${teamName}`);
+        return alert(`Match is favorite because of ${awayTeamName}`);
       } else {
         toggleFavoriteMatches(matchItem);
       }
