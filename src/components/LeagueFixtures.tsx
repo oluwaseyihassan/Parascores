@@ -353,7 +353,7 @@ const LeagueFixtures: FC<props> = ({
                       className="bg-transparent h-full w-full absolute "
                     ></Link>
                   )}
-                  <div className="mr-1 text-sm z-10">
+                  <div className="mr-1 text-lg z-10">
                     <FavStar
                       leagueId={today.league?.id ?? 0}
                       homeTeamId={homeTeam?.id ?? 0}

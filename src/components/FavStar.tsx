@@ -146,7 +146,7 @@ const FavStar: FC<StarProps> = ({
 
   return (
     <button
-      className={`text-md cursor-pointer p-1 duration-100 hover:bg-fav/10 rounded-md focus:outline outline-fav`}
+      className={`text-lg cursor-pointer p-1 duration-100 hover:bg-fav/10 rounded-md focus:outline outline-fav`}
       aria-label={`${condition() ? "Remove from" : "Add to"} favorites`}
       title={`${condition() ? "Remove from" : "Add to"} favorites`}
       onClick={handleClick}
