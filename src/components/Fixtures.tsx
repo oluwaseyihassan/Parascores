@@ -316,7 +316,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                 .map((league, index, filteredArray) => (
                   <div
                     key={league.id}
-                    className={`rounded-lg overflow-hidden ${
+                    className={`rounded-lg ${
                       theme === "dark" ? "divide-dark-bg" : "divide-light-bg"
                     } divide-y-[1px]`}
                     ref={
@@ -409,7 +409,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                 .map((league, index, filteredArray) => (
                   <div
                     key={league.id}
-                    className={`rounded-lg overflow-hidden ${
+                    className={`rounded-lg ${
                       theme === "dark" ? "divide-dark-bg" : "divide-light-bg"
                     } divide-y-[1px]`}
                     ref={

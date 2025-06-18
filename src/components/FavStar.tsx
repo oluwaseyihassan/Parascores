@@ -1,6 +1,6 @@
 import { FaRegStar, FaStar } from "react-icons/fa";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { useFavorites } from "../context/FavoritesContext";
 
 interface StarProps {
@@ -14,7 +14,19 @@ interface StarProps {
   matchId?: number;
   type: string;
   homeTeamName?: string;
-  awayTeamName?: string
+  awayTeamName?: string;
+  setShowMessage?: Dispatch<SetStateAction<number | null>>;
+  setMatchFavMessage?: Dispatch<
+    SetStateAction<
+      {
+        message: string | null;
+        logo: string | null;
+      }[]
+    >
+  >;
+  homeLogo?: string;
+  awayLogo?: string;
+  leagueLogo?: string;
 }
 
 const FavStar: FC<StarProps> = ({
@@ -28,7 +40,12 @@ const FavStar: FC<StarProps> = ({
   leagueName,
   teamName,
   homeTeamName,
-  awayTeamName
+  awayTeamName,
+  setShowMessage,
+  setMatchFavMessage,
+  homeLogo,
+  awayLogo,
+  leagueLogo,
 }) => {
   const {
     toggleFavorite,
@@ -37,7 +54,6 @@ const FavStar: FC<StarProps> = ({
     isMatchFavorite,
     toggleFavoriteMatches,
     toggleFavoriteTeams,
-
   } = useFavorites();
 
   const condition = (): boolean => {
@@ -67,6 +83,7 @@ const FavStar: FC<StarProps> = ({
       };
       toggleFavorite(leagueItem);
     }
+
     if (type.toLowerCase() === "team") {
       const teamItem = {
         id: teamId ?? 0,
@@ -75,6 +92,7 @@ const FavStar: FC<StarProps> = ({
       };
       toggleFavoriteTeams(teamItem);
     }
+
     if (type.toLowerCase() === "match") {
       const matchItem = {
         id: matchId ?? 0,
@@ -82,12 +100,39 @@ const FavStar: FC<StarProps> = ({
         homeTeamId: homeTeamId ?? 0,
         awayTeamId: awayTeamId ?? 0,
       };
-      if (isLeagueFavorite(leagueId ?? 0)) {
-        return alert(`Match is favorite because of ${leagueName}`);
-      } else if (isTeamFavorite(homeTeamId ?? 0)) {
-        return alert(`Match is favorite because of ${homeTeamName}`);
-      } else if (isTeamFavorite(awayTeamId ?? 0)) {
-        return alert(`Match is favorite because of ${awayTeamName}`);
+
+      if (
+        isLeagueFavorite(leagueId ?? 0) ||
+        isTeamFavorite(homeTeamId ?? 0) ||
+        isTeamFavorite(awayTeamId ?? 0)
+      ) {
+        if (setShowMessage && setMatchFavMessage) {
+          setShowMessage(matchId ?? 0);
+          const messages = [];
+
+          if (isLeagueFavorite(leagueId ?? 0)) {
+            messages.push({
+              message: leagueName || "N/A",
+              logo: leagueLogo || imagePlaceholders.league,
+            });
+          }
+
+          if (isTeamFavorite(homeTeamId ?? 0)) {
+            messages.push({
+              message: homeTeamName || "N/A",
+              logo: homeLogo || imagePlaceholders.team,
+            });
+          }
+
+          if (isTeamFavorite(awayTeamId ?? 0)) {
+            messages.push({
+              message: awayTeamName || "N/A",
+              logo: awayLogo || imagePlaceholders.team,
+            });
+          }
+
+          setMatchFavMessage(messages);
+        }
       } else {
         toggleFavoriteMatches(matchItem);
       }
@@ -101,7 +146,7 @@ const FavStar: FC<StarProps> = ({
 
   return (
     <button
-      className={`text-md cursor-pointer p-1 duration-100 hover:bg-fav/10 rounded-md focus:outline outline-fav `}
+      className={`text-md cursor-pointer p-1 duration-100 hover:bg-fav/10 rounded-md focus:outline outline-fav`}
       aria-label={`${condition() ? "Remove from" : "Add to"} favorites`}
       title={`${condition() ? "Remove from" : "Add to"} favorites`}
       onClick={handleClick}
