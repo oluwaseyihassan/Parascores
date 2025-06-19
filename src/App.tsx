@@ -11,11 +11,13 @@ import BottomNavBar from "./components/BottomNavBar";
 import Favorites from "./components/pages/Favorites";
 import Search from "./components/Search";
 import { useSearchToggle } from "./context/SearchToggleContext";
+import { useWindowWidth } from "./hooks/useWindowWidth";
 
 inject();
 function App() {
   const { theme } = useTheme();
   const { isSearchOpen } = useSearchToggle();
+  const windowWidth = useWindowWidth()
 
   useEffect(() => {
     document.documentElement.style.backgroundColor =
@@ -23,7 +25,7 @@ function App() {
     document.body.style.backgroundColor =
       theme === "dark" ? "#020300 " : "#ebecef ";
 
-    if (isSearchOpen) {
+    if (isSearchOpen && windowWidth < 1024) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
