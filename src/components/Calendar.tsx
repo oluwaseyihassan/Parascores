@@ -240,7 +240,7 @@ const Calendar: FC<CalendarProps> = ({
             <div className="flex items-center gap-2 mt-4">
               <div className="h-1 w-3 bg-fav rounded-sm" />
               <span className="text-[8px]">
-                Event days for your favorite teams.
+                Match days for your favorite teams.
               </span>
             </div>
             <button
