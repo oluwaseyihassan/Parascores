@@ -150,186 +150,184 @@ const LeagueFixtures: FC<props> = ({
   };
 
   return (
-    <ClickAway
-      onClickAway={() => {
-        setShowMessage(null);
-      }}
+    <div
+      className={`${
+        theme === "dark"
+          ? "bg-dark/70 divide-dark-bg"
+          : "bg-light divide-light-bg"
+      } rounded-b-lg divide-y-[1px] `}
     >
-      <div
-        className={`${
-          theme === "dark"
-            ? "bg-dark/70 divide-dark-bg"
-            : "bg-light divide-light-bg"
-        } rounded-b-lg divide-y-[1px] `}
-      >
-        {filterFixtures === "live" && league.inplay?.length === 0 && (
-          <div className="flex items-center justify-center py-2 text-sm font-semibold">
-            No Live games available
-          </div>
-        )}
+      {filterFixtures === "live" && league.inplay?.length === 0 && (
+        <div className="flex items-center justify-center py-2 text-sm font-semibold">
+          No Live games available
+        </div>
+      )}
 
-        {filterLogic()
-          ?.sort((a, b) => a.id - b.id)
-          .map((today) => {
-            const homeTeam = today.participants?.find(
-              (p) => p.meta.location === "home"
-            );
-            const awayTeam = today.participants?.find(
-              (p) => p.meta.location === "away"
-            );
+      {filterLogic()
+        ?.sort((a, b) => a.id - b.id)
+        .map((today) => {
+          const homeTeam = today.participants?.find(
+            (p) => p.meta.location === "home"
+          );
+          const awayTeam = today.participants?.find(
+            (p) => p.meta.location === "away"
+          );
 
-            const homeScore = today.scores?.find(
-              (score) =>
-                score.description === "CURRENT" &&
-                score.score.participant === "home"
-            )?.score.goals;
+          const homeScore = today.scores?.find(
+            (score) =>
+              score.description === "CURRENT" &&
+              score.score.participant === "home"
+          )?.score.goals;
 
-            const awayScore = today.scores?.find(
-              (score) =>
-                score.description === "CURRENT" &&
-                score.score.participant === "away"
-            )?.score.goals;
+          const awayScore = today.scores?.find(
+            (score) =>
+              score.description === "CURRENT" &&
+              score.score.participant === "away"
+          )?.score.goals;
 
-            const isLive =
-              today.state?.developer_name?.split("_")[0] === "INPLAY" ||
-              today.state?.developer_name === "HT";
+          const isLive =
+            today.state?.developer_name?.split("_")[0] === "INPLAY" ||
+            today.state?.developer_name === "HT";
 
-            const startTime = today.starting_at?.split(" ")[1].slice(0, 5);
+          const startTime = today.starting_at?.split(" ")[1].slice(0, 5);
 
-            return (
-              <div key={today.id}>
-                <div
-                  className={`${
-                    theme === "dark"
-                      ? "hover:bg-gray-600/10"
-                      : "hover:bg-gray-400/10"
-                  } flex items-center gap-1 py-2 px-2 justify-between w-full cursor-pointer text-xs relative last:rounded-b-lg`}
-                  onClick={() => {
-                    if (windowWidth <= 640) {
-                      return;
-                    }
+          return (
+            <div key={today.id}>
+              <div
+                className={`${
+                  theme === "dark"
+                    ? "hover:bg-gray-600/10"
+                    : "hover:bg-gray-400/10"
+                } flex items-center gap-1 py-2 px-2 justify-between w-full cursor-pointer text-xs relative last:rounded-b-lg`}
+                onClick={() => {
+                  if (windowWidth <= 640) {
+                    return;
+                  }
+                  setActiveFixtureId(
+                    activeFixtureId === today.id ? null : today.id
+                  );
+                  setFixtureId(today.id);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
                     setActiveFixtureId(
                       activeFixtureId === today.id ? null : today.id
                     );
                     setFixtureId(today.id);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setActiveFixtureId(
-                        activeFixtureId === today.id ? null : today.id
-                      );
-                      setFixtureId(today.id);
-                    }
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  // disabled={windowWidth <= 640}
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                // disabled={windowWidth <= 640}
+              >
+                <div
+                  className={`${
+                    theme === "dark" ? "text-light-bg" : "text-dark-bg"
+                  } text-[8px] w-10 flex flex-col items-center justify-center`}
                 >
                   <div
-                    className={`${
-                      theme === "dark" ? "text-light-bg" : "text-dark-bg"
-                    } text-[8px] w-10 flex flex-col items-center justify-center`}
+                    className={isLive ? "text-live font-bold text-[10px]" : ""}
+                    title={today.state?.name || ""}
                   >
-                    <div
-                      className={
-                        isLive ? "text-live font-bold text-[10px]" : ""
-                      }
-                      title={today.state?.name || ""}
-                    >
-                      {currentState(today)}
-                    </div>
-
-                    {windowWidth < 640 &&
-                      today.state?.developer_name !== "FT" &&
-                      today.state?.developer_name !== "HT" && (
-                        <span className="text-[8px]">
-                          {today.state?.developer_name === "NS" && startTime}
-                        </span>
-                      )}
+                    {currentState(today)}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-0 sm:gap-2 sm:items-center w-full justify-center">
-                    {/* Home team */}
-                    <div className="sm:text-right text-left flex gap-1 items-center sm:w-1/2 w-full flex-row-reverse sm:flex-row justify-between sm:justify-end text-[10px] sm:text-[12px]">
-                      <span
-                        className={`${
-                          homeTeam?.meta.winner === false ? "text-gray-400" : ""
-                        } block sm:hidden ${isLive ? "text-live" : ""}`}
-                      >
-                        {today.state?.developer_name !== "NS" && homeScore}
-                      </span>
-
-                      <div
-                        className={`${
-                          homeTeam?.meta.winner === false ? "text-gray-400" : ""
-                        } flex gap-1 items-center flex-row-reverse sm:flex-row`}
-                      >
-                        <div>{homeTeam?.name || ""}</div>
-
-                        <div className="h-5 w-5 flex justify-center items-center">
-                          <img
-                            src={homeTeam?.image_path || ""}
-                            alt=""
-                            className="w-4"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Score */}
-                    {windowWidth >= 640 && (
-                      <span
-                        className={`${
-                          isLive
-                            ? "bg-live text-light-bg"
-                            : theme === "dark"
-                            ? "bg-dark-bg"
-                            : "bg-light-bg"
-                        } w-14 rounded-full text-[10px] py-[2px] text-center`}
-                      >
-                        {today.state?.developer_name === "NS" ? (
-                          startTime
-                        ) : (
-                          <div className="flex justify-center items-center gap-1 font-serif">
-                            <span>{homeScore}</span>-<span>{awayScore}</span>
-                          </div>
-                        )}
+                  {windowWidth < 640 &&
+                    today.state?.developer_name !== "FT" &&
+                    today.state?.developer_name !== "HT" && (
+                      <span className="text-[8px]">
+                        {today.state?.developer_name === "NS" && startTime}
                       </span>
                     )}
+                </div>
 
-                    {/* Away team */}
-                    <div className="text-left flex gap-1 items-center w-full sm:w-1/2 justify-between text-[10px] sm:text-[12px] ">
-                      <div
-                        className={`${
-                          awayTeam?.meta.winner === false ? "text-gray-400" : ""
-                        } flex gap-1 items-center`}
-                      >
-                        <div className="h-5 w-5 flex justify-center items-center">
-                          <img
-                            src={awayTeam?.image_path || ""}
-                            alt=""
-                            className="w-4"
-                          />
-                        </div>
+                <div className="flex flex-col sm:flex-row gap-0 sm:gap-2 sm:items-center w-full justify-center">
+                  {/* Home team */}
+                  <div className="sm:text-right text-left flex gap-1 items-center sm:w-1/2 w-full flex-row-reverse sm:flex-row justify-between sm:justify-end text-[10px] sm:text-[12px]">
+                    <span
+                      className={`${
+                        homeTeam?.meta.winner === false ? "text-gray-400" : ""
+                      } block sm:hidden ${isLive ? "text-live" : ""}`}
+                    >
+                      {today.state?.developer_name !== "NS" && homeScore}
+                    </span>
 
-                        <div>{awayTeam?.name || ""}</div>
+                    <div
+                      className={`${
+                        homeTeam?.meta.winner === false ? "text-gray-400" : ""
+                      } flex gap-1 items-center flex-row-reverse sm:flex-row`}
+                    >
+                      <div>{homeTeam?.name || ""}</div>
+
+                      <div className="h-5 w-5 flex justify-center items-center">
+                        <img
+                          src={homeTeam?.image_path || ""}
+                          alt=""
+                          className="w-4"
+                        />
                       </div>
-
-                      <span
-                        className={`${
-                          awayTeam?.meta.winner === false ? "text-gray-400" : ""
-                        } block sm:hidden ${isLive ? "text-live" : ""}`}
-                      >
-                        {today.state?.developer_name !== "NS" && awayScore}
-                      </span>
                     </div>
                   </div>
 
+                  {/* Score */}
+                  {windowWidth >= 640 && (
+                    <span
+                      className={`${
+                        isLive
+                          ? "bg-live text-light-bg"
+                          : theme === "dark"
+                          ? "bg-dark-bg"
+                          : "bg-light-bg"
+                      } w-14 rounded-full text-[10px] py-[2px] text-center`}
+                    >
+                      {today.state?.developer_name === "NS" ? (
+                        startTime
+                      ) : (
+                        <div className="flex justify-center items-center gap-1 font-serif">
+                          <span>{homeScore}</span>-<span>{awayScore}</span>
+                        </div>
+                      )}
+                    </span>
+                  )}
+
+                  {/* Away team */}
+                  <div className="text-left flex gap-1 items-center w-full sm:w-1/2 justify-between text-[10px] sm:text-[12px] ">
+                    <div
+                      className={`${
+                        awayTeam?.meta.winner === false ? "text-gray-400" : ""
+                      } flex gap-1 items-center`}
+                    >
+                      <div className="h-5 w-5 flex justify-center items-center">
+                        <img
+                          src={awayTeam?.image_path || ""}
+                          alt=""
+                          className="w-4"
+                        />
+                      </div>
+
+                      <div>{awayTeam?.name || ""}</div>
+                    </div>
+
+                    <span
+                      className={`${
+                        awayTeam?.meta.winner === false ? "text-gray-400" : ""
+                      } block sm:hidden ${isLive ? "text-live" : ""}`}
+                    >
+                      {today.state?.developer_name !== "NS" && awayScore}
+                    </span>
+                  </div>
+                </div>
+
+                <ClickAway
+                  onClickAway={() => {
+                    setShowMessage(null);
+                  }}
+                >
                   {showMessage === today.id && (
                     <div
                       className={`${
                         theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-                      } absolute shadow-lg right-2 top-0 p-3 rounded-xl z-[1000]`}
+                      } absolute shadow-lg right-2 top-0 p-3 rounded-xl z-[1000] min-w-[150px]`}
                     >
                       <div className="mb-3 text-gray-400">
                         Because you follow
@@ -337,7 +335,7 @@ const LeagueFixtures: FC<props> = ({
                       {matchFavMessage.map((message, index) => (
                         <div
                           key={index}
-                          className="flex items-center space-x-2 p-1"
+                          className="flex items-center space-x-2 mb-1 p-1"
                         >
                           <div className="h-5 w-5 flex justify-center items-center">
                             <img
@@ -350,50 +348,50 @@ const LeagueFixtures: FC<props> = ({
                       ))}
                     </div>
                   )}
-                  {windowWidth <= 1024 && (
-                    <Link
-                      to={`/match/${today.id}`}
-                      className="bg-transparent h-full w-full absolute "
-                    ></Link>
-                  )}
-                  <div className="mr-1 text-lg z-10">
-                    <FavStar
-                      leagueId={today.league?.id ?? 0}
-                      homeTeamId={homeTeam?.id ?? 0}
-                      awayTeamId={awayTeam?.id ?? 0}
-                      homeTeamName={homeTeam?.name ?? ""}
-                      awayTeamName={awayTeam?.name ?? ""}
-                      matchId={today.id}
-                      type="match"
-                      leagueName={today.league?.name || ""}
-                      setShowMessage={setShowMessage}
-                      setMatchFavMessage={setMatchFavMessage}
-                      homeLogo={homeTeam?.image_path || ""}
-                      awayLogo={awayTeam?.image_path || ""}
-                      leagueLogo={today.league?.image_path || ""}
+                </ClickAway>
+                {windowWidth <= 1024 && (
+                  <Link
+                    to={`/match/${today.id}`}
+                    className="bg-transparent h-full w-full absolute "
+                  ></Link>
+                )}
+                <div className="mr-1 text-lg z-10">
+                  <FavStar
+                    leagueId={today.league?.id ?? 0}
+                    homeTeamId={homeTeam?.id ?? 0}
+                    awayTeamId={awayTeam?.id ?? 0}
+                    homeTeamName={homeTeam?.name ?? ""}
+                    awayTeamName={awayTeam?.name ?? ""}
+                    matchId={today.id}
+                    type="match"
+                    leagueName={today.league?.name || ""}
+                    setShowMessage={setShowMessage}
+                    setMatchFavMessage={setMatchFavMessage}
+                    homeLogo={homeTeam?.image_path || ""}
+                    awayLogo={awayTeam?.image_path || ""}
+                    leagueLogo={today.league?.image_path || ""}
+                  />
+                </div>
+              </div>
+
+              {windowWidth <= 1024 &&
+                activeLeague &&
+                activeFixtureId === today.id && (
+                  <div>
+                    <Events
+                      events={fixture?.data.data.events ?? null}
+                      homeId={homeTeam?.id ?? 0}
+                      awayId={awayTeam?.id ?? 0}
+                      homeStyle="justify-end flex-row-reverse"
+                      awayStyle="justify-end text-right"
+                      periods={fixture?.data.data.periods ?? null}
                     />
                   </div>
-                </div>
-
-                {windowWidth <= 1024 &&
-                  activeLeague &&
-                  activeFixtureId === today.id && (
-                    <div>
-                      <Events
-                        events={fixture?.data.data.events ?? null}
-                        homeId={homeTeam?.id ?? 0}
-                        awayId={awayTeam?.id ?? 0}
-                        homeStyle="justify-end flex-row-reverse"
-                        awayStyle="justify-end text-right"
-                        periods={fixture?.data.data.periods ?? null}
-                      />
-                    </div>
-                  )}
-              </div>
-            );
-          })}
-      </div>
-    </ClickAway>
+                )}
+            </div>
+          );
+        })}
+    </div>
   );
 };
 
