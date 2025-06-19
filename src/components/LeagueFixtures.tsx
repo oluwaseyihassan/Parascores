@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { Fixture, League, Today } from "../types/types";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import { useFavorites } from "../context/FavoritesContext";
 import FavStar from "./FavStar";
 import ClickAway from "./ClickAway";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
+import { useWindowWidth } from "../hooks/useWindowWidth";
 // import {useCountDown} from "../hooks/useCountDown";
 
 type props = {
@@ -38,18 +39,20 @@ const LeagueFixtures: FC<props> = ({
   isTeamFavorite,
 }) => {
   const [activeFixtureId, setActiveFixtureId] = useState<number | null>(null);
+  const windowWidth = useWindowWidth();
   const { isMatchFavorite } = useFavorites();
   const [showMessage, setShowMessage] = useState<number | null>(null);
-  const [matchFavMessage, setMatchFavMessage] = useState<{
-    message: string | null;
-    logo: string | null;
-  }[]>([
+  const [matchFavMessage, setMatchFavMessage] = useState<
+    {
+      message: string | null;
+      logo: string | null;
+    }[]
+  >([
     {
       message: null,
       logo: null,
     },
   ]);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { theme } = useTheme();
   const { data: fixture } = useQuery<ApiResponse>({
     queryKey: ["fixture", fixtureId],
@@ -61,15 +64,6 @@ const LeagueFixtures: FC<props> = ({
     },
     enabled: !!fixtureId,
   });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const matchState = (state: string | null) => {
     switch (state) {
@@ -332,19 +326,28 @@ const LeagueFixtures: FC<props> = ({
                   </div>
 
                   {showMessage === today.id && (
-                    <div className={`${theme === "dark" ? "bg-dark-bg" : "bg-light-bg"} absolute shadow-lg right-2 top-0 p-3 rounded-xl z-[1000]`}>
-                    <div className="mb-3 text-gray-400">Because you follow</div>
-                      {
-                        matchFavMessage.map((message,index) => (
-                          <div key={index} className="flex items-center space-x-2 p-1">
-                            <div className="h-5 w-5 flex justify-center items-center">
-                            <img src={message.logo || imagePlaceholders.team} alt="" />
-
-                            </div>
-                            <div>{message.message}</div>
+                    <div
+                      className={`${
+                        theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+                      } absolute shadow-lg right-2 top-0 p-3 rounded-xl z-[1000]`}
+                    >
+                      <div className="mb-3 text-gray-400">
+                        Because you follow
+                      </div>
+                      {matchFavMessage.map((message, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center space-x-2 p-1"
+                        >
+                          <div className="h-5 w-5 flex justify-center items-center">
+                            <img
+                              src={message.logo || imagePlaceholders.team}
+                              alt=""
+                            />
                           </div>
-                        ))
-                      }
+                          <div>{message.message}</div>
+                        </div>
+                      ))}
                     </div>
                   )}
                   {windowWidth <= 1024 && (
