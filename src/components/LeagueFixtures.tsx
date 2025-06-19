@@ -332,7 +332,7 @@ const LeagueFixtures: FC<props> = ({
                   </div>
 
                   {showMessage === today.id && (
-                    <div className={`${theme === "dark" ? "bg-dark-bg" : "bg-light-bg"} absolute shadow-lg right-2 top-0 p-3 rounded-xl z-30`}>
+                    <div className={`${theme === "dark" ? "bg-dark-bg" : "bg-light-bg"} absolute shadow-lg right-2 top-0 p-3 rounded-xl z-[1000]`}>
                     <div className="mb-3 text-gray-400">Because you follow</div>
                       {
                         matchFavMessage.map((message,index) => (
