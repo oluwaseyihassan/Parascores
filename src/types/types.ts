@@ -296,6 +296,7 @@ export type StandingType = {
     rule: {
         id: number;
         position: number | null;
+        model_type: string | null;
         type: {
             id: number;
             name: string | null;
@@ -305,6 +306,10 @@ export type StandingType = {
         }
 
     }
+    group: {
+        id: number;
+        name: string | null;
+    } | null
     form: {
         id: number;
         form: string | null;
