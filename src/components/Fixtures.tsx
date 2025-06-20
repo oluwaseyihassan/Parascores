@@ -70,7 +70,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
         format(date, "yyyy-MM-dd"),
         pageParam as number,
         50,
-        "today.scores;today.participants;today.stage;today.round;today.state;today.aggregate;today.group;today.periods;inplay.scores;inplay.participants;inplay.stage;inplay.round;inplay.state;inplay.aggregate;inplay.group;inplay.periods;country;today.league;inplay.league"
+        "today.scores;today.participants;today.stage;today.round;today.state;today.events.type;today.aggregate;today.group;today.periods;inplay.scores;inplay.participants;inplay.stage;inplay.round;inplay.state;inplay.aggregate;inplay.group;inplay.periods;country;today.league;inplay.league"
       ),
     getNextPageParam: (lastPage) =>
       lastPage.data.pagination.has_more
