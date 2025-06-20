@@ -12,12 +12,12 @@ import {
   isSameDay,
   subDays,
 } from "date-fns";
-import { FaRegCalendarDays } from "react-icons/fa6";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 import { useTheme } from "../context/ThemeContext";
 import { Today } from "../types/types";
 import ClickAway from "./ClickAway";
+import { FaRegCalendar } from "react-icons/fa";
 
 type CalendarProps = {
   selectedDate: Date;
@@ -174,8 +174,8 @@ const Calendar: FC<CalendarProps> = ({
       <div className="rounded-md px-1">
         <div
           className={`${
-            theme === "dark" ? "bg-dark/40" : "bg-light"
-          } flex items-center justify-between cursor-pointer p-1 gap-2 rounded-lg`}
+            theme === "dark" ? "outline-gray-400/30" : "outline-gray-300"
+          } flex items-center justify-between cursor-pointer p-1 gap-2 rounded-lg outline-2`}
         >
           <button
             onClick={() => {
@@ -189,7 +189,7 @@ const Calendar: FC<CalendarProps> = ({
               setFilterFixtures("all");
               setIsOpen(false);
             }}
-            className="text-accent cursor-pointer rounded-md text-lg p-[2px] hover:bg-accent/10"
+            className="text-accent cursor-pointer rounded-md text-lg p-1 hover:bg-accent/10"
           >
             <IoIosArrowBack />
           </button>
@@ -197,7 +197,7 @@ const Calendar: FC<CalendarProps> = ({
             className="flex gap-2 items-center"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <FaRegCalendarDays className="text-lg sm:text-xl text-accent mx-auto" />
+            <FaRegCalendar className="text-lg sm:text-xl text-accent mx-auto" />
             <h1 className=" text-center cursor-pointer text-base sm:text-lg flex gap-1">
               <span>{format(selectedDate, "dd/MM")}</span>
               <span className="hidden sm:block">
@@ -217,7 +217,7 @@ const Calendar: FC<CalendarProps> = ({
               setFilterFixtures("all");
               setIsOpen(false);
             }}
-            className="text-accent cursor-pointer rounded-md text-lg p-[2px] hover:bg-accent/10"
+            className="text-accent cursor-pointer rounded-md text-lg p-1 hover:bg-accent/10"
           >
             <IoIosArrowForward />
           </button>
@@ -226,7 +226,7 @@ const Calendar: FC<CalendarProps> = ({
           <div
             className={`${
               theme === "dark" ? "bg-dark" : "bg-light"
-            } absolute right-0 p-2 rounded-lg z-50 top-0 shadow-2xl`}
+            } absolute right-0 p-2 rounded-lg z-50 -top-1 shadow-2xl`}
           >
             <button
               onClick={() => setIsOpen(false)}
