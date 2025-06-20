@@ -42,7 +42,7 @@ const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
     >
       <div className="w-16 h-16">
         <img
-          src={`${league?.data.data.image_path}`}
+          src={`${league?.data.data.image_path || imagePlaceholders.league}`} 
           alt=""
           className="w-full h-full"
         />
@@ -63,7 +63,7 @@ const LeagueCard: FC<leagueCardProps> = ({ league, setSeasonId }) => {
           <div className="flex items-center gap-2">
             <div className=" h-7 rounded-full overflow-hidden w-7">
               <img
-                src={`${league?.data.data.country?.image_path}`}
+                src={`${league?.data.data.country?.image_path || imagePlaceholders.league}`}
                 alt=""
                 className="h-full w-full object-cover"
               />
