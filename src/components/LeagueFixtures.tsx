@@ -257,6 +257,34 @@ const LeagueFixtures: FC<props> = ({
                         homeTeam?.meta.winner === false ? "text-gray-400" : ""
                       } flex gap-1 items-center flex-row-reverse sm:flex-row`}
                     >
+                      {today.events?.some(
+                        (event) =>
+                          (event.type.developer_name === "REDCARD" ||
+                            event.type.developer_name === "YELLOWREDCARD") &&
+                          event.participant_id === homeTeam?.id
+                      ) && (
+                        <div className="h-4 w-3 bg-red-600 flex justify-center items-center rounded-[2px]">
+                          {today.events?.filter(
+                            (event) =>
+                              (event.type.developer_name === "REDCARD" ||
+                                event.type.developer_name ===
+                                  "YELLOWREDCARD") &&
+                              event.participant_id === homeTeam?.id
+                          ).length > 1 && (
+                            <span className="text-xs text-white">
+                              {
+                                today.events?.filter(
+                                  (event) =>
+                                    (event.type.developer_name === "REDCARD" ||
+                                      event.type.developer_name ===
+                                        "YELLOWREDCARD") &&
+                                    event.participant_id === homeTeam?.id
+                                ).length
+                              }
+                            </span>
+                          )}
+                        </div>
+                      )}
                       <div>{homeTeam?.name || ""}</div>
 
                       <div className="h-5 w-5 flex justify-center items-center">
@@ -306,6 +334,34 @@ const LeagueFixtures: FC<props> = ({
                       </div>
 
                       <div>{awayTeam?.name || ""}</div>
+                      {today.events?.some(
+                        (event) =>
+                          (event.type.developer_name === "REDCARD" ||
+                            event.type.developer_name === "YELLOWREDCARD") &&
+                          event.participant_id === awayTeam?.id
+                      ) && (
+                        <div className="h-4 w-3 bg-red-600 flex justify-center items-center rounded-[2px]">
+                          {today.events?.filter(
+                            (event) =>
+                              (event.type.developer_name === "REDCARD" ||
+                                event.type.developer_name ===
+                                  "YELLOWREDCARD") &&
+                              event.participant_id === awayTeam?.id
+                          ).length > 1 && (
+                            <span className="text-xs text-white">
+                              {
+                                today.events?.filter(
+                                  (event) =>
+                                    (event.type.developer_name === "REDCARD" ||
+                                      event.type.developer_name ===
+                                        "YELLOWREDCARD") &&
+                                    event.participant_id === awayTeam?.id
+                                ).length
+                              }
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     <span
