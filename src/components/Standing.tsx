@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, JSX, useState } from "react";
 import { StandingType } from "../types/types";
 import { useTheme } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
@@ -114,9 +114,7 @@ const Standing: FC<Props> = ({ standing, isLoading, isError }) => {
           <div>Team</div>
         </div>
         <div
-          className={`col-span-2 sm:col-span-3 flex justify-between min-w-fit w-full p-2 ${
-            theme === "dark" ? "bg-dark/70" : "bg-light"
-          }`}
+          className={`col-span-2 sm:col-span-3 flex justify-between min-w-fit w-full p-2 `}
         >
           <div className="min-w-[40px] flex justify-center items-center">P</div>
           <div className="min-w-[40px] flex justify-center items-center">W</div>
@@ -144,80 +142,119 @@ const Standing: FC<Props> = ({ standing, isLoading, isError }) => {
       <div
         className={`${
           theme === "dark" ? "divide-dark" : "divide-light"
-        } divide-y sm:text-[1.2rem]`}
+        } divide-y sm:text-[1.2rem] relative`}
       >
-        {standing?.data.data.map((standing) => (
-          <div key={standing.id} className="grid grid-cols-6 ">
-            <div
-              className={`${
-                theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
-              } col-span-4 sm:col-span-3  sticky left-0 z-10 p-2 flex gap-2 items-center`}
-            >
-              <div className="w-[20px] h-[20px] flex justify-center items-center">
-                {standing.position}
-              </div>
-              <div className="w-[20px] h-[20px] flex justify-center items-center font-bold text-2xl">
-                {standing.result === "up" ? (
-                  <RiArrowDropUpLine className="text-green-500" />
-                ) : standing.result === "down" ? (
-                  <RiArrowDropUpLine className="text-red-500 rotate-180" />
-                ) : standing.result === "equal" ? (
-                  <span className="text-gray-400">-</span>
-                ) : null}
-              </div>
-              <div className="h-5 w-5">
-                <img src={`${standing.participant.image_path}`} alt="" />
-              </div>
-              <div>{standing.participant.name}</div>
-            </div>
-            <div
-              className={`col-span-2 sm:col-span-3 flex justify-between items-center  min-w-fit w-full p-2 ${
-                theme === "dark" ? "bg-dark/70" : "bg-light"
-              }`}
-            >
-              {getStandingType(standingOption).map((type) => {
-                const detail = standing.details.find(
-                  (det) => det.type.developer_name === type
-                );
-                return (
-                  <div
-                    key={type}
-                    className={`min-w-[40px] flex justify-center items-center ${
-                      type === "TOTAL_POINTS" ? "font-bold" : ""
-                    }`}
-                  >
-                    {detail?.value ?? "-"}
-                  </div>
-                );
-              })}
+        {standing?.data.data
+          .sort((a: StandingType, b: StandingType) => {
+            const groupComparison = (a.group?.name || "").localeCompare(
+              b.group?.name || ""
+            );
 
-              <div className="min-w-[160px] flex gap-2 space-x-2 text-white ml-2">
-                {standing.form
-                  .sort((a, b) => (b.sort_order ?? 0) - (a.sort_order ?? 0))
-                  .slice(0, 5)
-                  .map((form) => (
-                    <Link
-                      to={`/match/${form.fixture_id}`}
-                      key={form.id}
-                      className={`${
-                        form.form?.toLocaleLowerCase() === "w"
-                          ? "bg-accent"
-                          : form.form?.toLocaleLowerCase() === "l"
-                          ? "bg-red-500"
-                          : "bg-gray-400"
-                      } w-[18px] h-[18px] flex justify-center items-center rounded-full relative text-[0.8rem]`}
-                      title={`${form.fixture.name} ${form.fixture.result_info}`}
+            if (groupComparison === 0) {
+              return a.position - b.position;
+            }
+
+            return groupComparison;
+          })
+          .reduce<JSX.Element[]>(
+            (
+              acc: JSX.Element[],
+              curr: StandingType,
+              index: number,
+              array: StandingType[]
+            ) => {
+              if (
+                index === 0 ||
+                curr.group?.name !== array[index - 1].group?.name
+              ) {
+                if (curr.group?.name) {
+                  acc.push(
+                    <div
+                      key={`group-header-${curr.group?.name || "default"}`}
+                      className={`font-bold ${
+                        theme === "dark" ? "bg-dark/90" : "bg-gray-200"
+                      }  p-2 sticky left-0 z-20 w-full`}
                     >
-                      {form.form}
-                      <span className="absolute bottom-0 hidden tooltip">
-                        {form.fixture.name}
-                      </span>
-                    </Link>
-                  ))}
-              </div>
-            </div>
-          </div>
-        ))}
+                      {curr.group?.name || "Group"}
+                    </div>
+                  );
+                }
+              }
+
+              acc.push(
+                <div key={curr.id} className="grid grid-cols-6">
+                  <div
+                    className={`${
+                      theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+                    } col-span-4 sm:col-span-3 sticky left-0 z-10 p-2 flex gap-2 items-center`}
+                  >
+                    <div className="w-[20px] h-[20px] flex justify-center items-center">
+                      {curr.position}
+                    </div>
+                    <div className="w-[20px] h-[20px] flex justify-center items-center font-bold text-2xl">
+                      {curr.result === "up" ? (
+                        <RiArrowDropUpLine className="text-green-500" />
+                      ) : curr.result === "down" ? (
+                        <RiArrowDropUpLine className="text-red-500 rotate-180" />
+                      ) : curr.result === "equal" ? (
+                        <span className="text-gray-400">-</span>
+                      ) : null}
+                    </div>
+                    <div className="h-5 w-5">
+                      <img src={`${curr.participant.image_path}`} alt="" />
+                    </div>
+                    <div>{curr.participant.name}</div>
+                  </div>
+                  <div
+                    className={`col-span-2 sm:col-span-3 flex justify-between items-center min-w-fit w-full p-2 `}
+                  >
+                    {getStandingType(standingOption).map((type: string) => {
+                      const detail = curr.details.find(
+                        (det) => det.type.developer_name === type
+                      );
+                      return (
+                        <div
+                          key={type}
+                          className={`min-w-[40px] flex justify-center items-center ${
+                            type === "TOTAL_POINTS" ? "font-bold" : ""
+                          }`}
+                        >
+                          {detail?.value ?? "-"}
+                        </div>
+                      );
+                    })}
+
+                    <div className="min-w-[160px] flex gap-2 space-x-2 text-white ml-2">
+                      {curr.form
+                        .sort(
+                          (a, b) => (b.sort_order ?? 0) - (a.sort_order ?? 0)
+                        )
+                        .slice(0, 5)
+                        .map((form) => (
+                          <Link
+                            to={`/match/${form.fixture_id}`}
+                            key={form.id}
+                            className={`${
+                              form.form?.toLocaleLowerCase() === "w"
+                                ? "bg-accent"
+                                : form.form?.toLocaleLowerCase() === "l"
+                                ? "bg-red-500"
+                                : "bg-gray-400"
+                            } w-[18px] h-[18px] flex justify-center items-center rounded-full relative text-[0.8rem]`}
+                            title={`${form.fixture.name} ${form.fixture.result_info}`}
+                          >
+                            {form.form}
+                          </Link>
+                        ))}
+                    </div>
+                  </div>
+                </div>
+              );
+
+              return acc;
+            },
+            [] as JSX.Element[]
+          )}
       </div>
     </div>
   );
