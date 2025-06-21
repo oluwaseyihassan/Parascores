@@ -19,6 +19,7 @@ import Standing from "../Standing";
 import HeadToHead from "../HeadToHead";
 import Venue from "../Venue";
 import StandingTracker from "../StandingTracker";
+import Commentary from "../Commentary";
 
 type ApiResponse = {
   data: {
@@ -292,7 +293,7 @@ const Fixture = () => {
               )}
               {activeTab === 3 && (
                 <div className="p-2">
-                  <h1>Commentary</h1>
+                  <Commentary comments={data?.data.data.comments ?? null} />
                 </div>
               )}
               {activeTab === 4 && (
