@@ -36,6 +36,7 @@ export type Today = {
     lineups: LineUp[] | null;
     metadata: MetaData[] | null;
     statistics: Statistics[] | null;
+    comments: Comments[] | null
     league: {
         id: number;
         name: string;
@@ -220,6 +221,18 @@ export type LineUp = {
     },
    
 
+}
+
+export type Comments = {
+    id: number;
+    fixture_id: number;
+    comment: string | null;
+    minute: number | null;
+    extra_minute: number | null;
+    is_goal: boolean | null;
+    is_important: boolean | null;
+    order: number | null;
+    player: Player | null;
 }
 
 export type Type = {
@@ -452,4 +465,26 @@ export type TeamType = {
         points: number | null;
         type: string | null
     }[] | null;
+}
+
+
+export type Player = {
+    id: number;
+    sport_id: number;
+    country_id: number | null;
+    nationality_id: number | null;
+    city_id: number | null;
+    position_id: number | null;
+    detailed_position_id: number | null;
+    type_id: number | null;
+    common_name: string | null;
+    firstname: string | null;
+    lastname: string | null;
+    name: string | null;
+    display_name: string | null;
+    image_path: string | null;
+    height: number | null;
+    weight: number | null;
+    date_of_birth: string | null;
+    gender: string | null;
 }
