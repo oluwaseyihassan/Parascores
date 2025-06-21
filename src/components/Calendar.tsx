@@ -116,17 +116,17 @@ const Calendar: FC<CalendarProps> = ({
             className={`relative h-10 w-10 flex justify-center items-center text-center text-sm cursor-pointer rounded-full transition focus:outline outline-accent 
               ${
                 isToday
-                  ? "bg-accent text-white font-semibold hover:bg-blue-200"
+                  ? "bg-accent text-white font-semibold hover:bg-accent/80"
                   : isCurrentMonth
                   ? theme === "dark"
-                    ? "hover:bg-gray-800"
-                    : "hover:bg-gray-300"
+                    ? "hover:bg-accent/20"
+                    : "hover:bg-accent/20"
                   : theme === "dark"
-                  ? "hover:bg-gray-800 text-gray-400 "
-                  : "text-gray-400 hover:bg-gray-300 "
+                  ? "hover:bg-gray-800/50 text-gray-400 "
+                  : "text-gray-400 hover:bg-gray-300/50 "
               } ${
               format(cloneDay, "yyyy-MM-dd") ===
-              format(selectedDate, "yyyy-MM-dd")
+                format(selectedDate, "yyyy-MM-dd") && !isToday
                 ? "bg-accent/30 text-white font-semibold"
                 : ""
             }`}
