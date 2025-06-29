@@ -1,16 +1,20 @@
 import { FC } from "react";
 import { useTheme } from "../context/ThemeContext";
-import { LineUp } from "../types/types";
+import { LineUp, Events } from "../types/types";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
+import { RiFootballFill } from "react-icons/ri";
+import { GiRunningShoe } from "react-icons/gi";
+import { TbArrowsExchange } from "react-icons/tb";
 
 type props = {
   side: "home" | "away";
   lineup: LineUp[] | null;
   teamId: number | null;
   formation: string | null;
+  events?: Events[] | null;
 };
 
-const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
+const LineUpCard: FC<props> = ({ side, lineup, teamId, formation, events }) => {
   const { theme } = useTheme();
 
   const formationArray =
@@ -25,6 +29,43 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
     lineup?.filter(
       (player) => player.type_id === 11 && player.team_id === teamId
     ) || [];
+
+  const checkIfPlayerScored = (playerId: number) => {
+    if (!events || events.length === 0) return [];
+    return events.filter(
+      (event) =>
+        event.player_id === playerId && event.type.developer_name === "GOAL"
+    );
+  };
+
+  const checkIfPlayerAssisted = (playerId: number) => {
+    if (!events || events.length === 0) return [];
+    return events.filter(
+      (event) =>
+        event.related_player_id === playerId &&
+        event.type.developer_name === "GOAL"
+    );
+  };
+
+  const checkIfPlayerHasRedCard = (playerId: number) => {
+    if (!events || events.length === 0) return false;
+    return events.find(
+      (event) =>
+        event.player_id === playerId &&
+        (event.type.developer_name === "REDCARD" ||
+          event.type.developer_name === "YELLOWREDCARD")
+    );
+  };
+
+  const checkIfPlayerWasSubstituted = (playerId: number) => {
+    if (!events || events.length === 0) return [];
+    return events.filter(
+      (event) =>
+        (event.player_id === playerId ||
+          event.related_player_id === playerId) &&
+        event.type.developer_name === "SUBSTITUTION"
+    );
+  };
 
   if (formationArray.length === 0) {
     return (
@@ -111,7 +152,7 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
                 })
                 .map((player) => (
                   <div key={player.id} className="z-30">
-                    <div className="flex flex-col items-center justify-center lg:rotate-90 relative">
+                    <div className="flex flex-col items-center justify-center lg:rotate-90 relative  w-[50px]">
                       <div className="h-9 w-9 bg-white flex justify-center items-end rounded-full overflow-hidden ">
                         <img
                           src={`${
@@ -122,6 +163,68 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
                           className=" w-8"
                         />
                       </div>
+                      {checkIfPlayerScored(player?.player_id).length > 0 &&
+                        checkIfPlayerScored(player?.player_id).map(
+                          (_, index) => (
+                            <div
+                              key={`goal-${player.player_id}-${index}`}
+                              className="absolute text-accent bg-black rounded-full"
+                              style={{
+                                left: `${index * 5}px`,
+                                zIndex: index * 2,
+                              }}
+                            >
+                              <RiFootballFill />
+                            </div>
+                          )
+                        )}
+
+                      {checkIfPlayerAssisted(player?.player_id).length > 0 &&
+                        checkIfPlayerAssisted(player?.player_id).map(
+                          (_, index) => (
+                            <div
+                              key={`assist-${player.player_id}-${index}`}
+                              className="absolute text-white "
+                              style={{
+                                right: `${index * 5}px`,
+                                zIndex: index * 2,
+                              }}
+                            >
+                              <GiRunningShoe size={12} />
+                            </div>
+                          )
+                        )}
+
+                      {checkIfPlayerHasRedCard(player?.player_id) && (
+                        <div
+                          className="absolute bg-red-600 h-4 w-3"
+                          style={{
+                            top: "-5px",
+                            right: "0px",
+                            zIndex: 10,
+                          }}
+                        />
+                      )}
+
+                      {checkIfPlayerWasSubstituted(player?.player_id).length >
+                        0 &&
+                        checkIfPlayerWasSubstituted(player?.player_id).map(
+                          (event) => (
+                            <div
+                              key={`sub-${player.player_id}`}
+                              className="absolute text-xs text--700"
+                              style={{
+                                top: "-10px",
+                                left: "0px",
+                                zIndex: 10,
+                              }}
+                            >
+                              <span className="">{event.minute}'</span>
+                              <TbArrowsExchange className="" />
+                            </div>
+                          )
+                        )}
+
                       {player?.details?.find(
                         (detail) => detail.type.developer_name === "RATING"
                       )?.data.value && (
@@ -158,11 +261,15 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation }) => {
                           ).toFixed(1) || 0}
                         </div>
                       )}
+
                       <div className="text-[10px] text-center flex gap-[2px]">
                         <div className="text-gray-400">
                           {player.jersey_number}
                         </div>
-                        <div>{player.player?.lastname?.split(" ")[0] || player.player?.firstname?.split(" ")[0]}</div>
+                        <div>
+                          {player.player?.lastname?.split(" ")[0] ||
+                            player.player?.firstname?.split(" ")[0]}
+                        </div>
                       </div>
                     </div>
                   </div>
