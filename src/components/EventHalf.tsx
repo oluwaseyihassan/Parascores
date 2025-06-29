@@ -112,7 +112,7 @@ const EventHalf: FC<Props> = ({
                   {eventIcon(event.type.developer_name ?? "")}
                 </div>
 
-                <div className={`${homeId === event.participant_id ? "text-right" : "text-left"} font-semibold min-w-[30px]`}>
+                <div className={` text-center font-semibold min-w-[30px]`}>
                   {event.minute}
                   {event.extra_minute && <span>+{event.extra_minute}</span>}'
                 </div>
