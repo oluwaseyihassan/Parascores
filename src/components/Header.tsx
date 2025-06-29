@@ -17,7 +17,7 @@ const Header = () => {
   };
   return (
     <header
-      className={`px-3 py-2 max-w-[1440px] mx-auto grid grid-cols-2 lg:grid-cols-10 gap-4 items-center`}
+      className={`px-3 py-2 max-w-[1440px] mx-auto grid grid-cols-2 lg:grid-cols-10 gap-4 items-center relative`}
     >
       <h1 className="text-4xl text-accent font-bold lg:col-span-2">
         <Link to={`/`} onClick={closeSearch}>
