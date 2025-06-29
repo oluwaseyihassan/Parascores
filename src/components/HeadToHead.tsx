@@ -48,6 +48,18 @@ const HeadToHead: FC<h2hProps> = ({ h2h, homeId, awayId }) => {
     return { home: homeWins, away: awayWins, draw: draws };
   }, [headToHead, homeId, awayId]);
 
+  if (!headToHead || headToHead.length === 0) {
+    return (
+      <div
+        className={`p-4 ${
+          theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+        } rounded-lg text-center`}
+      >
+        <p>No head-to-head matches available</p>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`${
