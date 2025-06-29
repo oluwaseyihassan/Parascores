@@ -30,6 +30,8 @@ type FavoritesContextType = {
   favoriteMatches: FavoriteMatch[];
   toggleFavoriteMatches: (match: FavoriteMatch) => void;
   isMatchFavorite: (matchId: number) => boolean;
+  showFavMatchesOnHomePage?: boolean;
+  toggleShowFavMatchesOnHomePage?: () => void;
 };
 
 const FavoritesContext = createContext<FavoritesContextType | null>(null);
@@ -50,6 +52,12 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
     }
   );
 
+  const [showFavMatchesOnHomePage, setShowFavMatchesOnHomePage] =
+    useState<boolean>(() => {
+      const storedValue = getItem("showFavMatchesOnHomePage");
+      return storedValue !== null ? JSON.parse(storedValue) : false;
+    });
+
   // Update localStorage whenever state changes
   useEffect(() => {
     setItem("favouritesLeagues", favoriteLeagues);
@@ -58,7 +66,7 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     setItem("favouritesTeams", favoriteTeams);
   }, [favoriteTeams, setItem]);
-  
+
   useEffect(() => {
     setItem("favouritesMatches", favoriteMatches);
   }, [favoriteMatches, setItem]);
@@ -115,6 +123,14 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
     return favoriteMatches.some((match) => match.id === matchId);
   };
 
+  const toggleShowFavMatchesOnHomePage = () => {
+    setShowFavMatchesOnHomePage((prev) => !prev);
+    setItem(
+      "showFavMatchesOnHomePage",
+      JSON.stringify(!showFavMatchesOnHomePage)
+    );
+  };
+
   return (
     <FavoritesContext.Provider
       value={{
@@ -127,6 +143,8 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
         favoriteMatches,
         toggleFavoriteMatches,
         isMatchFavorite,
+        showFavMatchesOnHomePage,
+        toggleShowFavMatchesOnHomePage
       }}
     >
       {children}
