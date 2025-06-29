@@ -1,7 +1,10 @@
+import { useFavorites } from "../context/FavoritesContext";
 import { useTheme } from "../context/ThemeContext";
 
 const Settings = () => {
   const { themeValue, setThemeValue, setThemeFromUserInput } = useTheme();
+  const { toggleShowFavMatchesOnHomePage, showFavMatchesOnHomePage } =
+    useFavorites();
   console.log(window.matchMedia("(prefers-color-scheme: light)").matches);
 
   const handleThemeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -11,6 +14,23 @@ const Settings = () => {
   };
   return (
     <div className="">
+      <h3 className="text-center text-xl">Settings</h3>
+      <div>
+        <div>Show favorites on home page</div>
+        <div
+          className="w-12 bg-white p-1 rounded-full cursor-pointer"
+          onClick={toggleShowFavMatchesOnHomePage}
+        >
+          <div
+            className="h-5 w-5  bg-accent rounded-full cursor-pointer transition-all duration-500"
+            style={{
+              transform: showFavMatchesOnHomePage
+                ? "translateX(100%)"
+                : "translateX(0)",
+            }}
+          />
+        </div>
+      </div>
       <div>
         <h4 className="mb-3">Theme</h4>
         <div className="flex flex-col space-y-1">
