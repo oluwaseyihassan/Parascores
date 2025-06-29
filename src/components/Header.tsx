@@ -1,13 +1,20 @@
 import { useTheme } from "../context/ThemeContext";
 import { CiSun } from "react-icons/ci";
-import { IoMoonOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useSearchToggle } from "../context/SearchToggleContext";
+import { useState } from "react";
+import Settings from "./Settings";
+import ClickAway from "./ClickAway";
 // import Search from "./Search";
 
 const Header = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const { closeSearch } = useSearchToggle();
+  const [toggleSettings, setToggleSettings] = useState(false);
+
+  const handleSettingsToggle = () => {
+    setToggleSettings((prev) => !prev);
+  };
   return (
     <header
       className={`px-3 py-2 max-w-[1440px] mx-auto grid grid-cols-2 lg:grid-cols-10 gap-4 items-center`}
@@ -26,16 +33,25 @@ const Header = () => {
       {/* <div className="absolute top-2 left-1/2 -translate-x-1/2">
         <Search />
       </div> */}
-      <button
-        onClick={toggleTheme}
-        className="text-2xl cursor-pointer lg:col-span-3 justify-self-end"
-      >
-        {theme === "dark" ? (
-          <CiSun title="light" />
-        ) : (
-          <IoMoonOutline title="dark" />
+      <div className="justify-self-end lg:col-span-3">
+        <button
+          onClick={handleSettingsToggle}
+          className="text-2xl cursor-pointer lg:col-span-3 justify-self-end"
+        >
+          <CiSun />
+        </button>
+        {toggleSettings && (
+          <ClickAway onClickAway={() => setToggleSettings(false)}>
+            <div
+              className={`${
+                theme === "dark" ? "bg-dark-bg sha" : "bg-light-bg"
+              } px-3 py-4 absolute top-10 right-5 shadow-2xl rounded-lg min-w-[200px]`}
+            >
+              <Settings />
+            </div>
+          </ClickAway>
         )}
-      </button>
+      </div>
     </header>
   );
 };
