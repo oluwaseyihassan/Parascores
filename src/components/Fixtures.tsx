@@ -42,8 +42,13 @@ type FixturesProps = {
 };
 
 const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
-  const { isLeagueFavorite, isTeamFavorite, isMatchFavorite, favoriteTeams } =
-    useFavorites();
+  const {
+    isLeagueFavorite,
+    isTeamFavorite,
+    isMatchFavorite,
+    favoriteTeams,
+    showFavMatchesOnHomePage,
+  } = useFavorites();
   const { theme } = useTheme();
   const [searchParams, setSearchParams] = useSearchParams();
   const dateParam = searchParams.get("date");
@@ -285,113 +290,122 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
           </div>
         )}
 
-      <section className="space-y-3">
-        {!isLoading &&
-          !isError &&
-          filterFixtures === "all" &&
-          leagues?.pages.map((page) => (
-            <Fragment key={page.data.pagination.current_page}>
-              {page.data.data.filter((league) => favFixturesFilterLogic(league))
-                .length > 0 && <h3 className="text-center text-2xl font-bold text-accent">Favorite Fixtures</h3>}
-              {page.data.data
-                .filter(
-                  (league) =>
-                    isLeagueFavorite(league.id) ||
-                    (league.today?.some(
-                      (today) =>
-                        isTeamFavorite(
-                          today.participants?.find(
-                            (p) => p.meta.location === "home"
-                          )?.id ?? 0
-                        ) ||
-                        isTeamFavorite(
-                          today.participants?.find(
-                            (p) => p.meta.location === "away"
-                          )?.id ?? 0
-                        ) ||
-                        isMatchFavorite(today.id)
-                    ) ??
-                      false)
-                )
-                .map((league, index, filteredArray) => (
-                  <div
-                    key={league.id}
-                    className={`rounded-lg ${
-                      theme === "dark" ? "divide-dark-bg" : "divide-light-bg"
-                    } divide-y-[1px]`}
-                    ref={
-                      index === filteredArray.length - 1 &&
-                      page === leagues.pages[leagues.pages.length - 1]
-                        ? ref
-                        : null
-                    }
-                  >
+      {showFavMatchesOnHomePage && filterFixtures === "all" && (
+        <section className="space-y-3">
+          {!isLoading &&
+            !isError &&
+            filterFixtures === "all" &&
+            leagues?.pages.map((page) => (
+              <Fragment key={page.data.pagination.current_page}>
+                {page.data.data.filter((league) =>
+                  favFixturesFilterLogic(league)
+                ).length > 0 && (
+                  <h3 className="text-center text-2xl font-bold text-accent">
+                    Favorite Fixtures
+                  </h3>
+                )}
+                {page.data.data
+                  .filter(
+                    (league) =>
+                      isLeagueFavorite(league.id) ||
+                      (league.today?.some(
+                        (today) =>
+                          isTeamFavorite(
+                            today.participants?.find(
+                              (p) => p.meta.location === "home"
+                            )?.id ?? 0
+                          ) ||
+                          isTeamFavorite(
+                            today.participants?.find(
+                              (p) => p.meta.location === "away"
+                            )?.id ?? 0
+                          ) ||
+                          isMatchFavorite(today.id)
+                      ) ??
+                        false)
+                  )
+                  .map((league, index, filteredArray) => (
                     <div
-                      className={`flex items-center gap-2 py-1 rounded-t-lg px-3 justify-between ${
-                        theme === "dark" ? "bg-dark/70" : "bg-light"
-                      }`}
+                      key={league.id}
+                      className={`rounded-lg ${
+                        theme === "dark" ? "divide-dark-bg" : "divide-light-bg"
+                      } divide-y-[1px]`}
+                      ref={
+                        index === filteredArray.length - 1 &&
+                        page === leagues.pages[leagues.pages.length - 1]
+                          ? ref
+                          : null
+                      }
                     >
-                      <div className="flex items-center gap-2">
-                        <div className="h-5 w-5 flex justify-center items-center rounded-full overflow-hidden">
-                          <img
-                            src={
-                              league.country?.image_path ||
-                              imagePlaceholders.team
-                            }
-                            alt=""
-                            className="w-5 h-5 object-cover"
-                          />
-                        </div>
-                        <div className="flex flex-col text-[0.8rem]">
-                          <Link
-                            to={`/country/${league.country}/${
-                              league.country?.id || ""
-                            }`}
-                            className=" text-gray-400 hover:text-accent w-fit"
-                          >
-                            {league.country?.name || "International"}
-                          </Link>
-                          <div className="flex items-center">
+                      <div
+                        className={`flex items-center gap-2 py-1 rounded-t-lg px-3 justify-between ${
+                          theme === "dark" ? "bg-dark/70" : "bg-light"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className="h-5 w-5 flex justify-center items-center rounded-full overflow-hidden">
+                            <img
+                              src={
+                                league.country?.image_path ||
+                                imagePlaceholders.team
+                              }
+                              alt=""
+                              className="w-5 h-5 object-cover"
+                            />
+                          </div>
+                          <div className="flex flex-col text-[0.8rem]">
                             <Link
-                              to={`/league/${league.name?.replace(
-                                / +/g,
-                                "-"
-                              )}/${league.id}`}
-                              className="font-medium hover:text-accent hover:underline "
+                              to={`/country/${league.country}/${
+                                league.country?.id || ""
+                              }`}
+                              className=" text-gray-400 hover:text-accent w-fit"
                             >
-                              {league.name}
+                              {league.country?.name || "International"}
                             </Link>
-                            {league.today?.[0]?.round?.name && (
-                              <div className="ml-2  opacity-70">
-                                Round {league.today[0].round.name}
-                              </div>
-                            )}
+                            <div className="flex items-center">
+                              <Link
+                                to={`/league/${league.name?.replace(
+                                  / +/g,
+                                  "-"
+                                )}/${league.id}`}
+                                className="font-medium hover:text-accent hover:underline "
+                              >
+                                {league.name}
+                              </Link>
+                              {league.today?.[0]?.round?.name && (
+                                <div className="ml-2  opacity-70">
+                                  Round {league.today[0].round.name}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
+
+                        <FavStar
+                          leagueId={league.id ?? 0}
+                          image_path={
+                            league.image_path ?? imagePlaceholders.team
+                          }
+                          type="League"
+                          leagueName={league.name}
+                        />
                       </div>
 
-                      <FavStar
-                        leagueId={league.id ?? 0}
-                        image_path={league.image_path ?? imagePlaceholders.team}
-                        type="League"
-                        leagueName={league.name}
+                      <LeagueFixtures
+                        league={league}
+                        activeLeague={activeLeagueId === league.id}
+                        setFixtureId={setFixtureId}
+                        fixtureId={fixtureId}
+                        filterFixtures="fav"
+                        isLeagueFavorite={isLeagueFavorite}
+                        isTeamFavorite={isTeamFavorite}
                       />
                     </div>
-
-                    <LeagueFixtures
-                      league={league}
-                      activeLeague={activeLeagueId === league.id}
-                      setFixtureId={setFixtureId}
-                      fixtureId={fixtureId}
-                      filterFixtures="fav"
-                      isLeagueFavorite={isLeagueFavorite}
-                      isTeamFavorite={isTeamFavorite}
-                    />
-                  </div>
-                ))}
-            </Fragment>
-          ))}
-      </section>
+                  ))}
+              </Fragment>
+            ))}
+        </section>
+      )}
       <section className="space-y-3 mt-4">
         {!isLoading &&
           !isError &&
@@ -402,7 +416,11 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
                   .length > 0 && <h3 className="">Live Fixtures</h3>} */}
               {filterFixtures === "all" &&
                 page.data.data.filter((league) => fixturesFilterLogic(league))
-                  .length > 0 && <h3 className="text-center text-2xl font-bold text-accent">All Fixtures</h3>}
+                  .length > 0 && (
+                  <h3 className="text-center text-2xl font-bold text-accent">
+                    All Fixtures
+                  </h3>
+                )}
 
               {page.data.data
                 .filter((league) => fixturesFilterLogic(league))
