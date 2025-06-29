@@ -3,24 +3,40 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 interface ThemeContextType {
   theme: string;
-  toggleTheme: () => void;
+  setThemeFromUserInput?: (newTheme: string) => void;
+  themeValue?: string;
+  setThemeValue?: (newTheme: string) => void;
 }
-
-
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const { getItem, setItem } = useLocalStorage();
-  const [theme, setTheme] = useState<string>(getItem("ps_theme") || "light");
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-    setItem("ps_theme", theme === "light" ? "dark" : "light");
+  const systemTheme: string = window.matchMedia("(prefers-color-scheme: light)")
+    .matches
+    ? "light"
+    : "dark";
+
+  const [themeValue, setThemeValue] = useState<string>(() => {
+    const storedTheme = getItem("ps_theme");
+    return storedTheme || "system";
+  });
+
+  const theme = themeValue === "system" ? systemTheme : themeValue;
+
+  const setThemeFromUserInput = (newTheme: string) => {
+    setThemeValue(newTheme);
+    setItem("ps_theme", newTheme);
   };
 
   return (
     <ThemeContext.Provider
-      value={{ theme, toggleTheme, }}
+      value={{
+        theme,
+        setThemeFromUserInput,
+        themeValue,
+        setThemeValue,
+      }}
     >
       {children}
     </ThemeContext.Provider>
