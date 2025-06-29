@@ -32,6 +32,19 @@ const Statistics: FC<props> = ({ fixture }) => {
 
     return Array.from(statMap.values());
   }, [fixture?.statistics]);
+
+  if (!fixture?.statistics || fixture.statistics.length === 0) {
+    return (
+      <div
+        className={`px-2 py-3  `}
+      >
+        <div className="flex justify-center items-center">
+          No Statistics Available
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={` px-2 py-3 lg:mt-4 ${
