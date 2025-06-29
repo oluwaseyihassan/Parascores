@@ -160,7 +160,9 @@ export type Events = {
     minute: number | null;
     extra_minute: number | null;
     player_name: string;
+    player_id: number
     related_player_name: string | null
+    related_player_id: number | null;
     result: string | null;
     info: string | null
     sort_order: number
