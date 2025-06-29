@@ -74,6 +74,7 @@ const LineUp: FC<props> = ({ fixture }) => {
           <LineUpCard
             side={"home"}
             lineup={fixture?.lineups ?? []}
+            events={fixture?.events ?? null}
             teamId={
               fixture?.participants?.find(
                 (participant) => participant.meta.location === "home"
@@ -88,6 +89,7 @@ const LineUp: FC<props> = ({ fixture }) => {
           <LineUpCard
             side={"away"}
             lineup={fixture?.lineups ?? []}
+            events={fixture?.events ?? null}
             teamId={
               fixture?.participants?.find(
                 (participant) => participant.meta.location === "away"
