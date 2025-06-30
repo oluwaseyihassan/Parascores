@@ -181,7 +181,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
             {fixture?.state?.developer_name === "NS" ? (
               fixture?.starting_at?.split(" ")[1].slice(0, 5)
             ) : (
-              <div className="flex justify-center items-center gap-1 text-sm">
+              <div className="score_font flex justify-center items-center gap-1 text-sm">
                 <span>
                   {
                     fixture?.scores?.filter(
