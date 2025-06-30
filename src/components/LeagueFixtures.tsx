@@ -120,7 +120,14 @@ const LeagueFixtures: FC<props> = ({
           </span>
         );
       } else {
-        return <span className="">{currentPeriod?.minutes}</span>;
+        return (
+          <span className="">
+            {Math.ceil(
+              Number(currentPeriod?.minutes + "." + currentPeriod.seconds)
+            )}
+            <span className="animate-blink">'</span>
+          </span>
+        );
       }
     } else {
       return matchState(fixture.state?.short_name ?? "");
@@ -247,7 +254,9 @@ const LeagueFixtures: FC<props> = ({
                     <span
                       className={`${
                         homeTeam?.meta.winner === false ? "text-gray-400" : ""
-                      } score_font block sm:hidden ${isLive ? "text-live" : ""}`}
+                      } score_font block sm:hidden ${
+                        isLive ? "text-live" : ""
+                      }`}
                     >
                       {today.state?.developer_name !== "NS" && homeScore}
                     </span>
@@ -299,23 +308,23 @@ const LeagueFixtures: FC<props> = ({
 
                   {/* Score */}
                   {windowWidth >= 640 && (
-                    <span
+                    <div
                       className={`${
                         isLive
                           ? "bg-live text-light-bg"
                           : theme === "dark"
                           ? "bg-dark-bg"
                           : "bg-light-bg"
-                      } w-14 rounded-full text-[10px] py-[2px] text-center`}
+                      } w-14 rounded-full text-[10px] py-[2px] text-center `}
                     >
                       {today.state?.developer_name === "NS" ? (
                         startTime
                       ) : (
-                        <div className="flex justify-center items-center gap-1 score_font">
+                        <div className="score_font flex justify-center items-center gap-1 ">
                           <span>{homeScore}</span>-<span>{awayScore}</span>
                         </div>
                       )}
-                    </span>
+                    </div>
                   )}
 
                   {/* Away team */}
@@ -367,7 +376,9 @@ const LeagueFixtures: FC<props> = ({
                     <span
                       className={`${
                         awayTeam?.meta.winner === false ? "text-gray-400" : ""
-                      } score_font block sm:hidden ${isLive ? "text-live" : ""}`}
+                      } score_font block sm:hidden ${
+                        isLive ? "text-live" : ""
+                      }`}
                     >
                       {today.state?.developer_name !== "NS" && awayScore}
                     </span>
