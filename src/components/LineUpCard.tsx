@@ -172,7 +172,7 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation, events }) => {
                               key={`goal-${player.player_id}-${index}`}
                               className="absolute text-accent bg-black rounded-full"
                               style={{
-                                left: `${index * 6}px`,
+                                left: `-${index * 6}px`,
                                 zIndex: index * 2,
                               }}
                               title={`${event.type.name} at ${event.minute}'`}
