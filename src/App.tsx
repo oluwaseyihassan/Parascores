@@ -12,6 +12,7 @@ import Favorites from "./components/pages/Favorites";
 import Search from "./components/Search";
 import { useSearchToggle } from "./context/SearchToggleContext";
 import { useWindowWidth } from "./hooks/useWindowWidth";
+import Profile from "./components/pages/Profile";
 
 inject();
 function App() {
@@ -57,6 +58,7 @@ function App() {
           <Route path="/league/:league_name/:id" element={<League />} />
           <Route path="/team/:team_name/:id" element={<Team />} />
           <Route path="/favorites" element={<Favorites />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>
       </section>
