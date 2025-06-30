@@ -83,7 +83,9 @@ const FixtureCard: FC<props> = ({ fixture }) => {
 
     return (
       <span>
-        {currentPeriod?.minutes}
+        {Math.ceil(
+          Number(currentPeriod?.minutes + "." + currentPeriod.seconds)
+        )}
         <span className="animate-blink">'</span>
       </span>
     );
