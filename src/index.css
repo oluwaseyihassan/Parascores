@@ -13,6 +13,12 @@
   --breakpoint-xl: 80rem;
   --animate-dropdown: dropdown 0.3s ease-in-out;
   --animate-dropdown-reverse: dropdown-reverse 0.3s ease-in-out;
+  --shadow-card: 0px 0px 10px 3px rgba(0,0,0,0.2);
+}
+
+
+button {
+  @apply cursor-pointer
 }
 
 *,
@@ -35,6 +41,11 @@ body {
 .scroll_bar::-webkit-scrollbar {
   width: 4px;
   /* background-color: #424242; */
+}
+
+.score_font {
+  font-family: lato, monospace;
+  font-style: normal;
 }
 
 .scroll_bar::-webkit-scrollbar-thumb {
