@@ -55,7 +55,7 @@ const Calendar: FC<CalendarProps> = ({
   };
 
   const renderHeader = () => (
-    <div className="flex items-center justify-between mb-4">
+    <div className="flex items-center justify-between mb-4 px-2">
       <button
         onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
         className="p-1 hover:bg-gray-400/10 rounded-md text-gray-600 cursor-pointer focus:outline outline-accent"
@@ -81,14 +81,14 @@ const Calendar: FC<CalendarProps> = ({
       days.push(
         <div
           key={i}
-          className="text-center text-sm font-medium text-gray-400"
+          className="p-2 text-center text-sm font-medium text-gray-400"
           title={`${format(addDays(startOfWeek(date), i), "EEEE")}`}
         >
           {format(addDays(startOfWeek(date), i), "EEE")}
         </div>
       );
     }
-    return <div className="grid grid-cols-7 mb-2">{days}</div>;
+    return <div className={`${theme === "dark" ? "bg-dark" : "bg-light"} grid grid-cols-7 `}>{days}</div>;
   };
 
   const renderCells = () => {
@@ -113,7 +113,7 @@ const Calendar: FC<CalendarProps> = ({
         days.push(
           <button
             key={day.toString()}
-            className={`relative h-10 w-10 flex justify-center items-center text-center text-sm cursor-pointer rounded-full transition focus:outline outline-accent 
+            className={`relative h-10 w-10 flex justify-center items-center text-center text-sm cursor-pointer rounded-full transition focus:outline outline-accent
               ${
                 isToday
                   ? "bg-accent text-white font-semibold hover:bg-accent/80"
@@ -160,7 +160,7 @@ const Calendar: FC<CalendarProps> = ({
         day = addDays(day, 1);
       }
       rows.push(
-        <div className="grid grid-cols-7 gap-1 mb-1" key={day.toString()}>
+        <div className="grid grid-cols-7 gap-1 mb-1 " key={day.toString()}>
           {days}
         </div>
       );
@@ -171,7 +171,7 @@ const Calendar: FC<CalendarProps> = ({
 
   return (
     <ClickAway onClickAway={() => setIsOpen(false)}>
-      <div className="rounded-md px-1">
+      <div className="rounded-md">
         <div
           className={`${
             theme === "dark" ? "outline-gray-400/30" : "outline-gray-300"
@@ -225,19 +225,19 @@ const Calendar: FC<CalendarProps> = ({
         {isOpen && (
           <div
             className={`${
-              theme === "dark" ? "bg-dark" : "bg-light"
-            } absolute right-0 p-2 rounded-lg z-50 -top-1 shadow-2xl`}
+              theme === "dark" ? "bg-dark-bg" : "bg-light-bg"
+            } absolute -right-1 py-2 rounded-lg z-50 -top-1 shadow-card`}
           >
             <button
               onClick={() => setIsOpen(false)}
-              className=" flex justify-self-end text-gray-500 cursor-pointer text-2xl hover:bg-gray-400/10 rounded-md focus:outline outline-accent"
+              className=" flex justify-self-end text-gray-500 cursor-pointer text-2xl hover:bg-gray-400/10 rounded-md focus:outline outline-accent mr-1 p-1"
             >
               <RxCross2 />
             </button>
             {renderHeader()}
             {renderDays()}
             {renderCells()}
-            <div className="flex items-center gap-2 mt-4">
+            <div className="flex items-center gap-2 mt-4 px-2">
               <div className="h-1 w-3 bg-fav rounded-sm" />
               <span className="text-[8px]">
                 Match days for your favorite teams.
