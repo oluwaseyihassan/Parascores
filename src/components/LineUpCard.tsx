@@ -167,14 +167,15 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation, events }) => {
                       </div>
                       {checkIfPlayerScored(player?.player_id).length > 0 &&
                         checkIfPlayerScored(player?.player_id).map(
-                          (_, index) => (
+                          (event, index) => (
                             <div
                               key={`goal-${player.player_id}-${index}`}
                               className="absolute text-accent bg-black rounded-full"
                               style={{
-                                left: `${index * 5}px`,
+                                left: `${index * 6}px`,
                                 zIndex: index * 2,
                               }}
+                              title={`${event.type.name} at ${event.minute}'`}
                             >
                               <RiFootballFill />
                             </div>
