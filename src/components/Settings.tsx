@@ -17,19 +17,21 @@ const Settings = () => {
       <h3 className="text-center text-xl">Settings</h3>
       <div>
         <div>Show favorites on home page</div>
-        <div
-          className="w-12 bg-white p-1 rounded-full cursor-pointer"
+        <button
+          className={`w-12 bg-white py-[2px] px-1 rounded-full focus:outline-accent focus:outline-1 cursor-pointer`}
           onClick={toggleShowFavMatchesOnHomePage}
         >
           <div
-            className="h-5 w-5  bg-accent rounded-full cursor-pointer transition-all duration-500"
+            className={`${
+              showFavMatchesOnHomePage ? "bg-accent" : "bg-gray-400"
+            } h-5 w-5  rounded-full cursor-pointer transition-all duration-500`}
             style={{
               transform: showFavMatchesOnHomePage
-                ? "translateX(100%)"
+                ? "translateX(100% )"
                 : "translateX(0)",
             }}
           />
-        </div>
+        </button>
       </div>
       <div>
         <h4 className="mb-3">Theme</h4>
