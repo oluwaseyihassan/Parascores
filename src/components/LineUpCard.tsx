@@ -34,7 +34,9 @@ const LineUpCard: FC<props> = ({ side, lineup, teamId, formation, events }) => {
     if (!events || events.length === 0) return [];
     return events.filter(
       (event) =>
-        event.player_id === playerId && event.type.developer_name === "GOAL"
+        event.player_id === playerId &&
+        (event.type.developer_name === "GOAL" ||
+          event.type.developer_name === "PENALTY")
     );
   };
 
