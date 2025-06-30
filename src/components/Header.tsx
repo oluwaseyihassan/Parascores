@@ -45,7 +45,7 @@ const Header = () => {
             <div
               className={`${
                 theme === "dark" ? "bg-dark-bg sha" : "bg-light-bg"
-              } px-3 py-4 absolute top-10 right-5 shadow-2xl rounded-lg min-w-[200px]`}
+              } px-3 py-4 absolute top-10 right-5 shadow-card rounded-lg min-w-[200px]`}
             >
               <Settings />
             </div>
