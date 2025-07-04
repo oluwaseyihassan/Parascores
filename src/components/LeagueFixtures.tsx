@@ -107,7 +107,7 @@ const LeagueFixtures: FC<props> = ({
       ) {
         return (
           <span className="">
-            45<sup>+{currentPeriod.minutes - 45}</sup>
+            45<sup className="animate-blink">+{currentPeriod.minutes - 45}</sup>
           </span>
         );
       } else if (
@@ -116,7 +116,7 @@ const LeagueFixtures: FC<props> = ({
       ) {
         return (
           <span>
-            90<sup>+{currentPeriod.minutes - 90}</sup>
+            90<sup className="animate-blink">+{currentPeriod.minutes - 90}</sup>
           </span>
         );
       } else {
