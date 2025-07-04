@@ -65,7 +65,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
     ) {
       return (
         <span>
-          45<sup>+{currentPeriod.minutes - 45}</sup>'
+          45<sup className="animate-blink">+{currentPeriod.minutes - 45}</sup>'
         </span>
       );
     }
@@ -76,7 +76,7 @@ const FixtureCard: FC<props> = ({ fixture }) => {
     ) {
       return (
         <span>
-          90<sup>+{currentPeriod.minutes - 90}</sup>'
+          90<sup className="animate-blink">+{currentPeriod.minutes - 90}</sup>'
         </span>
       );
     }
