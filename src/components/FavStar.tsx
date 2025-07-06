@@ -2,6 +2,7 @@ import { FaRegStar, FaStar } from "react-icons/fa";
 import { imagePlaceholders } from "../utils/imagePlaceholders";
 import { Dispatch, FC, SetStateAction } from "react";
 import { useFavorites } from "../context/FavoritesContext";
+import { Bounce, toast } from "react-toastify";
 
 interface StarProps {
   leagueName?: string;
@@ -56,6 +57,20 @@ const FavStar: FC<StarProps> = ({
     toggleFavoriteTeams,
   } = useFavorites();
 
+  const toastFunc = (message: string) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      transition: Bounce,
+    });
+  };
+
   const condition = (): boolean => {
     switch (type.toLowerCase()) {
       case "league":
@@ -82,6 +97,11 @@ const FavStar: FC<StarProps> = ({
         logo: image_path || imagePlaceholders.league,
       };
       toggleFavorite(leagueItem);
+      if (condition()) {
+        toastFunc(`${leagueName} is removed from favorites`);
+      } else {
+        toastFunc(`${leagueName} is added to favorites`);
+      }
     }
 
     if (type.toLowerCase() === "team") {
@@ -91,6 +111,11 @@ const FavStar: FC<StarProps> = ({
         logo: image_path || imagePlaceholders.team,
       };
       toggleFavoriteTeams(teamItem);
+      if (condition()) {
+        toastFunc(`${teamName} is removed from favorites`);
+      } else {
+        toastFunc(`${teamName} is added to favorites`);
+      }
     }
 
     if (type.toLowerCase() === "match") {
@@ -135,6 +160,13 @@ const FavStar: FC<StarProps> = ({
         }
       } else {
         toggleFavoriteMatches(matchItem);
+        if (condition()) {
+          toastFunc(
+            `${homeTeamName} vs ${awayTeamName} is removed from favorites`
+          );
+        } else {
+          toastFunc(`${homeTeamName} vs ${awayTeamName} is added to favorites`);
+        }
       }
     }
   };
