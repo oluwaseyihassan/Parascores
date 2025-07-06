@@ -13,6 +13,7 @@ import Search from "./components/Search";
 import { useSearchToggle } from "./context/SearchToggleContext";
 import { useWindowWidth } from "./hooks/useWindowWidth";
 import Profile from "./components/pages/Profile";
+import { Bounce, ToastContainer } from "react-toastify";
 
 inject();
 function App() {
@@ -81,6 +82,19 @@ function App() {
           <BottomNavBar />
         </div>
       </div>
+        <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        transition={Bounce}
+      />
     </div>
   );
 }
