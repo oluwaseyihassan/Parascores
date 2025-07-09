@@ -147,7 +147,7 @@ const Fixture = () => {
   }
 
   return (
-    <div className="grid lg:grid-cols-3 grid-cols-1 lg:gap-4 p-4">
+    <div className="grid lg:grid-cols-3 grid-cols-1 lg:gap-4 md:p-2">
       {/* Large screens */}
       <Fragment>
         <section className={` col-span-1 rounded-lg`}>
