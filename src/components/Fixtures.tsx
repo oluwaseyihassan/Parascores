@@ -245,7 +245,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
             onClick={() => setFilterFixtures("fav")}
           >
             <FaStar className="inline" />
-            <span className="hidden sm:block">Favorites</span>
+            <span className="hidden min-[401px]:block ml-1">Favorites</span>
           </button>
         </div>
         <div className="flex justify-end">
