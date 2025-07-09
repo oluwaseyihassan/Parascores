@@ -197,7 +197,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
   return (
     <div className="mt-2">
       <section className="flex justify-between mb-4 relative gap-2">
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap h-fit">
           <button
             onClick={() => setFilterFixtures("all")}
             className={`px-4 py-1 h-fit rounded-md cursor-pointer ${
@@ -235,7 +235,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
           </button>
 
           <button
-            className={`px-2 py-1 cursor-pointer  rounded-md flex items-center ${
+            className={`px-2 py-1  cursor-pointer  rounded-md flex items-center ${
               filterFixtures === "fav"
                 ? "bg-fav text-dark"
                 : theme === "dark"
@@ -244,7 +244,7 @@ const Fixtures: FC<FixturesProps> = ({ fixtureId, setFixtureId }) => {
             }`}
             onClick={() => setFilterFixtures("fav")}
           >
-            <FaStar className="inline mr-1" />
+            <FaStar className="inline" />
             <span className="hidden sm:block">Favorites</span>
           </button>
         </div>
